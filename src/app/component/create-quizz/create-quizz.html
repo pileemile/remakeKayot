@@ -1,0 +1,55 @@
+<div class="h-full">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="p-4">
+    <div class="flex flex-col gap-2.5">
+      <label for="title">Titre</label>
+      <input id="title" formControlName="title" class="border border-b-gray-400 rounded-lg" type="text">
+
+      <label for="description">Description</label>
+      <input id="description" formControlName="description" class="border border-b-gray-400 rounded-lg" type="text">
+
+      <label for="category">Catégorie</label>
+      <select id="category" formControlName="category" class="border border-b-gray-400 rounded-lg">
+        @for (categorie of categories; track $index) {
+          <option [value]="categorie">{{ categorie }}</option>
+        }
+      </select>
+
+      <label for="difficulty">Difficulté</label>
+      <select id="difficulty" formControlName="difficulty" class="border border-b-gray-400 rounded-lg">
+        @for (difficulty of difficulties; track $index) {
+          <option [value]="difficulty">{{ difficulty }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="mt-4">
+      <h3 class="text-lg font-semibold mb-2">Questions</h3>
+      <div formArrayName="question">
+        @for (questionGroup of questions.controls; track $index) {
+          <div [formGroupName]="$index" class="flex flex-col gap-2.5 border border-gray-300 rounded-lg p-3 mb-3">
+            <label for="text{{$index}}">Texte de la question</label>
+            <input id="text{{$index}}" [formControlName]="'text'" type="text" class="border border-b-gray-400 rounded-lg">
+            <button type="button"
+                    class="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-3 rounded w-fit self-end"
+                    (click)="removeQuestion($index)">
+              Supprimer
+            </button>
+          </div>
+        }
+      </div>
+
+      <button type="button"
+              class="bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded"
+              (click)="addQuestion()">
+        Ajouter une question
+      </button>
+    </div>
+
+    <div class="mt-6">
+      <button type="submit"
+              class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+        Soumettre le quiz
+      </button>
+    </div>
+  </form>
+</div>
