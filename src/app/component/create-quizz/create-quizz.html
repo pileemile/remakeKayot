@@ -28,12 +28,28 @@
         @for (questionGroup of questions.controls; track $index) {
           <div [formGroupName]="$index" class="flex flex-col gap-2.5 border border-gray-300 rounded-lg p-3 mb-3">
             <label for="text{{$index}}">Texte de la question</label>
-            <input id="text{{$index}}" [formControlName]="'text'" type="text" class="border border-b-gray-400 rounded-lg">
-            <button type="button"
-                    class="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-3 rounded w-fit self-end"
-                    (click)="removeQuestion($index)">
-              Supprimer
-            </button>
+            <input id="text{{$index}}" formControlName="text" type="text" class="border border-b-gray-400 rounded-lg">
+            <p>Ajouter des réponses a votre question</p>
+            <div class="" formArrayName="answers">
+              <label for="is_correct{{$index}}">Sélectionner la bonne réponse</label>
+              @for (answerGroup of getAnswersControls($index); track $index) {
+                <div [formGroupName]="$index" class="flex flex-col gap-2.5">
+                  <div class="flex gap-2.5">
+                    <input type="radio" id="is_correct{{$index}}" formControlName="is_correct" class="border border-b-gray-400 rounded-lg" [value]="true">
+                    <label for="text{{$index}}">Compléter la réponse</label>
+                  </div>
+                  <input type="text" id="text{{$index}}" formControlName="text" class="border border-b-gray-400 rounded-lg">
+                </div>
+              }
+            </div>
+            <div class="flex justify-between">
+              <button type="button" (click)="addAnswerQuestion($index)" class="bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-3 rounded w-fit self-end">
+                ajouter une réponse
+              </button>
+              <button type="button" class="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-3 rounded w-fit self-end" (click)="removeQuestion($index)">
+                Supprimer
+              </button>
+            </div>
           </div>
         }
       </div>
