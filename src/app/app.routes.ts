@@ -3,14 +3,18 @@ import { Login } from './page/login/login';
 import { Pin } from './page/pin/pin';
 import { Quizz } from './page/quizz/quizz';
 import {SeeAllQuizzes} from './page/see-all-quizzes/see-all-quizzes';
+import {AuthGuard} from './auth.guard';
+import {Timer} from './component/timer/timer';
+import {AnswerQuiz} from './page/answer-quiz/answer-quiz';
 
 export const routes: Routes = [
   {
-    path: '',
-    component: Pin
+    path: 'pin',
+    component: Pin,
+    canActivate: [AuthGuard]
   },
   {
-    path: 'auth',
+    path: '',
     children: [
       {
         path: 'login',
@@ -36,5 +40,14 @@ export const routes: Routes = [
   {
     path:'all-quizzes',
     component:SeeAllQuizzes,
+    canActivate: [AuthGuard]
   },
+  {
+    path:'timer',
+    component:Timer,
+  },
+  {
+    path: 'answer-quiz',
+    component: AnswerQuiz
+  }
 ];

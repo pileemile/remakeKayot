@@ -12,7 +12,7 @@ export interface Quizzes {
 export enum Category {
   "Sport"= "Sport",
   "Culture" = "Culture",
-  "Géographie" = "Géographie",
+  "Geographie" = "Geographie",
 }
 
 export enum Difficulty {
