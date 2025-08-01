@@ -1,1 +1,24 @@
-<app-component-login></app-component-login>
+<div class="h-[70vw] flex justify-center items-center">
+  <div class="border border-gray-300 rounded-lg p-4 flex flex-col justify-center">
+    @if (this.routeUrl === 'reset-password') {
+      <div class=" text-center">
+        <p class="text-2xl font-medium ">Pour le reset de mot de passe y </p>
+      </div>
+    } @else {
+      <div class=" text-center">
+        <p class="text-2xl font-medium ">Bienvenue sur kayot </p>
+      </div>
+      @if (this.routeUrl === 'login') {
+        <div class=" text-center">
+          <p>Veuillez vous connecter</p>
+        </div>
+      }
+      @if (this.routeUrl === 'register') {
+        <div class=" text-center">
+          <p>Veuillez vous inscrire</p>
+        </div>
+      }
+    }
+    <app-component-login></app-component-login>
+  </div>
+</div>

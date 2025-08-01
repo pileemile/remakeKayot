@@ -21,10 +21,10 @@ export enum Difficulty {
   "Difficile" = "Difficile",
 }
 export interface QuestionCreate {
-  id: string;
-  quiz_id: Quizzes;
-  text: string;
-  created_at: string;
+  created_at?: string | null
+  id?: string
+  quiz_id?: string | null
+  text: string
 }
 
 export interface Answers {

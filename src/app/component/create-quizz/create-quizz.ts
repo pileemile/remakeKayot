@@ -3,6 +3,7 @@ import {FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Val
 import {Category, Difficulty, Quizzes, QuestionCreate, Answers} from '../../models/quizzes/quizzes';
 import {QuizzesService} from '../../service/quizzes/quizzes-service';
 import {MatButtonModule} from '@angular/material/button';
+import {MatDialogClose} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-create-quizz',
@@ -16,7 +17,7 @@ import {MatButtonModule} from '@angular/material/button';
   styleUrl: './create-quizz.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CreateQuizz implements OnInit {
+export class CreateQuizz {
 
   public form: FormGroup;
   public categories = Object.values(Category);
@@ -35,51 +36,36 @@ export class CreateQuizz implements OnInit {
     });
   }
 
-  ngOnInit() {
-    this.quizzesService.quiz$.subscribe(quiz => {
-      if (quiz) {
-
-        this.form.patchValue({
-          title: quiz.title,
-          description: quiz.description,
-          category: quiz.category,
-          difficulty: quiz.difficulty,
-        });
-      }
-    });
-  }
-
   public get questions(): FormArray {
     return this.form.get('question') as FormArray;
   }
 
-  getAnswersControls(questionIndex: number) {
+  public getAnswersControls(questionIndex: number) {
     return (this.questions.at(questionIndex).get('answers') as FormArray).controls;
   }
 
   private createQuestionFormGroup(question?: QuestionCreate): FormGroup {
-    const group = this.formBuilder.group({
+    const groupQuestion = this.formBuilder.group({
       text: [question?.text || '', Validators.required],
       created_at: [question?.created_at || new Date().toISOString()],
       answers: this.formBuilder.array([])
     });
-    return group;
+    return groupQuestion;
   }
 
   private createAnswersFormGroup(answers?: Answers): FormGroup {
-    const group = this.formBuilder.group ({
+    const groupAnswers = this.formBuilder.group ({
       text: [answers?.text || '', Validators.required],
       is_correct: [answers?.is_correct || false,]
     });
-    return group;
+    return groupAnswers;
   }
 
  public addQuestion() {
     this.questions.push(this.createQuestionFormGroup());
-    console.log("la questil",this.questions.value)
   }
 
-  addAnswerQuestion(questionIndex: number) {
+ public addAnswerQuestion(questionIndex: number) {
     const answersArray = this.questions.at(questionIndex).get('answers') as FormArray;
     answersArray.push(this.createAnswersFormGroup());
   }
@@ -89,27 +75,47 @@ export class CreateQuizz implements OnInit {
     this.questions.removeAt(index);
   }
 
-  public onSubmit() {
-    if (this.form.valid) {
-      const quiz = this.form.value as Quizzes;
-      this.quizzesService.addQuizz(quiz);
-      this.quizzesService.createQuestion$.next(this.questions.value);
-      console.log("l'abonnement sur le quiz", this.quizzesService.quiz$.value);
-      console.log("l'abonnement sur la question", this.quizzesService.createQuestion$.value);
-      const allAnswers = this.questions.value.flatMap((question: { answers: any; }) => question.answers);
-      this.quizzesService.answers$.next([
-        ...(this.quizzesService.answers$.value ?? []),
-        ...allAnswers
-      ]);
-      console.log("l'abonnement sur les answers", this.quizzesService.answers$.value);
+ public async onSubmit() {
+  if (this.form.valid) {
+    const quiz = this.form.value as Quizzes;
+    this.quizzesService.addQuizz(quiz);
+    this.quizzesService.createQuestion$.next(this.questions.value);
+
+    try {
       if (this.quizzesService.quiz$.value) {
-        this.quizzesService.InsertQuizzes(this.quizzesService.quiz$.value);
-        console.log('l api de supaaaa')
+        await this.quizzesService.InsertQuizzes(this.quizzesService.quiz$.value);
       }
 
-    } else {
-      console.log("erreur sur ce bon vieux form")
-    }
+      const questionsValue = this.quizzesService.createQuestion$.value;
+      if (questionsValue) {
+        await this.quizzesService.InsertQuestion(questionsValue);
 
+        const questionsWithIds = this.quizzesService.createQuestion$.value;
+        const allAnswers: Answers[] = [];
+
+        questionsWithIds?.forEach((question, index) => {
+          const answersControl = this.questions.at(index)?.get('answers');
+          const questionAnswers = answersControl?.value;
+
+          if (question?.id && questionAnswers) {
+            questionAnswers.forEach((answer: any) => {
+              allAnswers.push({
+                ...answer,
+                question_id: question.id!
+              });
+            });
+          }
+        });
+
+        if (allAnswers.length > 0) {
+          await this.quizzesService.InsertAnswers(allAnswers);
+        }
+      }
+    } catch (error) {
+      console.error('Erreur', error);
+    }
+  } else {
+    console.log("erreur sur ce bon vieux form");
   }
+}
 }
