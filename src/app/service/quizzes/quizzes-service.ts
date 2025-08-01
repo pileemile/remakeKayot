@@ -9,13 +9,6 @@ import {supabase} from '../../../environments/environment';
   providedIn: 'root'
 })
 export class QuizzesService {
-
-  // constructor() {
-  //   this.supabase = createClient(
-  //     environment.supabaseUrl,
-  //     environment.supabaseKey
-  //   );
-
   public  quiz$ = new BehaviorSubject<Quizzes | null>(null)
   public createQuestion$ = new BehaviorSubject<QuestionCreate[] | null>(null);
   public answers$ = new BehaviorSubject<Answers[] | null>(null)
@@ -24,7 +17,7 @@ export class QuizzesService {
     this.quiz$.next(quiz);
   }
 
-  async InsertQuizzes(quiz: Quizzes)  {
+  public async InsertQuizzes(quiz: Quizzes)  {
 
     const newQuiz: TablesInsert<'quizzes'> = {
       category: this.quiz$.value?.category ?? null,
@@ -43,7 +36,56 @@ export class QuizzesService {
     if (error) {
       console.error('Erreur lors de l\'insertion :', error);
     } else {
-      console.log('Données insérées :', data);
+      if (data && data[0]) {
+        this.quiz$.next(data[0] as Quizzes);
+      }
+      return data?.[0]?.id;
+    }
+  }
+
+  public async InsertQuestion(question: QuestionCreate[]) {
+    const questionInsert = question.map(questions => ({
+      created_at: questions.created_at ?? new Date().toISOString(),
+      text: questions.text ?? '',
+      quiz_id: this.quiz$.value?.id ?? null,
+    }));
+
+    const { data, error } = await supabase
+      .from('questions')
+      .insert(
+        questionInsert
+      )
+      .select()
+
+    if (error){
+      console.log("erreur sur l'insertion des questions", error);
+    } else {
+      if (data) {
+        this.createQuestion$.next(data);
+      }
+
+      console.log("questions insérées");
+
+    }
+  }
+
+  public async InsertAnswers(answers: Answers[]) {
+    const answersInsert = answers.map(answer => ({
+      is_correct: answer.is_correct,
+      text: answer.text,
+      question_id: answer.question_id,
+    }));
+
+    const { data, error } = await supabase
+      .from('answers')
+      .insert(answersInsert)
+      .select()
+
+    if (error) {
+      console.log("erreur sur l'insertion des answers", error);
+    } else {
+    this.answers$.next(data);
+      console.log("answers insérées");
     }
   }
 

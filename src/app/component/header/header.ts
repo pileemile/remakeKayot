@@ -22,6 +22,7 @@ export class Header {
   constructor(
     private readonly router: Router,
   ) {}
+
   private readonly dialog = inject(MatDialog)
 
   public openQuizzes() {

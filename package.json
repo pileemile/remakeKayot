@@ -18,6 +18,12 @@
       }
     ]
   },
+  "overrides": {
+    "@supabase/supabase-js": {
+      "@supabase/gotrue-js": "2.61.0"
+    },
+    "@supabase/gotrue-js": "2.54.2"
+  },
   "private": true,
   "dependencies": {
     "@angular/common": "^20.1.0",

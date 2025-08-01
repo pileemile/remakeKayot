@@ -352,6 +352,3 @@ export const Constants = {
     Enums: {},
   },
 } as const
-
-export class TablesInserte {
-}
