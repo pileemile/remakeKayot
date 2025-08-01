@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import {CreateQuizz} from '../../component/create-quizz/create-quizz';
+import {CreateQuizz} from '../../component/quiz/create-quizz/create-quizz';
 
 @Component({
   selector: 'app-quizz',
   imports: [
-    CreateQuizz
+      CreateQuizz
   ],
   templateUrl: './quizz.html',
   styleUrl: './quizz.css'

@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import {LoginService} from '../../../service/login/login-service';
 import {MatDialog} from '@angular/material/dialog';
 import {DialogForgotPassword} from '../dialog-forgot-password/dialog-forgot-password';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Login} from '../../../models/login/login';
 
 @Component({
@@ -23,6 +23,7 @@ export class ComponentLogin implements OnInit{
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly route: ActivatedRoute,
+    private readonly navigateRoute: Router,
     public loginService: LoginService,
   ) {
     this.form = this.formBuilder.group({
@@ -44,6 +45,7 @@ export class ComponentLogin implements OnInit{
           this.loginService.login$.next(login);
           if (this.loginService.login$.value) {
             await this.loginService.loginSigIn(login);
+            await this.navigateRoute.navigate(['/all-quizzes']);
 
           }
         } else if(this.routeUrl === 'register') {
@@ -51,6 +53,7 @@ export class ComponentLogin implements OnInit{
           this.loginService.login$.next(register);
           if (this.loginService.login$.value) {
             await this.loginService.loginSigUp(register);
+            await this.navigateRoute.navigate(['/login']);
           }
         }
         /* TODO l'update se fait habituellement sur une nouvelle page*/
