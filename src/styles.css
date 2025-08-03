@@ -1,19 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
 
-/* Variables CSS personnalisées */
-:root {
-  --primary-color: #6366f1;
-  --primary-hover: #4f46e5;
-  --secondary-color: #f8fafc;
-  --text-primary: #1e293b;
-  --text-secondary: #64748b;
-  --border-color: #e2e8f0;
-  --shadow-light: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  --shadow-medium: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-large: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-}
-
 /* Reset et styles de base */
 * {
   box-sizing: border-box;
@@ -21,208 +8,11 @@
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  min-height: 100vh;
   margin: 0;
   padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-/* Conteneur principal */
-app-root {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  padding: 1rem;
-}
-
-/* Styles pour le formulaire de connexion */
-.login-container {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-  padding: 3rem;
-  box-shadow: var(--shadow-large);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  width: 100%;
-  max-width: 420px;
-  position: relative;
-  overflow: hidden;
-}
-
-.login-container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--primary-color), #8b5cf6, #ec4899);
-}
-
-/* Titre du formulaire */
-.login-title {
-  text-align: center;
-  margin-bottom: 2rem;
-  color: var(--text-primary);
-  font-size: 1.875rem;
-  font-weight: 700;
-  letter-spacing: -0.025em;
-}
-
-/* Groupes de champs */
-.form-group {
-  margin-bottom: 1.5rem;
-  position: relative;
-}
-
-/* Labels */
-.form-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: var(--text-primary);
-  font-weight: 500;
-  font-size: 0.875rem;
-  letter-spacing: 0.025em;
-}
-
-/* Inputs */
-.form-input {
-  width: 100%;
-  padding: 0.875rem 1rem;
-  border: 2px solid var(--border-color);
-  border-radius: 12px;
-  font-size: 1rem;
-  color: var(--text-primary);
-  background-color: #ffffff;
-  transition: all 0.3s ease;
-  outline: none;
-}
-
-.form-input:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-  transform: translateY(-1px);
-}
-
-.form-input::placeholder {
-  color: var(--text-secondary);
-}
-
-/* Checkbox personnalisé */
-.checkbox-container {
-  display: flex;
-  align-items: center;
-  margin-bottom: 2rem;
-}
-
-.custom-checkbox {
-  position: relative;
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  margin-right: 0.75rem;
-}
-
-.custom-checkbox input {
-  opacity: 0;
-  position: absolute;
-  cursor: pointer;
-}
-
-.checkmark {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 20px;
-  width: 20px;
-  background-color: #ffffff;
-  border: 2px solid var(--border-color);
-  border-radius: 4px;
-  transition: all 0.3s ease;
-}
-
-.custom-checkbox:hover input ~ .checkmark {
-  border-color: var(--primary-color);
-}
-
-.custom-checkbox input:checked ~ .checkmark {
-  background-color: var(--primary-color);
-  border-color: var(--primary-color);
-}
-
-.checkmark:after {
-  content: "";
-  position: absolute;
-  display: none;
-}
-
-.custom-checkbox input:checked ~ .checkmark:after {
-  display: block;
-}
-
-.custom-checkbox .checkmark:after {
-  left: 6px;
-  top: 2px;
-  width: 6px;
-  height: 10px;
-  border: solid white;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
-}
-
-.checkbox-label {
-  color: var(--text-secondary);
-  font-size: 0.875rem;
-  cursor: pointer;
-  user-select: none;
-}
-
-/* Bouton de soumission */
-.submit-button {
-  width: 100%;
-  padding: 1rem;
-  background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
-  color: white;
-  border: none;
-  border-radius: 12px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.submit-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
-}
-
-.submit-button:active {
-  transform: translateY(0);
-}
-
-.submit-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s;
-}
-
-.submit-button:hover::before {
-  left: 100%;
-}
-
-/* Animations */
+/* Styles pour les animations personnalisées */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -234,66 +24,30 @@ app-root {
   }
 }
 
-.login-container {
+.animate-fade-in-up {
   animation: fadeInUp 0.6s ease-out;
 }
 
-/* Responsive */
-@media (max-width: 480px) {
-  .login-container {
-    padding: 2rem 1.5rem;
-    margin: 1rem;
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
   }
-  
-  .login-title {
-    font-size: 1.5rem;
+  100% {
+    transform: translateX(100%);
   }
 }
 
-/* États de focus améliorés */
-.form-input:focus,
-.submit-button:focus {
-  outline: 2px solid var(--primary-color);
-  outline-offset: 2px;
-}
-
-/* Styles pour les messages d'erreur (pour usage futur) */
-.error-message {
-  color: #ef4444;
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
-  display: flex;
-  align-items: center;
-}
-
-.error-message::before {
-  content: '⚠';
-  margin-right: 0.5rem;
-}
-
-/* Loader pour le bouton (pour usage futur) */
-.button-loading {
-  position: relative;
-  color: transparent;
-}
-
-.button-loading::after {
+.shimmer::before {
   content: '';
   position: absolute;
-  width: 20px;
-  height: 20px;
-  top: 50%;
-  left: 50%;
-  margin-left: -10px;
-  margin-top: -10px;
-  border: 2px solid #ffffff;
-  border-radius: 50%;
-  border-top-color: transparent;
-  animation: spin 1s linear infinite;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+.shimmer:hover::before {
+  animation: shimmer 0.5s ease-out;
 }
