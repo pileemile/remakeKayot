@@ -17,7 +17,7 @@ export const routes: Routes = [
     path: '',
     children: [
       {
-        path: 'login',
+        path: '',
         component: Login,
         data: { authMode: 'login' }
       },
@@ -41,10 +41,6 @@ export const routes: Routes = [
     path:'all-quizzes',
     component:SeeAllQuizzes,
     canActivate: [AuthGuard]
-  },
-  {
-    path:'timer',
-    component:Timer,
   },
   {
     path: 'answer-quiz',

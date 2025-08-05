@@ -14,6 +14,5 @@ export class SessionService {
       access_token,
       refresh_token
     })
-    console.log(access_token, refresh_token, 'session');
   }
 }

@@ -12,6 +12,8 @@ export class QuizzesService {
   public  quiz$ = new BehaviorSubject<Quizzes | null>(null)
   public createQuestion$ = new BehaviorSubject<QuestionCreate[] | null>(null);
   public answers$ = new BehaviorSubject<Answers[] | null>(null)
+  public allQuizzes$ = new BehaviorSubject<Quizzes[] |null>(null);
+  public quizzesId$ = new BehaviorSubject<Quizzes | null>(null);
 
   public addQuizz(quiz: Quizzes) {
     this.quiz$.next(quiz);
@@ -63,9 +65,6 @@ export class QuizzesService {
       if (data) {
         this.createQuestion$.next(data);
       }
-
-      console.log("questions insérées");
-
     }
   }
 
@@ -85,7 +84,32 @@ export class QuizzesService {
       console.log("erreur sur l'insertion des answers", error);
     } else {
     this.answers$.next(data);
-      console.log("answers insérées");
+    }
+  }
+
+  public async getAllQuizzes() {
+
+    let { data: quizzes, error } = await supabase
+      .from('quizzes')
+      .select('*')
+    this.allQuizzes$.next(quizzes);
+    console.log(quizzes, 'quizzes')
+
+    if (error) {
+      console.log("error", error)
+    }
+  }
+
+  public async getQuizzesById(id: string) {
+    let { data: quizzes, error } = await supabase
+      .from('quizzes')
+      .select('*')
+      .eq('id', id)
+      .single();
+    this.quizzesId$.next(quizzes);
+
+    if (error) {
+      console.log("error", error)
     }
   }
 
