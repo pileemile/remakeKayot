@@ -38,7 +38,7 @@ export class LoginService {
       console.log("erreur sur la connexion", error);
     } else {
       await this.sessionService.getSession(data.session?.access_token ?? '', data.session?.refresh_token ?? '')
-      console.log('session : ', data, )
+      console.log('session : ' )
       this.isAuthentificated = true;
       console.log("connecté !!!", this.isAuthenticated());
     }
@@ -47,7 +47,6 @@ export class LoginService {
 
   public async forgotPassword(login: Login) {
     const email = this.login$.value?.email ?? '';
-    console.log(email, 'whoa');
     let { data, error } = await supabase.auth.resetPasswordForEmail(
         email
     )
