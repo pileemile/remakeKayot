@@ -19,10 +19,12 @@ export class QuestionService {
 
   }
 
-  public async getQuestionById(id: string) {
-    let {data: questions, error} = await supabase
+  public async getQuestionByIdWithAnswer(id: string) {
+    let {data: questions , error} = await supabase
       .from('questions')
-      .select('*')
+      .select(
+        '*, answers(*)'
+      )
       .eq('quiz_id', id)
 
 
@@ -36,4 +38,6 @@ export class QuestionService {
     }
     console.log('data question', this.question$.value)
   }
+
+
 }

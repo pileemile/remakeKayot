@@ -21,14 +21,15 @@ export enum Difficulty {
   "Difficile" = "Difficile",
 }
 export interface QuestionCreate {
-  created_at?: string | null
+  answers: Answers[]
+  created_at?: string
   id?: string
-  quiz_id?: string | null
+  quiz_id?: string
   text: string
 }
 
 export interface Answers {
-  question_id: QuestionCreate
+  question_id: string
   text: string;
   is_correct: boolean;
 }

@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AnswerService} from '../../../service/answers/answer-service';
 import {QuestionService} from '../../../service/question/question-service';
+import {Answers, QuestionCreate} from '../../../models/quizzes/quizzes';
 
 @Component({
   selector: 'app-answer-quiz',
@@ -10,33 +11,31 @@ import {QuestionService} from '../../../service/question/question-service';
 })
 export class AnswerQuiz implements OnInit {
 
+  public retrieve_answer: { answers: Answers[] | null | undefined; }[] | undefined;
+
   constructor(
-    public answerService: AnswerService,
+    public answersService: AnswerService,
     public questionService: QuestionService,
-  ) {
+  ) {}
+
+  ngOnInit() {
+     // this.questionAnswersService.question_with_answers_load(0);
+     this.retrieve_answer = this.answersService.answerForQuestion$.value;
   }
 
-  async ngOnInit() {
-    this.questionService.question$.subscribe(
-      async questions => {
-        if (questions) {
-          console.log(typeof this.questionService.question$.value)
-          if (this.questionService.question$.value){
-            const questionForAnswerservice = this.questionService.question$.value.map(
-              question => ({
-                id: question.id
-              }
-              )
-            );
-            console.log("ici l'id de la question", questionForAnswerservice[0].id)
-            await this.answerService.getAnswersById(
-              questionForAnswerservice[0].id
-            );
-          }
-        }
-      }
-    );
+  // public set answers(answers: Answers[] | null | undefined) {
+  //
+  // }
+  //
+  // public get answers(): (Answers[] | null | undefined)[] {
+  //   if (this.questionService.question$.value) {
+  //     return this.retrieve_answer = this.questionService.question$.value.map(
+  //       (question) => question.answers,
+  //     );
+  //
+  //
+  //   }
+  //   return [];
+  // }
 
-
-  }
 }
