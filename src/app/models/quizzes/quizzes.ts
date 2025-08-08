@@ -1,3 +1,5 @@
+import {Answers} from '../answer/answer';
+
 export interface Quizzes {
   id: string;
   user_id: string;
@@ -28,8 +30,7 @@ export interface QuestionCreate {
   text: string
 }
 
-export interface Answers {
-  question_id: string
-  text: string;
-  is_correct: boolean;
-}
+
+
+
+

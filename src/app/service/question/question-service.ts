@@ -16,7 +16,6 @@ export class QuestionService {
       .select('*')
     console.log(questions, 'questions');
     this.questionsAll$.next(questions);
-
   }
 
   public async getQuestionByIdWithAnswer(id: string) {

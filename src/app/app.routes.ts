@@ -37,6 +37,7 @@ export const routes: Routes = [
   },
   {
     path: 'answer-quiz',
-    component: AnswerQuiz
+    component: AnswerQuiz,
+    canActivate: [AuthGuard]
   }
 ];

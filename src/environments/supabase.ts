@@ -116,11 +116,9 @@ export type Database = {
       }
       attempts: {
         Row: {
-          completed_at: string | null
           id: string
           quiz_id: string | null
           score: number | null
-          started_at: string | null
           total: number | null
           user_id: string | null
         }

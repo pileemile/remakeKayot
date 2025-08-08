@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
-import {Answers, QuestionCreate, Quizzes} from '../../models/quizzes/quizzes';
+import {QuestionCreate, Quizzes} from '../../models/quizzes/quizzes';
 import {TablesInsert} from '../../../environments/supabase';
 import {supabase} from '../../../environments/environment';
+import {Answers} from '../../models/answer/answer';
 
 
 @Injectable({
@@ -15,9 +16,7 @@ export class QuizzesService {
   public allQuizzes$ = new BehaviorSubject<Quizzes[] |null>(null);
   public quizzesId$ = new BehaviorSubject<Quizzes | null>(null);
 
-  public addQuizz(quiz: Quizzes) {
-    this.quiz$.next(quiz);
-  }
+
 
   public async InsertQuizzes(quiz: Quizzes)  {
 

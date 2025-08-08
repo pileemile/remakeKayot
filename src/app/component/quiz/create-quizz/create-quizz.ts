@@ -1,8 +1,9 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {Category, Difficulty, Quizzes, QuestionCreate, Answers} from '../../../models/quizzes/quizzes';
+import {Category, Difficulty, Quizzes, QuestionCreate} from '../../../models/quizzes/quizzes';
 import {QuizzesService} from '../../../service/quizzes/quizzes-service';
 import {MatButtonModule} from '@angular/material/button';
+import {Answers} from '../../../models/answer/answer';
 
 @Component({
   selector: 'app-create-quizz',
@@ -69,6 +70,10 @@ export class CreateQuizz {
     answersArray.push(this.createAnswersFormGroup());
   }
 
+  public addQuizz(quiz: Quizzes) {
+    this.quizzesService.quiz$.next(quiz);
+  }
+
 
   public removeQuestion(index: number): void {
     this.questions.removeAt(index);
@@ -82,7 +87,7 @@ export class CreateQuizz {
  public async onSubmit() {
   if (this.form.valid) {
     const quiz = this.form.value as Quizzes;
-    this.quizzesService.addQuizz(quiz);
+    this.addQuizz(quiz);
     this.quizzesService.createQuestion$.next(this.questions.value);
 
     try {
