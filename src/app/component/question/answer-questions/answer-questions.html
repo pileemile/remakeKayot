@@ -1,60 +1,71 @@
 <div class="h-full w-full flex justify-center items-center">
-  <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm">
-    @if (this.quizz) {
-      @if (this.quizz.category === Category.Sport)  {
-        <img src="sport-imagejpg.jpg" alt="">
+  <form>
+    <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm">
+      @if (this.quizz) {
+        @if (this.quizz.category === Category.Sport)  {
+          <img src="sport-imagejpg.jpg" alt="">
+        }
+        @if (this.quizz.category === Category.Culture) {
+          <img src="image-culture.png" alt="">
+        }
+        @if (this.quizz.category === Category.Geographie) {
+          <img src="geographie.jpg" alt="">
+        }
       }
-      @if (this.quizz.category === Category.Culture) {
-        <img src="image-culture.png" alt="">
-      }
-      @if (this.quizz.category === Category.Geographie) {
-        <img src="geographie.jpg" alt="">
-      }
-    }
-    <div class="p-5">
-      <app-timer></app-timer>
-      @if (this.question)  {
-        <p>{{this.question.text}}</p>
-      }
-      @if (this.question)  {
-        @if (this.question.answers) {
-          @for (answer of this.question.answers; track $index) {
-            <div class="flex items-center ps-4 border border-gray-200 rounded-sm mt-3">
-              <input id="bordered-radio-1" type="checkbox" [value]="true" name="bordered-radio" class="w-4 h-4 text-blue-600 bg-gray-100 rounded-lg border-gray-300 focus:ring-blue-500">
-              <label for="bordered-radio-1" class="w-full py-4 ms-2 text-sm font-medium text-gray-900">{{ answer.text }}</label>
-            </div>
+      <div class="p-5">
+        <app-timer></app-timer>
+
+
+        <p>Question n° {{this.index + 1 }}</p>
+        @if (this.question)  {
+          <p>{{this.question.text}}</p>
+        }
+        @if (this.question)  {
+          @if (this.question.answers) {
+            @for (answer of this.question.answers; track $index) {
+              <div class="flex items-center ps-4 border border-gray-200 rounded-sm mt-3">
+                <input
+                  id="bordered-radio-{{this.index}}-{{ $index }}"
+                  type="radio"
+                  [ngModel]="answers_user[this.index]?.text === answer.text"
+                  (ngModelChange)="answers_user_true(answer.is_correct, answer.text, this.index)"
+                  [value]="answer.is_correct"
+                  name="bordered-radio-{{this.index}}"
+                  class="w-4 h-4 text-blue-600 bg-gray-100 rounded-lg border-gray-300 focus:ring-blue-500">
+                <label for="bordered-radio-{{this.index}}" class="w-full py-4 ms-2 text-sm font-medium text-gray-900">{{ answer.text }}</label>
+              </div>
+            }
           }
+          <div class="flex justify-between">
+            <button
+              type="button"
+              [disabled]="this.index === 0"
+              (click)="this.question_back()"
+              [ngClass]="{ 'opacity-50 cursor-not-allowed': this.index === 0 }"
+              class="inline-flex items-center mt-2 px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
+              question précédente
+              <img src="arrow-back.svg" alt="" class="w-3.5 h-3.5 ms-2">
+            </button>
+            @if (this.question.answers.length) {
+              @if (this.index === this.question.answers.length - 1) {
+                <button (click)="submit_answer()" class="inline-flex items-center mt-2 px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
+                  Terminer le quiz
+                </button>
+              } @else {
+                <button
+                  type="button"
+                  (click)="this.question_next()"
+                  class="inline-flex items-center mt-2 px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
+                  question suivante
+                  <img src="arrow-next.svg" alt="" class="w-3.5 h-3.5 ms-2">
+                </button>
+              }
+            }
+          </div>
         }
 
-      <div class="flex justify-between">
-          <button
-            type="button"
-            [disabled]="this.index === 0"
-            (click)="this.question_back()"
-            [ngClass]="{ 'opacity-50 cursor-not-allowed': this.index === 0 }"
-            class="inline-flex items-center mt-2 px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
-            question précédente
-            <img src="arrow-back.svg" alt="" class="w-3.5 h-3.5 ms-2">
-          </button>
-          @if (this.question.answers.length) {
-            @if (this.index === this.question.answers.length - 1) {
-              <button type="submit" class="inline-flex items-center mt-2 px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
-                Terminer le quiz
-              </button>
-            } @else {
-              <button
-                type="button"
-                (click)="this.question_next()"
-                class="inline-flex items-center mt-2 px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
-                question suivante
-                <img src="arrow-next.svg" alt="" class="w-3.5 h-3.5 ms-2">
-              </button>
-            }
-
-          }
-
       </div>
-      }
     </div>
-  </div>
+  </form>
+
 </div>
