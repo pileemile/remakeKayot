@@ -92,7 +92,6 @@ export class QuizzesService {
       .from('quizzes')
       .select('*')
     this.allQuizzes$.next(quizzes);
-    console.log(quizzes, 'quizzes')
 
     if (error) {
       console.log("error", error)

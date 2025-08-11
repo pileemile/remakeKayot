@@ -25,8 +25,7 @@ export class LoginService {
     })
     if (error) {
       console.log("erreur sur l'inscription", error);
-    } else
-      console.log("donnée enregistrée :");
+    }
   }
 
   public async loginSigIn(login : Login ){
@@ -38,9 +37,7 @@ export class LoginService {
       console.log("erreur sur la connexion", error);
     } else {
       await this.sessionService.getSession(data.session?.access_token ?? '', data.session?.refresh_token ?? '')
-      console.log('session : ' )
       this.isAuthentificated = true;
-      console.log("connecté !!!", this.isAuthenticated());
     }
 
   }
@@ -62,7 +59,6 @@ export class LoginService {
       email: this.updateUser$.value?.email,
       password: this.updateUser$.value?.password,
     })
-    console.log(this.updateUser$.value?.email, 'email')
     if (error){
       console.log('erreur sur le nouveau mot de passe', data);
     } else

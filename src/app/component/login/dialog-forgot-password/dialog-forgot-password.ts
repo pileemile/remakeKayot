@@ -37,13 +37,11 @@ export class DialogForgotPassword implements OnInit{
     })
   }
   public onSubmit() {
-    console.log('click')
     if (this.form.valid) {
       const login = this.form.value;
       this.loginService.forgotPassword$.next(login);
       if (this.loginService.forgotPassword$.value){
         this.loginService.forgotPassword(this.loginService.forgotPassword$.value)
-        console.log('mot de passe', this.loginService.forgotPassword$.value)
 
       }
     } else {

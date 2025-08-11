@@ -25,7 +25,7 @@ export enum Difficulty {
 export interface QuestionCreate {
   answers: Answers[]
   created_at?: string
-  id?: string
+  id: string
   quiz_id?: string
   text: string
 }
