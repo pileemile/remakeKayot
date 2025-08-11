@@ -14,7 +14,6 @@ export class QuestionService {
     let {data: questions, error} = await supabase
       .from('questions')
       .select('*')
-    console.log(questions, 'questions');
     this.questionsAll$.next(questions);
   }
 
@@ -32,10 +31,8 @@ export class QuestionService {
 
     }
     if (questions) {
-      console.log('la question', questions);
       this.question$.next(questions);
     }
-    console.log('data question', this.question$.value)
   }
 
 

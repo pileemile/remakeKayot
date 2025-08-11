@@ -19,7 +19,6 @@ export class Login  implements OnInit{
 
   ngOnInit() {
     this.routeUrl = this.route.snapshot.url.join('');
-    console.log(this.routeUrl)
 
   }
 

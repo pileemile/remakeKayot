@@ -70,21 +70,18 @@ export type Database = {
       }
       attempt_answers: {
         Row: {
-          attempt_id: string | null
           id: string
           is_correct: boolean | null
           question_id: string | null
           selected_answer_id: string | null
         }
         Insert: {
-          attempt_id?: string | null
           id?: string
           is_correct?: boolean | null
           question_id?: string | null
           selected_answer_id?: string | null
         }
         Update: {
-          attempt_id?: string | null
           id?: string
           is_correct?: boolean | null
           question_id?: string | null
@@ -117,6 +114,7 @@ export type Database = {
       attempts: {
         Row: {
           id: string
+          id_attempts_answers: string | null
           quiz_id: string | null
           score: number | null
           total: number | null
@@ -124,6 +122,7 @@ export type Database = {
         }
         Insert: {
           completed_at?: string | null
+          id_attempts_answers: string | null
           id?: string
           quiz_id?: string | null
           score?: number | null
@@ -133,6 +132,7 @@ export type Database = {
         }
         Update: {
           completed_at?: string | null
+          id_attempts_answers: string | null
           id?: string
           quiz_id?: string | null
           score?: number | null

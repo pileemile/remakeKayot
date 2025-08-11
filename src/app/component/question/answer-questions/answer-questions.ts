@@ -5,9 +5,8 @@ import {Timer} from '../../timer/timer';
 import {Category, QuestionCreate, Quizzes} from '../../../models/quizzes/quizzes';
 import {NgClass} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {AttemptsService} from '../../../service/attempts/attempts-service';
-import {Attempts} from '../../../models/attempts/attempts';
 import {Answers} from '../../../models/answer/answer';
+import {AttemptsAnswersService} from '../../../service/attempts/attempts-answers-service';
 
 @Component({
   selector: 'app-answer-questions',
@@ -24,20 +23,18 @@ export class AnswerQuestions implements OnInit{
   protected readonly Category = Category;
 
   public index: number = 0;
-
-  public answers_user: { [index: number]: Answers } = {};
+  public answers_user: { [index: number]: Answers} = {};
 
   constructor(
     public questionService: QuestionService,
     public quizzesService: QuizzesService,
-    public attemptsService: AttemptsService,
+    public attemptsAnswersService: AttemptsAnswersService
   ) {}
 
  async ngOnInit() {
     if (this.quizzesService.quizzesId$.value) {
       await this.questionService.getQuestionByIdWithAnswer(this.quizzesService.quizzesId$.value?.id)
     }
-   console.log("question", this.questionService.question$.value);
 
   }
 
@@ -51,7 +48,6 @@ export class AnswerQuestions implements OnInit{
 
   public set question(question: QuestionCreate) {
     this.questionService.question$.next([question]);
-       console.log("question", this.questionService.question$.value);
   }
 
   public get quizz(): Quizzes | null {
@@ -83,25 +79,21 @@ export class AnswerQuestions implements OnInit{
     }
   }
 
-  public answers_user_true(is_correct: boolean, text: string, index: number) {
-    this.answers_user[index] = {question_id: '', is_correct, text };
-    console.log("answers_user", this.answers_user);
+  public answers_user_true(is_correct: boolean, text: string, index: number, id: string | undefined) {
+    if (this.questionService.question$.value && this.question && this.quizz) {
+      this.answers_user[index] = {question_id: this.question.id, is_correct, text, id, quiz_id: this.quizz.id};
+
+    }
   }
 
-  public submit_answer() {
-    const questions = this.questionService.question$.value;
-    let score = 0;
+  public async submit_answer() {
+    const total_answers: number = Object.values(this.answers_user).length;
 
-    questions?.forEach((question, i) => {
-      const correctAnswer = question.answers.find(a => a.is_correct);
-
-      if (this.answers_user[i].text === correctAnswer?.text) {
-        score++;
-      } else {
-        console.log("erreur sur les réponses")
-      }
-    });
-
+    // this.attemptsAnswersService.matchAnswers(this.question?.answers, this.index, this.answers_user);
+    //  await this.attemptsAnswersService.insertAttemptAnswers(this.answers_user);
+     await this.attemptsAnswersService.getAttemptsAnswers(this.quizz?.id);
+     await this.attemptsAnswersService.matchAnswersUser(this.attemptsAnswersService.getAllAnswersQuiz, this.answers_user);
+     await this.attemptsAnswersService.insertAttempts(total_answers, this.quizz?.id);
   }
 
 }

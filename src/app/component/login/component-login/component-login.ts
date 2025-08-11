@@ -34,7 +34,6 @@ export class ComponentLogin implements OnInit{
 
   ngOnInit() {
     this.routeUrl = this.route.snapshot.url.join('');
-    console.log(this.routeUrl)
 
   }
 
@@ -45,7 +44,6 @@ export class ComponentLogin implements OnInit{
           this.loginService.updateUser$.next(update);
           if (this.loginService.updateUser$.value){
             await this.loginService.updateUser(this.loginService.updateUser$.value)
-            console.log('update', this.loginService.updateUser$.value)
           } else
             console.log("erreur requête", this.loginService.updateUser$.value)
         } else if(this.routeUrl === 'register') {
