@@ -111,4 +111,12 @@ export class QuizzesService {
     }
   }
 
+  public async paginationQuizzes(page: number, limit: number) {
+    let { data: quizzes, error } = await supabase
+      .from('quizzes')
+      .select('*')
+      .range(page, limit)
+    this.allQuizzes$.next(quizzes);
+  }
+
 }
