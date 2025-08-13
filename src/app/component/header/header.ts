@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {
   MatDialog,
@@ -8,6 +8,7 @@ import {
   MatDialogTitle,
 } from '@angular/material/dialog';
 import {Quizz} from '../../page/quizz/quizz';
+import {initFlowbite} from 'flowbite';
 
 @Component({
   selector: 'app-header',
@@ -17,7 +18,7 @@ import {Quizz} from '../../page/quizz/quizz';
   templateUrl: './header.html',
   styleUrl: './header.css'
 })
-export class Header {
+export class Header implements OnInit {
 
   constructor(
     private readonly router: Router,
@@ -25,6 +26,9 @@ export class Header {
 
   private readonly dialog = inject(MatDialog)
 
+  ngOnInit() {
+    initFlowbite();
+  }
   public openQuizzes() {
   this.dialog.open(Quizz, {
     width: '1000px',

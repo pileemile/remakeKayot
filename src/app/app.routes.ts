@@ -5,6 +5,7 @@ import {SeeAllQuizzes} from './page/see-all-quizzes/see-all-quizzes';
 import {AuthGuard} from './auth.guard';
 import {AnswerQuiz} from './page/answer-quiz/answer-quiz';
 import {Dashboard} from './page/dashboard/dashboard';
+import {Drawer} from './component/drawer/drawer';
 
 export const routes: Routes = [
   {
@@ -44,5 +45,5 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: Dashboard,
-  }
+  },
 ];

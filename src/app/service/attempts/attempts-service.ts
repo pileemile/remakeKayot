@@ -45,8 +45,6 @@ export class AttemptsService {
     }
     else {
       this.attemptsAllWithUser$.next(attempts);
-      console.log(this.attemptsAllWithUser$.value)
     }
-
   }
 }

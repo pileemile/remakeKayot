@@ -90,7 +90,7 @@ export class AnswerQuestions implements OnInit{
     const total_answers: number = Object.values(this.answers_user).length;
 
     // this.attemptsAnswersService.matchAnswers(this.question?.answers, this.index, this.answers_user);
-    //  await this.attemptsAnswersService.insertAttemptAnswers(this.answers_user);
+     await this.attemptsAnswersService.insertAttemptAnswers(this.answers_user);
      await this.attemptsAnswersService.getAttemptsAnswers(this.quizz?.id);
      await this.attemptsAnswersService.matchAnswersUser(this.attemptsAnswersService.getAllAnswersQuiz, this.answers_user);
      await this.attemptsAnswersService.insertAttempts(total_answers, this.quizz?.id);
