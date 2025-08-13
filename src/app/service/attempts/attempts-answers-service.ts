@@ -42,11 +42,14 @@ export class AttemptsAnswersService {
     }
     else {
       this.getAllAnswersQuiz = data ;
+      console.log("all answers", this.getAllAnswersQuiz)
     }
   }
 
   public async matchAnswersUser(answers_user: AttemtpsAnswers[] | undefined, answers_correct: { [p: number]: Answers }) {
 
+    console.log("user" , answers_user);
+    console.log("correct" , answers_correct);
     const answers_quiz = Object.values(answers_correct);
     const answers_user_length = answers_user?.length ?? 0;
     for (let i = 0; i < answers_user_length; i++) {
@@ -54,10 +57,10 @@ export class AttemptsAnswersService {
         const { data  , error } = await supabase
           .from('answers')
           .select('*')
-          .eq('is_correct', answers_quiz[i].is_correct)
+          // .eq('is_correct', answers_quiz[i].is_correct)
           .eq('id', answers_user[i].selected_answer_id)
         if (error) {
-          console.log("erreur sur l'insertion des answers", error);
+          console.log("erreur sur le match is correct", error);
         }
         else {
           console.log('data',data)
@@ -72,13 +75,14 @@ export class AttemptsAnswersService {
 
   public async insertAttempts(total: number, quiz_id: string | undefined) {
 
-    const newAttempts = this.recoverAnswersUser.map(answers => ({
-      id_attempts_answers: answers.id ?? null,
+    const newAttempts:TablesInsert<'attempts'> ={
       quiz_id: quiz_id ?? null,
       score: this.recoverAnswersUser.length,
       total: total,
       user_id: '22ce5a89-1db2-46e7-a265-c929697ff1d0',
-    }))
+      created_at: new Date().toISOString(),
+    };
+    console.log('newAttempts', newAttempts)
     const { data, error } = await supabase
       .from('attempts')
       .insert(

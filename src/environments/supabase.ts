@@ -114,29 +114,24 @@ export type Database = {
       attempts: {
         Row: {
           id: string
-          id_attempts_answers: string | null
           quiz_id: string | null
           score: number | null
           total: number | null
           user_id: string | null
         }
         Insert: {
-          completed_at?: string | null
-          id_attempts_answers: string | null
+          created_at?: string | null
           id?: string
           quiz_id?: string | null
           score?: number | null
-          started_at?: string | null
           total?: number | null
           user_id?: string | null
         }
         Update: {
-          completed_at?: string | null
-          id_attempts_answers: string | null
+          created_at?: string | null
           id?: string
           quiz_id?: string | null
           score?: number | null
-          started_at?: string | null
           total?: number | null
           user_id?: string | null
         }
