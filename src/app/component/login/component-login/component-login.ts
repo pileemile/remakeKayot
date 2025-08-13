@@ -60,7 +60,7 @@ export class ComponentLogin implements OnInit{
           this.loginService.login$.next(login);
           if (this.loginService.login$.value) {
             await this.loginService.loginSigIn(login);
-            await this.navigateRoute.navigate(['/all-quizzes']);
+            await this.navigateRoute.navigate(['/dashboard']);
 
           }
         }

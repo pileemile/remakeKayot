@@ -11,6 +11,7 @@ export class LoginService {
   public login$ = new BehaviorSubject<Login | null>(null);
   public forgotPassword$ = new BehaviorSubject<Login | null>(null);
   public updateUser$ = new BehaviorSubject<Login | null>(null);
+  public user_create_at: string | number | Date = "";
 
   private isAuthentificated = false;
 
@@ -38,6 +39,8 @@ export class LoginService {
     } else {
       await this.sessionService.getSession(data.session?.access_token ?? '', data.session?.refresh_token ?? '')
       this.isAuthentificated = true;
+      if (data.user)
+      this.user_create_at = data.user.created_at;
     }
 
   }
