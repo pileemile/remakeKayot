@@ -1,4 +1,5 @@
 export interface Attempts {
+  created_at: string | number | Date
   id?: string
   id_attempts_answers?: string | null
   quiz_id?: string | null

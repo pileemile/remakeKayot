@@ -4,6 +4,7 @@ import { Quizz } from './page/quizz/quizz';
 import {SeeAllQuizzes} from './page/see-all-quizzes/see-all-quizzes';
 import {AuthGuard} from './auth.guard';
 import {AnswerQuiz} from './page/answer-quiz/answer-quiz';
+import {Dashboard} from './page/dashboard/dashboard';
 
 export const routes: Routes = [
   {
@@ -39,5 +40,9 @@ export const routes: Routes = [
     path: 'answer-quiz',
     component: AnswerQuiz,
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'dashboard',
+    component: Dashboard,
   }
 ];
