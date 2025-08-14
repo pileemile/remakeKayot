@@ -1,4 +1,4 @@
-export interface AttemtpsAnswers {
+export interface AttemptsAnswers {
   id?: string,
   user_id: string | null,
   question_id?: string | null,
