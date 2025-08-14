@@ -1,5 +1,5 @@
 <div class="grid grid-cols-3 gap-4">
-  @for (quiz of this.allQuizzesService.allQuizzes$.value; track $index){
+  @for (quiz of this.all_quizzes; track $index){
     <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm">
       <a href="#">
         @if (quiz.category === Category.Sport) {

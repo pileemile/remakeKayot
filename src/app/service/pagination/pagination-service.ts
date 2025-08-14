@@ -1,0 +1,34 @@
+import { Injectable } from '@angular/core';
+import {Pagination} from '../../models/pagination/pagination';
+import {supabase} from '../../../environments/environment';
+import {QuizzesService} from '../quizzes/quizzes-service';
+import {BehaviorSubject} from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class PaginationService {
+
+  constructor(
+    private quizzesService: QuizzesService
+  ) {}
+
+  public pagination$ = new BehaviorSubject<Pagination>({
+    page: 0,
+    limit: 10,
+  })
+
+  public async paginationQuizzes(page: number | undefined, limit: number | undefined) {
+    if (page != null && limit != null) {
+        let {data: quizzes, error} = await supabase
+          .from('quizzes')
+          .select('*')
+          .range(page, limit)
+      this.quizzesService.allQuizzes$.next(quizzes);
+      console.log("all quizzes", quizzes)
+    }
+    else {
+      console.log("erreur sur la pagination")
+    }
+  }
+}
