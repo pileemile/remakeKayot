@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.12 (cd3cf9e)"
@@ -22,10 +22,10 @@ export type Database = {
     Functions: {
       graphql: {
         Args: {
+          extensions?: Json
           operationName?: string
           query?: string
           variables?: Json
-          extensions?: Json
         }
         Returns: Json
       }
@@ -71,35 +71,38 @@ export type Database = {
       attempt_answers: {
         Row: {
           id: string
-          is_correct: boolean | null
-          question_id: string | null
+          question_id: string
+          quiz_id: string | null
           selected_answer_id: string | null
+          user_id: string | null
         }
         Insert: {
           id?: string
-          is_correct?: boolean | null
-          question_id?: string | null
+          question_id: string
+          quiz_id?: string | null
           selected_answer_id?: string | null
+          user_id?: string | null
         }
         Update: {
           id?: string
-          is_correct?: boolean | null
-          question_id?: string | null
+          question_id?: string
+          quiz_id?: string | null
           selected_answer_id?: string | null
+          user_id?: string | null
         }
         Relationships: [
-          {
-            foreignKeyName: "attempt_answers_attempt_id_fkey"
-            columns: ["attempt_id"]
-            isOneToOne: false
-            referencedRelation: "attempts"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "attempt_answers_question_id_fkey"
             columns: ["question_id"]
             isOneToOne: false
             referencedRelation: "questions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "attempt_answers_quiz_id_fkey"
+            columns: ["quiz_id"]
+            isOneToOne: false
+            referencedRelation: "quizzes"
             referencedColumns: ["id"]
           },
           {
@@ -113,6 +116,7 @@ export type Database = {
       }
       attempts: {
         Row: {
+          created_at: string | null
           id: string
           quiz_id: string | null
           score: number | null
@@ -204,6 +208,51 @@ export type Database = {
         }
         Relationships: []
       }
+      role_permissions: {
+        Row: {
+          id: number
+          permission: Database["public"]["Enums"]["app_permission"]
+          role: Database["public"]["Enums"]["app_role"]
+        }
+        Insert: {
+          id?: number
+          permission: Database["public"]["Enums"]["app_permission"]
+          role: Database["public"]["Enums"]["app_role"]
+        }
+        Update: {
+          id?: number
+          permission?: Database["public"]["Enums"]["app_permission"]
+          role?: Database["public"]["Enums"]["app_role"]
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          adress: string | null
+          first_name: string | null
+          id: number
+          last_name: string | null
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          adress?: string | null
+          first_name?: string | null
+          id?: number
+          last_name?: string | null
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          adress?: string | null
+          first_name?: string | null
+          id?: number
+          last_name?: string | null
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -212,7 +261,8 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      app_permission: "channels.delete" | "messages.delete"
+      app_role: "admin" | "moderator"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -342,6 +392,9 @@ export const Constants = {
     Enums: {},
   },
   public: {
-    Enums: {},
+    Enums: {
+      app_permission: ["channels.delete", "messages.delete"],
+      app_role: ["admin", "moderator"],
+    },
   },
 } as const
