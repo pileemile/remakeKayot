@@ -35,7 +35,7 @@
               @for (answerGroup of getAnswersControls($index); track $index) {
                 <div [formGroupName]="$index" class="flex flex-col gap-2.5">
                   <div class="flex gap-2.5">
-                    <input type="radio" id="is_correct" name="is_correct" [formControlName]="'is_correct'" class="border border-b-gray-400 rounded-lg" [value]="true">
+                    <input type="radio" id="is_correct" name="is_correct_{{$index}}" [formControlName]="'is_correct'" class="border border-b-gray-400 rounded-lg" [value]="true">
                     <label for="text{{$index}}">Compléter la réponse</label>
                   </div>
                   <div class="flex gap-2.5 h-full">
