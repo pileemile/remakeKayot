@@ -31,4 +31,3 @@ body {
 }
 @import "tailwindcss";
 @import "flowbite/src/themes/default.css";
-@source "../node_modules/flowbite";
