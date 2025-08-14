@@ -1,6 +1,4 @@
-import {Component, OnInit} from '@angular/core';
-import {initFlowbite} from 'flowbite';
-import {Router} from '@angular/router';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-drawer',
@@ -8,18 +6,9 @@ import {Router} from '@angular/router';
   templateUrl: './drawer.html',
   styleUrl: './drawer.css'
 })
-export class Drawer implements OnInit{
+export class Drawer {
 
   constructor(
-    private router: Router
-  ) {
-  }
+  ) {}
 
-  ngOnInit() {
-    initFlowbite();
-  }
-
-  open_dashboard() {
-    this.router.navigate(['/dashboard']);
-  }
 }

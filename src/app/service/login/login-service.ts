@@ -41,6 +41,7 @@ export class LoginService {
       this.isAuthentificated = true;
       if (data.user)
       this.user_create_at = data.user.created_at;
+      console.log("user", data.user)
     }
 
   }
