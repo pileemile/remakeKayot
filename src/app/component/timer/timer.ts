@@ -13,7 +13,7 @@ export class Timer {
     this.timer(1);
   }
   timer(minute: number) {
-    let seconds: number = minute * 30;
+    let seconds: number = minute * 60;
     let textSec: any = "0";
     let statSec: number = 30;
 
