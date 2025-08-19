@@ -28,7 +28,7 @@
                 <input
                   id="bordered-radio-{{this.index}}-{{ $index }}"
                   type="radio"
-                  [ngModel]="answers_user[this.index]?.text ?? '' "
+                  [ngModel]="answers_user[this.index]?.text ?? ''"
                   (ngModelChange)="answers_user_true( answer.is_correct, answer.text, this.index, answer.id)"
                   [value]="answer.text"
                   name="bordered-radio-{{this.index}}"
@@ -49,6 +49,7 @@
             </button>
             @if (this.question.answers.length) {
               @if (this.index === (this.quizz?.question?.length ?? 0) - 1) {
+
                 <button (click)="submit_answer()" class="inline-flex items-center mt-2 px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
                   Terminer le quiz
                 </button>
