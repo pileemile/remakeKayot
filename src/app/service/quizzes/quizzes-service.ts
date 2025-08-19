@@ -16,7 +16,7 @@ export class QuizzesService {
   public allQuizzes$ = new BehaviorSubject<Quizzes[] |null>(null);
   public quizzesId$ = new BehaviorSubject<Quizzes | null>(null);
   public search: boolean = false;
-
+  public btnAllQuizzes: boolean = false;
 
   public async InsertQuizzes(quiz: Quizzes)  {
 
