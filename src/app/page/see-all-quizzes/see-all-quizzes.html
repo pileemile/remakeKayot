@@ -1,12 +1,13 @@
-<div class="ml-4 my-4">
+<div class="mx-4 my-4">
   <div class="mb-4">
     <app-tabs></app-tabs>
   </div>
-  <div class="bg-white rounded-lg p-4">
-    <app-all-quizzes></app-all-quizzes>
-  </div>
-  <div class="mt-4">
-    <app-pagination></app-pagination>
+  <div>
+    @if (search) {
+      <app-search-component></app-search-component>
+    } @else if (btnAllQuizzes) {
+      <app-all-quizzes></app-all-quizzes>
+    }
   </div>
 </div>
 

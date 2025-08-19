@@ -2,8 +2,8 @@
   <div class="w-52 h-28 flex items-center justify-center rounded-lg cursor-pointer flex  flex-col"
        [ngClass]="{'bg-blue-600': btnAllQuizzes, 'bg-white': !btnAllQuizzes}"
        (click)="toggleAllQuizzes()">
-    <img src="search.svg"
-         alt="search"
+    <img src="quiz.png"
+         alt=""
          class="w-9 h-9 transition-all duration-300"
          [ngClass]=" {'filter invert' : btnAllQuizzes, 'filter brightness-0 saturate-0' : !btnAllQuizzes}">
     <p [ngClass]="{'text-white': btnAllQuizzes, 'text-black': !btnAllQuizzes}">Filtrer les quiz</p>

@@ -1,12 +1,16 @@
 import {Component, OnInit} from '@angular/core';
 import {Category,} from '../../../models/quizzes/quizzes';
-import {Router} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {QuizzesService} from '../../../service/quizzes/quizzes-service';
 import {PaginationService} from '../../../service/pagination/pagination-service';
+import {Pagination} from '../../pagination/pagination';
 
 @Component({
   selector: 'app-all-quizzes',
-  imports: [],
+  imports: [
+    RouterLink,
+    Pagination
+  ],
   templateUrl: './all-quizzes.html',
   styleUrl: './all-quizzes.css'
 })
