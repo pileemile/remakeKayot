@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import {AttemtpsAnswers} from '../../models/attempts/attemtps-answers';
 import {Answers} from '../../models/answer/answer';
 import {supabase} from '../../../environments/environment';
 import {Attempts} from '../../models/attempts/attempts';
 import {TablesInsert} from '../../../environments/supabase';
+import {AttemtpsAnswers} from '../../models/attempts-answers/attempts-answers';
 
 @Injectable({
   providedIn: 'root'

@@ -12,15 +12,15 @@ export interface Quizzes {
 }
 
 export enum Category {
-  "Sport"= "Sport",
-  "Culture" = "Culture",
-  "Geographie" = "Geographie",
+  Sport = "Sport",
+  Culture = "Culture",
+  Geographie = "Geographie",
 }
 
 export enum Difficulty {
-  "Facile"= "Facile",
-  "Moyen" = "Moyen",
-  "Difficile" = "Difficile",
+  Facile= "Facile",
+  Moyen = "Moyen",
+  Difficile = "Difficile",
 }
 export interface QuestionCreate {
   answers: Answers[]

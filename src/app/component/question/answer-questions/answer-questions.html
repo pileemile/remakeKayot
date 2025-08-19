@@ -1,4 +1,5 @@
 <div class="h-full w-full flex justify-center items-center">
+  @if (this.quizz) {
   <form>
     <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm">
       @if (this.quizz) {
@@ -47,7 +48,8 @@
               <img src="arrow-back.svg" alt="" class="w-3.5 h-3.5 ms-2">
             </button>
             @if (this.question.answers.length) {
-              @if (this.questionService.question$.value && this.index === this.questionService.question$.value.length - 1) {
+              @if (this.index === (this.quizz?.question?.length ?? 0) - 1) {
+
                 <button (click)="submit_answer()" class="inline-flex items-center mt-2 px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
                   Terminer le quiz
                 </button>
@@ -67,5 +69,5 @@
       </div>
     </div>
   </form>
-
+  }
 </div>

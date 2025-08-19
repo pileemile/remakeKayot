@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
-import {SearchBar} from '../../component/search-bar/search-bar';
 import {Pagination} from '../../component/pagination/pagination';
 import {AllQuizzes} from '../../component/quiz/all-quizzes/all-quizzes';
+import {Tabs} from '../../component/tabs/tabs/tabs';
 
 @Component({
   selector: 'app-see-all-quizzes',
   imports: [
-    SearchBar,
     Pagination,
-    AllQuizzes
+    AllQuizzes,
+    Tabs
   ],
   templateUrl: './see-all-quizzes.html',
   styleUrl: './see-all-quizzes.css'

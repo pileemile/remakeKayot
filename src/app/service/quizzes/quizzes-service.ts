@@ -15,7 +15,7 @@ export class QuizzesService {
   public answers$ = new BehaviorSubject<Answers[] | null>(null)
   public allQuizzes$ = new BehaviorSubject<Quizzes[] |null>(null);
   public quizzesId$ = new BehaviorSubject<Quizzes | null>(null);
-
+  public search: boolean = false;
 
 
   public async InsertQuizzes(quiz: Quizzes)  {
@@ -110,7 +110,5 @@ export class QuizzesService {
       console.log("error", error)
     }
   }
-
-
 
 }
