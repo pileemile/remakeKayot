@@ -35,7 +35,7 @@ export const routes: Routes = [
   {
     path:'all-quizzes',
     component:SeeAllQuizzes,
-    canActivate: [AuthGuard]
+    // canActivate: [AuthGuard]
   },
   {
     path: 'answer-quiz',
