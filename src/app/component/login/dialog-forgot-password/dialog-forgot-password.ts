@@ -1,14 +1,13 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {LoginService} from '../../../service/login/login-service';
-import {MatDialogActions, MatDialogClose} from '@angular/material/dialog';
+import {MatDialogModule} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-dialog-forgot-password',
   imports: [
     ReactiveFormsModule,
-    MatDialogActions,
-    MatDialogClose
+    MatDialogModule
   ],
   templateUrl: './dialog-forgot-password.html',
   styleUrl: './dialog-forgot-password.css',
