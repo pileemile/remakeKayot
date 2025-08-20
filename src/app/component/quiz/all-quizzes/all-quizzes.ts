@@ -1,18 +1,18 @@
 import {Component, OnInit} from '@angular/core';
-import {Category,} from '../../../models/quizzes/quizzes';
 import {Router} from '@angular/router';
 import {QuizzesService} from '../../../service/quizzes/quizzes-service';
 import {PaginationService} from '../../../service/pagination/pagination-service';
+import {Pagination} from '../../pagination/pagination';
 
 @Component({
   selector: 'app-all-quizzes',
-  imports: [],
+  imports: [
+    Pagination
+  ],
   templateUrl: './all-quizzes.html',
   styleUrl: './all-quizzes.css'
 })
 export class AllQuizzes implements OnInit{
-  public Category = Category;
-
   constructor(
     private allQuizzesService: QuizzesService,
     private router: Router,
@@ -28,14 +28,9 @@ export class AllQuizzes implements OnInit{
     return this.allQuizzesService.allQuizzes$.value;
   }
 
-  public get pagination() {
-    return this.paginationService.pagination$.value;
-  }
-
-
   public async getQuizById(id: string) {
   await this.allQuizzesService.getQuizzesById(id);
-  await this.router.navigate(['/answer-quiz']);
+  await this.router.navigate(['/answer-quiz/' + id]);
 
   }
 

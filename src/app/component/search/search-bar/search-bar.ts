@@ -18,11 +18,11 @@ export class SearchBar {
   ){}
 
   public toggleSearch() {
-    this.quizzesService.search = !this.quizzesService.search;
+    this.quizzesService.activeTab = this.quizzesService.activeTab === 'search' ? null : 'search';
   }
 
   public get search() {
-    return this.quizzesService.search;
+    return this.quizzesService.activeTab === 'search';
   }
 
 }
