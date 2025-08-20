@@ -1,16 +1,31 @@
 import { Component } from '@angular/core';
 import {Category, Difficulty} from '../../../models/quizzes/quizzes';
+import {SearchService} from '../../../service/search-service/search-service';
+import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {SearchInterface} from '../../../models/search/search';
 
 @Component({
   selector: 'app-search-component',
-  imports: [],
+  imports: [
+    ReactiveFormsModule
+  ],
   templateUrl: './search-component.html',
   styleUrl: './search-component.css'
 })
 export class SearchComponent {
 
+  public form: FormGroup;
   public constructor(
-  ) { }
+    private searchService: SearchService,
+    private formBuilder: FormBuilder,
+  ) {
+    this.form = this.formBuilder.group({
+      category: [''],
+      difficulty: [''],
+      created_at: [''],
+      finish_at: ['']
+    })
+  }
 
   public get categories() {
     return Object.values(Category);
@@ -20,4 +35,11 @@ export class SearchComponent {
     return Object.values(Difficulty);
   }
 
+  public async onSubmit() {
+    if (this.form.value) {
+      const search = this.form.value as SearchInterface;
+       await this.searchService.search(search);
+      console.log("search", search);
+    }
+  }
 }

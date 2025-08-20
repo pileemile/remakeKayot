@@ -1,62 +1,63 @@
 <div class=" h-[550px] bg-white p-4 mt-4 rounded-lg mr-4">
-  <p>Filtre</p>
-  <div class="flex gap-9 mt-4">
-    <div class="flex flex-col">
-      <img src="arrow-down.png" alt="" class="w-4 h-4 absolute top-[282px] left-[427px]">
-      <span>Filtrer par catégories</span>
-      <select name="" id="" class="h-9 appearance-none border border-gray-300 rounded-lg bg-gray-100">
-        <option value=""></option>
-        <option value="">Toutes</option>
-        @for (category of categories; track $index) {
-          <option [value]="category">{{category}}</option>
-        }
-      </select>
-    </div>
-    <div class="flex flex-col">
-      <img src="arrow-down.png" alt="" class="w-4 h-4 absolute top-[282px] left-[607px]">
-      <span>Filtrer par difficulté</span>
-      <select name="" id="" class="h-9 appearance-none border border-gray-300 rounded-lg bg-gray-100">
-        <option value=""></option>
-        <option value="">Toutes</option>
-        @for (difficulty of difficulties; track $index) {
-          <option [value]="difficulty">{{difficulty}}</option>
-        }
-      </select>
-    </div>
-</div>
-  <div class="flex gap-9 mt-4">
-    <div>
-      <span>date de début</span>
-      <div class="relative max-w-sm">
-        <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-          <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-          </svg>
-        </div>
-        <input datepicker id="default-datepicker" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Select date">
+  <form action="" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <p>Filtre</p>
+    <div class="flex gap-9 mt-4">
+      <div class="flex flex-col">
+        <img src="arrow-down.png" alt="" class="w-4 h-4 absolute top-[282px] left-[427px]">
+        <span>Filtrer par catégories</span>
+        <select formControlName="category" name="" id="" class="h-9 appearance-none border border-gray-300 rounded-lg bg-gray-100">
+          <option value=""></option>
+          <option value="">Toutes</option>
+          @for (category of categories; track $index) {
+            <option [value]="category">{{category}}</option>
+          }
+        </select>
+      </div>
+      <div class="flex flex-col">
+        <img src="arrow-down.png" alt="" class="w-4 h-4 absolute top-[282px] left-[607px]">
+        <span>Filtrer par difficulté</span>
+        <select name="" id="" formControlName="difficulty" class="h-9 appearance-none border border-gray-300 rounded-lg bg-gray-100">
+          <option value=""></option>
+          <option value="">Toutes</option>
+          @for (difficulty of difficulties; track $index) {
+            <option [value]="difficulty">{{difficulty}}</option>
+          }
+        </select>
       </div>
     </div>
-    <div>
-      <span>date de fin</span>
-      <div class="relative max-w-sm">
-        <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-          <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-          </svg>
+    <div class="flex gap-9 mt-4">
+      <div>
+        <span>date de début</span>
+        <div class="relative max-w-sm">
+          <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+            <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+            </svg>
+          </div>
+          <input formControlName="created_at" datepicker id="default-datepicker" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Select date">
         </div>
-        <input datepicker id="default-datepicker" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Select date">
+      </div>
+      <div>
+        <span>date de fin</span>
+        <div class="relative max-w-sm">
+          <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+            <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+            </svg>
+          </div>
+          <input formControlName="finish_at" datepicker id="default-datepicker" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Select date">
+        </div>
       </div>
     </div>
-  </div>
-<!--  <div>-->
     <div class="flex gap-9 mt-4 justify-end items-end h-3/5">
-      <button class="border border-black-2 p-4 flex justify-center items-center w-36 h-10 rounded-4xl">
+      <button type="button" class="border border-black-2 p-4 flex justify-center items-center w-36 h-10 rounded-4xl">
         Supprimer
       </button>
-      <button class="bg-green-400 text-white p-4 flex justify-center items-center w-36 h-10 rounded-4xl">
+      <button type="submit" class="bg-green-400 text-white p-4 flex justify-center items-center w-36 h-10 rounded-4xl">
         Recherche
       </button>
     </div>
-<!--  </div>-->
+
+  </form>
 
 </div>

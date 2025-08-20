@@ -1,1 +1,15 @@
-<app-create-quizz></app-create-quizz>
+<div class="mx-4 my-4">
+  <div class="mb-4">
+    <app-tabs></app-tabs>
+  </div>
+  <div>
+    @if (activeTab === 'search') {
+      <app-search-component></app-search-component>
+    } @else if (activeTab === 'all') {
+      <app-all-quizzes></app-all-quizzes>
+    } @else if (activeTab === 'create') {
+      <app-create-quizz></app-create-quizz>
+    }
+  </div>
+</div>
+

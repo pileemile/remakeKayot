@@ -1,0 +1,11 @@
+<div>
+  <div class="w-52 h-28 flex items-center justify-center rounded-lg cursor-pointer flex  flex-col"
+       [ngClass]="{'bg-blue-600': create, 'bg-white': !create}"
+       (click)="toggleCreateQuiz()">
+    <img src="create.png"
+         alt="create"
+         class="w-9 h-9 transition-all duration-300"
+         [ngClass]=" {'filter invert' : create, 'filter brightness-0 saturate-0' : !create}">
+    <p [ngClass]="{'text-white': create, 'text-black': !create}">Créer un quiz</p>
+  </div>
+</div>
