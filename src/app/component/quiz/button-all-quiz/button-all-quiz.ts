@@ -16,10 +16,10 @@ export class ButtonAllQuiz {
   ){}
 
   public toggleAllQuizzes() {
-    this.quizzesService.btnAllQuizzes = !this.quizzesService.btnAllQuizzes;
+    this.quizzesService.activeTab = this.quizzesService.activeTab === 'all' ? null : 'all';
   }
 
   public get btnAllQuizzes() {
-    return this.quizzesService.btnAllQuizzes;
+    return this.quizzesService.activeTab === 'all';
   }
 }

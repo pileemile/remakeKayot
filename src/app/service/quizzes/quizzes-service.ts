@@ -17,6 +17,7 @@ export class QuizzesService {
   public quizzesId$ = new BehaviorSubject<Quizzes | null>(null);
   public search: boolean = false;
   public btnAllQuizzes: boolean = false;
+  public activeTab: 'search' | 'all' | null = null;
 
   public async InsertQuizzes(quiz: Quizzes)  {
 

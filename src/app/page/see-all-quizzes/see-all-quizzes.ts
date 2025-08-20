@@ -18,7 +18,7 @@ import {QuizzesService} from '../../service/quizzes/quizzes-service';
 })
 export class SeeAllQuizzes {
   constructor(
-    private quizzesService: QuizzesService,
+    public quizzesService: QuizzesService,
   ) {}
 
   public get search() {

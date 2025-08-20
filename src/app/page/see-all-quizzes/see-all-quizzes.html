@@ -3,9 +3,9 @@
     <app-tabs></app-tabs>
   </div>
   <div>
-    @if (search) {
+    @if (quizzesService.activeTab === 'search') {
       <app-search-component></app-search-component>
-    } @else if (btnAllQuizzes) {
+    } @else if (quizzesService.activeTab === 'all') {
       <app-all-quizzes></app-all-quizzes>
     }
   </div>
