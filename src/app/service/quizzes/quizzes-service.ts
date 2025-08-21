@@ -15,7 +15,7 @@ export class QuizzesService {
   public answers$ = new BehaviorSubject<Answers[] | null>(null)
   public allQuizzes$ = new BehaviorSubject<Quizzes[] |null>(null);
   public quizzesId$ = new BehaviorSubject<Quizzes | null>(null);
-  public activeTab: 'search' | 'all' | 'create' | null = null;
+  public activeTab: 'search' | 'all' | 'create' | 'filter' |  null = null;
 
   public async InsertQuizzes(quiz: Quizzes)  {
 

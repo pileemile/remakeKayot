@@ -1,0 +1,50 @@
+<div class="relative overflow-x-auto rounded-lg">
+  <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+    <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+      <tr>
+        @for (column of columns; track column.key) {
+          <th scope="col" class="px-6 py-3">
+            {{ column.label }}
+          </th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for (item of data; track $index) {
+        <tr class="bg-white border-b border-gray-200">
+          @for (column of columns; track column.key) {
+            @if (column.type === 'action') {
+              <td class="px-6 py-4">
+                @for (action of actions; track $index) {
+                  <button
+                    (click)="onActionClick(action, item)"
+                    class="text-blue-600 hover:text-blue-900 cursor-pointer inline-flex items-center"
+                  >
+                    @if (action.icon) {
+                      <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                      </svg>
+                    }
+                    @if (action.label) {
+                      <span>{{ action.label }}</span>
+                    }
+                  </button>
+                }
+              </td>
+            } @else {
+              @if ($index === 0) {
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                  {{ item[column.key] }}
+                </th>
+              } @else {
+                <td class="px-6 py-4">
+                  {{ item[column.key] }}
+                </td>
+              }
+            }
+          }
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
