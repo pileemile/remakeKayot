@@ -4,6 +4,7 @@ import {AllQuizzes} from '../../component/quiz/all-quizzes/all-quizzes';
 import {SearchComponent} from '../../component/search/search-component/search-component';
 import {Tabs} from '../../component/tabs/tabs/tabs';
 import {QuizzesService} from '../../service/quizzes/quizzes-service';
+import {QuizFilter} from '../../component/quiz/quiz-filter/quiz-filter';
 
 @Component({
   selector: 'app-quizz',
@@ -11,7 +12,8 @@ import {QuizzesService} from '../../service/quizzes/quizzes-service';
     CreateQuizz,
     AllQuizzes,
     SearchComponent,
-    Tabs
+    Tabs,
+    QuizFilter
   ],
   templateUrl: './quizz.html',
   styleUrl: './quizz.css'

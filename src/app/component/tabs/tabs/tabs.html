@@ -1,7 +1,10 @@
-<div class="flex gap-5">
+<div class="flex gap-5 grid grid-cols-3">
   <app-search-bar></app-search-bar>
   <app-button-all-quiz></app-button-all-quiz>
   <app-button-create-quiz></app-button-create-quiz>
+  @if (this.activeTab === 'filter') {
+    <app-button-quiz-filter></app-button-quiz-filter>
+  }
 </div>
 
 

@@ -1,1 +1,9 @@
-<p>quiz-filter works!</p>
+<div class="p-4 bg-white rounded-lg shadow-md">
+  <app-table
+    [data]="filterquiz"
+    [columns]="tableColumns"
+    [actions]="tableActions">
+  </app-table>
+  <app-pagination></app-pagination>
+</div>
+

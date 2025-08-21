@@ -1,6 +1,7 @@
 import {Answers} from '../answer/answer';
 
 export interface Quizzes {
+  [key: string]: any;
   id: string;
   user_id: string;
   title: string;
