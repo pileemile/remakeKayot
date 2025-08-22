@@ -1,36 +1,94 @@
-<div class="h-full">
-  <div class="flex bg-white justify-between p-4 mx-3 my-4 ">
-    <p>Bienvenue sur le dashboard</p>
-    <p>Dashboard</p>
-  </div>
-  <div class=" grid grid-cols-2 lg:grid-cols-3  sm:gap-4 sm:mx-3 p-4 ">
-    <div>
-      <a href="#" class="block w-[450px] h-[450px] p-6 bg-white border border-gray-200 rounded-sm shadow-sm">
-        <p class="text-lg text-center">Pourcentage de quiz terminer</p>
-
-        <canvasjs-chart [options]="this.dashboardService.average_completed_quiz_by_user()" [styles]="{width: '100%', height:'350px'}"></canvasjs-chart>
-      </a>
-    </div>
-    <div>
-      <a href="#" class="block w-[450px] h-[450px] p-6 bg-white border border-gray-200 rounded-sm shadow-sm">
-        <p class="text-lg text-center">Pourcentage de quiz terminer</p>
-
-        <canvasjs-chart [options]="this.dashboardService.percentage_correcte_answers_last_quiz()" [styles]="{width: '100%', height:'350px'}"></canvasjs-chart>
-      </a>
-    </div>
-    <div>
-      <a href="#" class="block w-[450px] h-[450px] p-6 bg-white border border-gray-200 rounded-sm shadow-sm">
-        <p class="text-lg text-center">Nombre de quiz terminer</p>
-        <canvasjs-chart [options]="this.dashboardService.stay_quiz_user()" [styles]="{width: '100%', height:'350px'}"></canvasjs-chart>
-      </a>
-    </div>
-  </div>
-  <div>
-    <div>
-      <p>Tous les quizzes terminer</p>
-      <button class="bg-blue-500 rounded-lg p-4 flex justify-center w-36">Voir tous</button>
+<div class="min-h-screen bg-gray-50 p-6">
+  <!-- En-tête du dashboard -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
+    <div class="flex justify-between items-center">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900">Tableau de bord</h1>
+        <p class="text-gray-600 mt-1">Bienvenue sur votre dashboard</p>
+      </div>
+      <div class="flex items-center space-x-2 text-sm text-gray-500">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 00-2-2m0 0V5a2 2 0 012-2h2a2 2 0 00-2-2m0 0V9a2 2 0 012-2h2a2 2 0 00-2-2"></path>
+        </svg>
+        <span>Dashboard</span>
+      </div>
     </div>
   </div>
 
+  <!-- Grille des graphiques -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
+    
+    <!-- Graphique 1 -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold text-gray-900">Quiz Terminés</h3>
+        <div class="p-2 bg-blue-100 rounded-lg">
+          <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+      </div>
+      <p class="text-sm text-gray-600 mb-4">Pourcentage de quiz terminés par utilisateur</p>
+      <div class="h-80">
+        <canvasjs-chart 
+          [options]="this.dashboardService.average_completed_quiz_by_user()" 
+          [styles]="{width: '100%', height:'100%'}">
+        </canvasjs-chart>
+      </div>
+    </div>
 
+    <!-- Graphique 2 -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold text-gray-900">Réponses Correctes</h3>
+        <div class="p-2 bg-green-100 rounded-lg">
+          <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+          </svg>
+        </div>
+      </div>
+      <p class="text-sm text-gray-600 mb-4">Pourcentage de réponses correctes</p>
+      <div class="h-80">
+        <canvasjs-chart 
+          [options]="this.dashboardService.percentage_correcte_answers_last_quiz()" 
+          [styles]="{width: '100%', height:'100%'}">
+        </canvasjs-chart>
+      </div>
+    </div>
+
+    <!-- Graphique 3 -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold text-gray-900">Statistiques Quiz</h3>
+        <div class="p-2 bg-purple-100 rounded-lg">
+          <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 00-2-2m0 0V5a2 2 0 012-2h2a2 2 0 00-2-2m0 0V9a2 2 0 012-2h2a2 2 0 00-2-2"></path>
+          </svg>
+        </div>
+      </div>
+      <p class="text-sm text-gray-600 mb-4">Nombre total de quiz terminés</p>
+      <div class="h-80">
+        <canvasjs-chart 
+          [options]="this.dashboardService.stay_quiz_user()" 
+          [styles]="{width: '100%', height:'100%'}">
+        </canvasjs-chart>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section des actions -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div class="flex items-center justify-between">
+      <div>
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">Tous les quiz terminés</h3>
+        <p class="text-gray-600">Consultez l'historique complet de vos quiz</p>
+      </div>
+      <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center space-x-2">
+        <span>Voir tous</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
 </div>

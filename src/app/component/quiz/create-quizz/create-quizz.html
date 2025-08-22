@@ -1,74 +1,210 @@
-<div class="h-full">
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="p-4">
-    <div class="flex flex-col gap-2.5">
-      <label for="title">Titre</label>
-      <input id="title" formControlName="title" class="border border-b-gray-400 rounded-lg" type="text">
-
-      <label for="description">Description</label>
-      <input id="description" formControlName="description" class="border border-b-gray-400 rounded-lg" type="text">
-
-      <label for="category">Catégorie</label>
-      <select id="category" formControlName="category" class="border border-b-gray-400 rounded-lg">
-        @for (categorie of categories; track $index) {
-          <option [value]="categorie">{{ categorie }}</option>
-        }
-      </select>
-
-      <label for="difficulty">Difficulté</label>
-      <select id="difficulty" formControlName="difficulty" class="border border-b-gray-400 rounded-lg">
-        @for (difficulty of difficulties; track $index) {
-          <option [value]="difficulty">{{ difficulty }}</option>
-        }
-      </select>
+<div class="min-h-screen bg-gray-50 p-6">
+  <div class="max-w-4xl mx-auto">
+    
+    <!-- En-tête -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
+      <h1 class="text-2xl font-bold text-gray-900 mb-2">Créer un nouveau quiz</h1>
+      <p class="text-gray-600">Remplissez les informations ci-dessous pour créer votre quiz</p>
     </div>
-
-    <div class="mt-4">
-      <h3 class="text-lg font-semibold mb-2">Questions</h3>
-      <div formArrayName="question">
-        @for (questionGroup of questions.controls; track $index) {
-          <div [formGroupName]="$index" class="flex flex-col gap-2.5 border border-gray-300 rounded-lg p-3 mb-3">
-            <label for="text{{$index}}">Texte de la question</label>
-            <input id="text{{$index}}" formControlName="text" type="text" class="border border-b-gray-400 rounded-lg">
-            <p>Ajouter des réponses a votre question</p>
-            <div class="" [formArrayName]="'answers'">
-              <label for="is_correct{{$index}}">Sélectionner la bonne réponse</label>
-              @for (answerGroup of getAnswersControls($index); track $index) {
-                <div [formGroupName]="$index" class="flex flex-col gap-2.5">
-                  <div class="flex gap-2.5">
-                    <input type="radio" id="is_correct" name="is_correct_{{$index}}" [formControlName]="'is_correct'" class="border border-b-gray-400 rounded-lg" [value]="true">
-                    <label for="text{{$index}}">Compléter la réponse</label>
-                  </div>
-                  <div class="flex gap-2.5 h-full">
-                    <input type="text" id="text{{$index}}" [formControlName]="'text'" class="border border-b-gray-400 rounded-lg h-full">
-                    <img src="delete.svg" alt="" class="w-4 h-4 cursor-pointer" (click)="removeAnswerQuestion($index, $index)">
-                  </div>
-                </div>
+    
+    <!-- Formulaire -->
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-8">
+      
+      <!-- Informations générales -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-6">Informations générales</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Titre -->
+          <div class="md:col-span-2">
+            <label for="title" class="block text-sm font-semibold text-gray-700 mb-2">
+              Titre du quiz
+            </label>
+            <input 
+              id="title" 
+              formControlName="title" 
+              type="text"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              placeholder="Entrez le titre de votre quiz"
+            >
+          </div>
+          
+          <!-- Description -->
+          <div class="md:col-span-2">
+            <label for="description" class="block text-sm font-semibold text-gray-700 mb-2">
+              Description
+            </label>
+            <textarea 
+              id="description" 
+              formControlName="description" 
+              rows="3"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              placeholder="Décrivez votre quiz"
+            ></textarea>
+          </div>
+          
+          <!-- Catégorie -->
+          <div>
+            <label for="category" class="block text-sm font-semibold text-gray-700 mb-2">
+              Catégorie
+            </label>
+            <select 
+              id="category" 
+              formControlName="category" 
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+            >
+              <option value="">Sélectionnez une catégorie</option>
+              @for (categorie of categories; track $index) {
+                <option [value]="categorie">{{ categorie }}</option>
               }
+            </select>
+          </div>
+          
+          <!-- Difficulté -->
+          <div>
+            <label for="difficulty" class="block text-sm font-semibold text-gray-700 mb-2">
+              Difficulté
+            </label>
+            <select 
+              id="difficulty" 
+              formControlName="difficulty" 
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+            >
+              <option value="">Sélectionnez la difficulté</option>
+              @for (difficulty of difficulties; track $index) {
+                <option [value]="difficulty">{{ difficulty }}</option>
+              }
+            </select>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Questions -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-lg font-semibold text-gray-900">Questions</h2>
+          <button 
+            type="button"
+            (click)="addQuestion()"
+            class="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+            </svg>
+            Ajouter une question
+          </button>
+        </div>
+        
+        <div formArrayName="question" class="space-y-6">
+          @for (questionGroup of questions.controls; track $index) {
+            <div [formGroupName]="$index" class="border border-gray-200 rounded-lg p-6 bg-gray-50">
+              
+              <!-- En-tête de la question -->
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-md font-semibold text-gray-900">Question {{ $index + 1 }}</h3>
+                <button 
+                  type="button" 
+                  (click)="removeQuestion($index)"
+                  class="p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                  </svg>
+                </button>
+              </div>
+              
+              <!-- Texte de la question -->
+              <div class="mb-6">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                  Texte de la question
+                </label>
+                <input 
+                  formControlName="text" 
+                  type="text" 
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-white"
+                  placeholder="Entrez votre question"
+                >
+              </div>
+              
+              <!-- Réponses -->
+              <div [formArrayName]="'answers'">
+                <div class="flex items-center justify-between mb-4">
+                  <label class="block text-sm font-semibold text-gray-700">
+                    Réponses (sélectionnez la bonne réponse)
+                  </label>
+                  <button 
+                    type="button" 
+                    (click)="addAnswerQuestion($index)"
+                    class="inline-flex items-center px-3 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors"
+                  >
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                    Ajouter
+                  </button>
+                </div>
+                
+                <div class="space-y-3">
+                  @for (answerGroup of getAnswersControls($index); track $index) {
+                    <div [formGroupName]="$index" class="flex items-center space-x-3 p-3 bg-white border border-gray-200 rounded-lg">
+                      <input 
+                        type="radio" 
+                        [formControlName]="'is_correct'" 
+                        [name]="'is_correct_' + $index"
+                        [value]="true"
+                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+                      >
+                      <input 
+                        type="text" 
+                        [formControlName]="'text'" 
+                        class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                        placeholder="Entrez la réponse"
+                      >
+                      <button 
+                        type="button" 
+                        (click)="removeAnswerQuestion($index, $index)"
+                        class="p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors"
+                      >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                      </button>
+                    </div>
+                  }
+                </div>
+              </div>
             </div>
-            <div class="flex justify-between">
-              <button type="button" (click)="addAnswerQuestion($index)" class="bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-3 rounded w-fit self-end">
-                ajouter une réponse
-              </button>
-              <button type="button" class="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-3 rounded w-fit self-end" (click)="removeQuestion($index)">
-                Supprimer
-              </button>
-            </div>
+          }
+        </div>
+        
+        <!-- Message si aucune question -->
+        @if (questions.length === 0) {
+          <div class="text-center py-12">
+            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <h3 class="mt-2 text-sm font-medium text-gray-900">Aucune question</h3>
+            <p class="mt-1 text-sm text-gray-500">Commencez par ajouter une question à votre quiz.</p>
           </div>
         }
       </div>
-
-      <button type="button"
-              class="bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded"
-              (click)="addQuestion()">
-        Ajouter une question
-      </button>
-    </div>
-
-    <div class="mt-6">
-      <button type="submit"
-              class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-        Soumettre le quiz
-      </button>
-    </div>
-  </form>
+      
+      <!-- Actions -->
+      <div class="flex items-center justify-end space-x-4 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <button 
+          type="button"
+          class="px-6 py-3 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-colors"
+        >
+          Annuler
+        </button>
+        <button 
+          type="submit"
+          class="px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          [disabled]="!form.valid"
+        >
+          Créer le quiz
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
