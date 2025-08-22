@@ -1,17 +1,22 @@
 <div class="mx-4 my-4">
   <div class="mb-4">
-    <app-tabs></app-tabs>
+    <app-tabs [mode]="tabsConfiguration" (activeTab)="activationPage($event)"></app-tabs>
   </div>
-  <div>
-    @if (activeTab === 'search') {
-      <app-search-component></app-search-component>
-    } @else if (activeTab === 'all') {
-      <app-all-quizzes></app-all-quizzes>
-    } @else if (activeTab === 'create') {
-      <app-create-quizz></app-create-quizz>
-    } @else if (activeTab === 'filter') {
-      <app-quiz-filter></app-quiz-filter>
+  <ng-content>
+    @switch (this.pageActive) {
+      @case (ButtonEnum.ALL){
+        <app-all-quizzes></app-all-quizzes>
+      }
+      @case (ButtonEnum.SEARCH){
+        <app-search-component></app-search-component>
+      }
+      @case (ButtonEnum.CREATE) {
+        <app-create-quizz></app-create-quizz>
+      }
+      @default {
+        <p>ta rien</p>
+      }
     }
-  </div>
+  </ng-content>
 </div>
 

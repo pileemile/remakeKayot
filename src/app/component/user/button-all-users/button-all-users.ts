@@ -3,14 +3,14 @@ import {QuizzesService} from '../../../service/quizzes/quizzes-service';
 import {NgClass} from '@angular/common';
 
 @Component({
-  selector: 'app-button-create-quiz',
+  selector: 'app-button-all-users',
   imports: [
     NgClass
   ],
-  templateUrl: './button-create-quiz.html',
-  styleUrl: './button-create-quiz.css'
+  templateUrl: './button-all-users.html',
+  styleUrl: './button-all-users.css'
 })
-export class ButtonCreateQuiz {
+export class ButtonAllUsers {
   constructor(
     private quizzesService: QuizzesService,
   ){}

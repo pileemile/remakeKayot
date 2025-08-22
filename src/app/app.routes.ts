@@ -5,6 +5,7 @@ import {AuthGuard} from './auth.guard';
 import {AnswerQuiz} from './page/answer-quiz/answer-quiz';
 import {Dashboard} from './page/dashboard/dashboard';
 import {QuizFilter} from './component/quiz/quiz-filter/quiz-filter';
+import {Users} from './page/users/users';
 
 export const routes: Routes = [
   {
@@ -50,4 +51,8 @@ export const routes: Routes = [
     path: 'dashboard',
     component: Dashboard,
   },
+  {
+    path: 'users',
+    component: Users,
+  }
 ];

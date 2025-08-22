@@ -3,9 +3,8 @@
     <p>Filtre</p>
     <div class="flex gap-9 mt-4">
       <div class="flex flex-col">
-        <img src="arrow-down.png" alt="" class="w-4 h-4 absolute top-[282px] left-[427px]">
         <span>Filtrer par catégories</span>
-        <select formControlName="category" name="" id="" class="h-9 appearance-none border border-gray-300 rounded-lg bg-gray-100">
+        <select formControlName="category" name="" id="" class="h-9  border border-gray-300 rounded-lg bg-gray-100">
           <option value=""></option>
           <option value="">Toutes</option>
           @for (category of categories; track $index) {
@@ -14,9 +13,8 @@
         </select>
       </div>
       <div class="flex flex-col">
-        <img src="arrow-down.png" alt="" class="w-4 h-4 absolute top-[282px] left-[607px]">
         <span>Filtrer par difficulté</span>
-        <select name="" id="" formControlName="difficulty" class="h-9 appearance-none border border-gray-300 rounded-lg bg-gray-100">
+        <select name="" id="" formControlName="difficulty" class="h-9 border border-gray-300 rounded-lg bg-gray-100">
           <option value=""></option>
           <option value="">Toutes</option>
           @for (difficulty of difficulties; track $index) {

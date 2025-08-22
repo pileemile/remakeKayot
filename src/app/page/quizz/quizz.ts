@@ -4,7 +4,7 @@ import {AllQuizzes} from '../../component/quiz/all-quizzes/all-quizzes';
 import {SearchComponent} from '../../component/search/search-component/search-component';
 import {Tabs} from '../../component/tabs/tabs/tabs';
 import {QuizzesService} from '../../service/quizzes/quizzes-service';
-import {QuizFilter} from '../../component/quiz/quiz-filter/quiz-filter';
+import {ButtonEnum, ITabsMode} from '../../component/tabs/constants';
 
 @Component({
   selector: 'app-quizz',
@@ -13,17 +13,21 @@ import {QuizFilter} from '../../component/quiz/quiz-filter/quiz-filter';
     AllQuizzes,
     SearchComponent,
     Tabs,
-    QuizFilter
   ],
   templateUrl: './quizz.html',
   styleUrl: './quizz.css'
 })
 export class Quizz {
-  constructor(
-    public quizzesService: QuizzesService,
-  ) {}
 
-  public get activeTab() {
-    return this.quizzesService.activeTab;
+  public ButtonEnum = ButtonEnum;
+  public pageActive?: ButtonEnum;
+
+  public get tabsConfiguration(): ITabsMode {
+    return {[ButtonEnum.ALL]: true, [ButtonEnum.CREATE]: true, [ButtonEnum.SEARCH]: true}
   }
+
+  public activationPage(event: ButtonEnum) {
+    this.pageActive = event;
+  }
+
 }
