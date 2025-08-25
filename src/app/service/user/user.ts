@@ -1,13 +1,16 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {supabase} from '../../../environments/environment';
+import {UserModele} from '../../models/user/user-modele';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private readonly _adress_url: string = "https://api-adresse.data.gouv.fr/search/"
+  private readonly _adress_url: string = "https://api-adresse.data.gouv.fr/search/";
   private http =  inject(HttpClient);
+
+  public getUser: UserModele | null = null;
 
   public async getAdress(address: string) {
     return this.http.get(this._adress_url + address)
@@ -29,16 +32,17 @@ export class UserService {
 
   public async getUserById(user_id: string) {
     const {data, error} = await supabase
-      .from('users_roles')
+      .from('user_roles')
       .select(`*`)
       .eq('user_id', user_id)
+      .maybeSingle<UserModele>();
     console.log("data", data)
     if (error) {
-      console.log("erreur sur l'insertion des attempts", error);
+      console.log("erreur sur le user", error);
     }
     else {
       console.log('data',data)
+      this.getUser = data;
     }
-  }
-
+}
 }

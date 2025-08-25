@@ -10,29 +10,27 @@
       <div>
         <div class="flex flex-col gap-2">
           <span>Nom</span>
-          <input type="text" name="" id="" class="bg-gray-200 rounded-sm p-2">
+          <input type="text" name="" id="" class="bg-gray-200 rounded-sm p-2" disabled placeholder="{{user?.last_name}}">
         </div>
         <div class="flex flex-col gap-2">
           <span>Prénom</span>
-          <input type="text" name="" id="" class="bg-gray-200 rounded-sm p-2">
+          <input type="text" name="" id="" class="bg-gray-200 rounded-sm p-2" disabled placeholder="{{user?.first_name}}">
         </div>
         <div class="flex flex-col gap-2">
           <span>Email</span>
-          <input type="text" name="" id="" class="bg-gray-200 rounded-sm p-2">
+          <input type="text" name="" id="" class="bg-gray-200 rounded-sm p-2" disabled>
         </div>
         <div class="flex flex-col gap-2">
           <span>Adresse</span>
-          <input type="text" name="" id="" class="bg-gray-200 rounded-sm p-2">
+          <input type="text" name="" id="" class="bg-gray-200 rounded-sm p-2" disabled placeholder="{{user?.adress}}">
         </div>
         <div class="flex flex-col gap-2">
           <span>Ville</span>
-          <select name="" id="">
-            <option value="">XXX</option>
-          </select>
+          <input type="text" name="" id="" disabled placeholder="{{user?.ville}}">
         </div>
         <div class="flex flex-col gap-2">
           <span>Code postale</span>
-          <input type="text" name="" id="">
+          <input type="text" name="" id="" disabled placeholder="{{user?.cp}}">
         </div>
       </div>
     </div>

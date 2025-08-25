@@ -20,4 +20,8 @@ export class UserDetails implements OnInit{
 
   }
 
+  public get user() {
+    return this.userService.getUser
+  }
+
 }
