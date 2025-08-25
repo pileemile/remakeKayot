@@ -1,11 +1,45 @@
-<nav aria-label="Page navigation example">
-  <ul class="inline-flex -space-x-px text-sm">
-    <li (click)="previousPage()">
-      <a class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700">Previous</a>
-    </li>
-
-    <li (click)="nextPage()">
-      <a class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700">Next</a>
-    </li>
-  </ul>
+<nav class="flex items-center justify-between px-6 py-4 bg-white border-t border-gray-200">
+  <!-- Informations sur la pagination -->
+  <div class="flex items-center text-sm text-gray-700">
+    <span>Affichage des résultats</span>
+  </div>
+  
+  <!-- Contrôles de pagination -->
+  <div class="flex items-center space-x-2">
+    <!-- Bouton Précédent -->
+    <button
+      (click)="previousPage()"
+      class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+      [disabled]="false"
+    >
+      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+      </svg>
+      Précédent
+    </button>
+    
+    <!-- Numéros de page (optionnel) -->
+    <div class="hidden md:flex items-center space-x-1">
+      <button class="px-3 py-2 text-sm font-medium text-blue-600 bg-blue-50 border border-blue-300 rounded-lg">
+        1
+      </button>
+      <button class="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
+        2
+      </button>
+      <button class="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
+        3
+      </button>
+    </div>
+    
+    <!-- Bouton Suivant -->
+    <button
+      (click)="nextPage()"
+      class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+    >
+      Suivant
+      <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+      </svg>
+    </button>
+  </div>
 </nav>
