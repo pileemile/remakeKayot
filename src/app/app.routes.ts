@@ -6,6 +6,7 @@ import {AnswerQuiz} from './page/answer-quiz/answer-quiz';
 import {Dashboard} from './page/dashboard/dashboard';
 import {QuizFilter} from './component/quiz/quiz-filter/quiz-filter';
 import {Users} from './page/users/users';
+import {UserProfil} from './page/user-profil/user-profil';
 
 export const routes: Routes = [
   {
@@ -54,5 +55,10 @@ export const routes: Routes = [
   {
     path: 'users',
     component: Users,
+  },
+  {
+    path:'user-profil',
+    component:UserProfil
+    //:id
   }
 ];
