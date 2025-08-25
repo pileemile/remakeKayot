@@ -31,7 +31,6 @@ export class Pagination implements OnInit{
       const page = this.paginationService.pagination$.value?.page + 10;
       const limit = this.paginationService.pagination$.value?.limit + 10;
       this.paginationService.pagination$.next({page, limit});
-      console.log("page", page, "limit", limit)
       return await this.paginationService.paginationQuizzes(page, limit)
   }
 }

@@ -17,3 +17,4 @@ export const labels = {
   [ButtonEnum.FILTER]: 'Filter',
   [ButtonEnum.USER]: 'User',
 }
+

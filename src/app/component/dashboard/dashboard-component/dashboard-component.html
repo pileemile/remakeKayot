@@ -14,10 +14,7 @@
       </div>
     </div>
   </div>
-
-  <!-- Grille des graphiques -->
   <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
-    
     <!-- Graphique 1 -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
       <div class="flex items-center justify-between mb-4">
@@ -30,14 +27,12 @@
       </div>
       <p class="text-sm text-gray-600 mb-4">Pourcentage de quiz terminés par utilisateur</p>
       <div class="h-80">
-        <canvasjs-chart 
-          [options]="this.dashboardService.average_completed_quiz_by_user()" 
+        <canvasjs-chart
+          [options]="this.dashboardService.average_completed_quiz_by_user()"
           [styles]="{width: '100%', height:'100%'}">
         </canvasjs-chart>
       </div>
     </div>
-
-    <!-- Graphique 2 -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
       <div class="flex items-center justify-between mb-4">
         <h3 class="text-lg font-semibold text-gray-900">Réponses Correctes</h3>
@@ -49,14 +44,12 @@
       </div>
       <p class="text-sm text-gray-600 mb-4">Pourcentage de réponses correctes</p>
       <div class="h-80">
-        <canvasjs-chart 
-          [options]="this.dashboardService.percentage_correcte_answers_last_quiz()" 
+        <canvasjs-chart
+          [options]="this.dashboardService.percentage_correcte_answers_last_quiz()"
           [styles]="{width: '100%', height:'100%'}">
         </canvasjs-chart>
       </div>
     </div>
-
-    <!-- Graphique 3 -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
       <div class="flex items-center justify-between mb-4">
         <h3 class="text-lg font-semibold text-gray-900">Statistiques Quiz</h3>
@@ -68,15 +61,13 @@
       </div>
       <p class="text-sm text-gray-600 mb-4">Nombre total de quiz terminés</p>
       <div class="h-80">
-        <canvasjs-chart 
-          [options]="this.dashboardService.stay_quiz_user()" 
+        <canvasjs-chart
+          [options]="this.dashboardService.stay_quiz_user()"
           [styles]="{width: '100%', height:'100%'}">
         </canvasjs-chart>
       </div>
     </div>
   </div>
-
-  <!-- Section des actions -->
   <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
     <div class="flex items-center justify-between">
       <div>
