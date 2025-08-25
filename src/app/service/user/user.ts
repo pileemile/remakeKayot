@@ -25,7 +25,20 @@ export class UserService {
     else {
       console.log('data',data)
     }
+  }
 
+  public async getUserById(user_id: string) {
+    const {data, error} = await supabase
+      .from('users_roles')
+      .select(`*`)
+      .eq('user_id', user_id)
+    console.log("data", data)
+    if (error) {
+      console.log("erreur sur l'insertion des attempts", error);
+    }
+    else {
+      console.log('data',data)
+    }
   }
 
 }
