@@ -1,16 +1,13 @@
-import {ChangeDetectionStrategy, Component, inject, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UserService} from '../../../service/user/user';
 import {NgClass} from '@angular/common';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {MatDialog, MatDialogModule} from '@angular/material/dialog';
-import {MatButton} from '@angular/material/button';
 
 @Component({
   selector: 'app-user-details',
   imports: [
     NgClass,
     ReactiveFormsModule,
-    MatButton
   ],
   templateUrl: './user-details.html',
   styleUrl: './user-details.css',
@@ -18,7 +15,6 @@ import {MatButton} from '@angular/material/button';
 export class UserDetails implements OnInit{
 
   private id_user:string = '22ce5a89-1db2-46e7-a265-c929697ff1d0';
-  private readonly dialog = inject(MatDialog);
 
   public form: FormGroup;
   public isEditing: boolean = false;
@@ -82,8 +78,8 @@ export class UserDetails implements OnInit{
    public async onSubmit() {
     this.userService.editUser.next(this.form.value);
     await this.userService.updateUser(this.form.value, this.id_user);
-    console.log("form valid", this.form.value);
-
+    await this.userService.getUserById(this.id_user);
+    this.isEditing = !this.isEditing;
   }
 
 }
