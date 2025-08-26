@@ -61,7 +61,7 @@ export class UserService {
     const { data, error } = await supabase
       .from('user_roles')
       .update(updateUser )
-      .eq('user_id', user.user_id)
+      .eq('user_id', user_id)
       .select()
 
     if (error) {

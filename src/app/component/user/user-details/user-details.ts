@@ -28,13 +28,12 @@ export class UserDetails implements OnInit{
     private formBuilder: FormBuilder,
     private userService: UserService
   ) {
-    // Initialiser le formulaire avec des valeurs vides pour commencer
     this.form = this.formBuilder.group(
       {
         first_name: [{value: '', disabled: true}, Validators.required],
         last_name: [{value: '', disabled: true}, Validators.required],
         adress: [{value: '', disabled: true}, Validators.required],
-        city: [{value: '', disabled: true}, Validators.required],
+        ville: [{value: '', disabled: true}, Validators.required],
         cp: [{value: '', disabled: true}, Validators.required],
       }
     )
@@ -51,7 +50,7 @@ export class UserDetails implements OnInit{
         first_name: this.user.first_name,
         last_name: this.user.last_name,
         adress: this.user.adress,
-        city: this.user.ville,
+        ville: this.user.ville,
         cp: this.user.cp
       });
     }
@@ -68,13 +67,13 @@ export class UserDetails implements OnInit{
       this.form.get('first_name')?.enable();
       this.form.get('last_name')?.enable();
       this.form.get('adress')?.enable();
-      this.form.get('city')?.enable();
+      this.form.get('ville')?.enable();
       this.form.get('cp')?.enable();
     } else {
       this.form.get('first_name')?.disable();
       this.form.get('last_name')?.disable();
       this.form.get('adress')?.disable();
-      this.form.get('city')?.disable();
+      this.form.get('ville')?.disable();
       this.form.get('cp')?.disable();
     }
   }
