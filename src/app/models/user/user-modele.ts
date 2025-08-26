@@ -5,7 +5,7 @@ export interface UserModele {
   last_name?: string | null
   role: RoleEnum
   user_id: string
-  cp: string
+  cp: number
   ville: string
 }
 

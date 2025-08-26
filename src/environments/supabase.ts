@@ -229,27 +229,33 @@ export type Database = {
       user_roles: {
         Row: {
           adress: string | null
+          cp: number | null
           first_name: string | null
           id: number
           last_name: string | null
           role: Database["public"]["Enums"]["app_role"]
           user_id: string
+          ville: string | null
         }
         Insert: {
           adress?: string | null
+          cp?: number | null
           first_name?: string | null
           id?: number
           last_name?: string | null
           role: Database["public"]["Enums"]["app_role"]
           user_id: string
+          ville?: string | null
         }
         Update: {
           adress?: string | null
+          cp?: number | null
           first_name?: string | null
           id?: number
           last_name?: string | null
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
+          ville?: string | null
         }
         Relationships: []
       }
@@ -262,7 +268,7 @@ export type Database = {
     }
     Enums: {
       app_permission: "channels.delete" | "messages.delete"
-      app_role: "admin" | "moderator"
+      app_role: "admin" | "moderator" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -394,7 +400,7 @@ export const Constants = {
   public: {
     Enums: {
       app_permission: ["channels.delete", "messages.delete"],
-      app_role: ["admin", "moderator"],
+      app_role: ["admin", "moderator", "user"],
     },
   },
 } as const

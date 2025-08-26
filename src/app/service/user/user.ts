@@ -2,6 +2,8 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {supabase} from '../../../environments/environment';
 import {UserModele} from '../../models/user/user-modele';
+import {BehaviorSubject} from 'rxjs';
+import {TablesUpdate} from '../../../environments/supabase';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +13,7 @@ export class UserService {
   private http =  inject(HttpClient);
 
   public getUser: UserModele | null = null;
+  public editUser = new BehaviorSubject<UserModele | null>(null);
 
   public async getAdress(address: string) {
     return this.http.get(this._adress_url + address)
@@ -36,13 +39,36 @@ export class UserService {
       .select(`*`)
       .eq('user_id', user_id)
       .maybeSingle<UserModele>();
-    console.log("data", data)
     if (error) {
       console.log("erreur sur le user", error);
     }
     else {
-      console.log('data',data)
       this.getUser = data;
     }
-}
+  }
+
+  public async updateUser(user: UserModele, user_id: string) {
+
+    const updateUser : TablesUpdate<'user_roles'> = {
+      first_name: this.editUser.value?.first_name ?? user.first_name,
+      last_name: this.editUser.value?.last_name ?? user.last_name,
+      adress: this.editUser.value?.adress ?? user.adress,
+      ville: this.editUser.value?.ville ?? user.ville,
+      cp: this.editUser.value?.cp ?? user.cp,
+    }
+
+
+    const { data, error } = await supabase
+      .from('user_roles')
+      .update(updateUser )
+      .eq('user_id', user.user_id)
+      .select()
+
+    if (error) {
+      console.log("erreur sur l'insertion des attempts", error);
+    }
+    else {
+      console.log('data',data)
+    }
+  }
 }

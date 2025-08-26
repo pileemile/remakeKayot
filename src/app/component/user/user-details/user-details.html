@@ -1,51 +1,80 @@
 <div>
   <div class="p-4 bg-white rounded-lg shadow-md mx-4 flex gap-4">
-    <div class="w-3/4">
+    <form class="w-3/4" [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="flex gap-4 items-center">
         <p class="font-medium text-xl">Mon détails</p>
-        <button class="p-4 bg-gray-200 rounded-lg hover:bg-gray-300">
+        <button type="button" class="p-4 bg-gray-200 rounded-lg hover:bg-gray-300" (click)="toggleEdit()">
           <img src="edit.svg" alt="" class="w-4 h-4">
         </button>
       </div>
       <div>
         <div class="flex flex-col gap-2">
           <span>Nom</span>
-          <input type="text" name="" id="" class="bg-gray-200 rounded-sm p-2" disabled placeholder="{{user?.last_name}}">
+          <input type="text"
+                 class=" rounded-sm p-2"
+                 [ngClass]="{'text-gray-500 border border-black': isEditing, 'text-black bg-gray-200': !isEditing}"
+                 placeholder="{{user?.last_name}}"
+                 formControlName="last_name"
+          >
         </div>
         <div class="flex flex-col gap-2">
           <span>Prénom</span>
-          <input type="text" name="" id="" class="bg-gray-200 rounded-sm p-2" disabled placeholder="{{user?.first_name}}">
+          <input type="text" class="bg-gray-200 rounded-sm p-2"
+                 placeholder="{{user?.first_name}}"
+                 [ngClass]="{'text-gray-500 border border-black': isEditing, 'text-black bg-gray-200': !isEditing}"
+                 formControlName="first_name"
+          >
         </div>
         <div class="flex flex-col gap-2">
           <span>Email</span>
-          <input type="text" name="" id="" class="bg-gray-200 rounded-sm p-2" disabled>
+          <input type="text"
+                 class="bg-gray-200 rounded-sm p-2"
+                 [ngClass]="{'text-gray-500 border border-black': isEditing, 'text-black bg-gray-200': !isEditing}"
+          >
         </div>
         <div class="flex flex-col gap-2">
           <span>Adresse</span>
-          <input type="text" name="" id="" class="bg-gray-200 rounded-sm p-2" disabled placeholder="{{user?.adress}}">
+          <input type="text"
+                 class="bg-gray-200 rounded-sm p-2"
+                 placeholder="{{user?.adress}}"
+                 [ngClass]="{'text-gray-500 border border-black': isEditing, 'text-black bg-gray-200': !isEditing}"
+                 formControlName="adress"
+          >
         </div>
         <div class="flex flex-col gap-2">
           <span>Ville</span>
-          <input type="text" name="" id="" disabled placeholder="{{user?.ville}}">
+          <input type="text"
+                 class=" rounded-sm p-2"
+                 placeholder="{{user?.ville}}"
+                 [ngClass]="{'text-gray-500 border border-black': isEditing, 'text-black bg-gray-200': !isEditing}"
+                 formControlName="city"
+          >
         </div>
         <div class="flex flex-col gap-2">
           <span>Code postale</span>
-          <input type="text" name="" id="" disabled placeholder="{{user?.cp}}">
+          <input type="number"
+                 class=" rounded-sm p-2"
+                 placeholder="{{user?.cp}}"
+                 [ngClass]="{'text-gray-500 border border-black': isEditing, 'text-black bg-gray-200': !isEditing}"
+                 formControlName="cp"
+          >
         </div>
       </div>
-    </div>
+      <button type="submit" matButton class="bg-blue-500 text-white p-2 rounded-lg mt-4"  [disabled]="!isEditing" [hidden]="!isEditing">
+        sauvegarder
+      </button>
+    </form>
     <div>
       <img
         class="w-40 h-40 rounded-full object-cover border-2 border-gray-200"
         src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
         alt="Photo de profil"
       >
-      <div class="flex">
-        <p>nom XXXXX</p>
-        <p>prenom XXXX</p>
+      <div class="flex gap-2 ">
+        <p>{{ user?.last_name }}</p>
+        <p>{{ user?.first_name }}</p>
       </div>
-      <p class="text-gray-500">Role XXX</p>
+      <p class="text-gray-500">{{user?.role}}</p>
     </div>
   </div>
-
 </div>
