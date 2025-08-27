@@ -3,7 +3,8 @@ export enum ButtonEnum {
   ALL = 'all',
   CREATE = 'create',
   FILTER = 'filter',
-  USER = 'user',
+  ALL_USERS = 'all_users',
+  Find_USER = 'find_users',
 }
 
 export type ITabsMode = {
@@ -15,6 +16,7 @@ export const labels = {
   [ButtonEnum.ALL]: 'All',
   [ButtonEnum.CREATE]: 'Create',
   [ButtonEnum.FILTER]: 'Filter',
-  [ButtonEnum.USER]: 'User',
+  [ButtonEnum.ALL_USERS]: 'User',
+  [ButtonEnum.Find_USER]: 'Find User',
 }
 

@@ -47,14 +47,10 @@
         </div>
       </div>
     </div>
-    <div class="flex gap-9 mt-4 justify-end items-end h-3/5">
-      <button type="button" class="border border-black-2 p-4 flex justify-center items-center w-36 h-10 rounded-4xl">
-        Supprimer
-      </button>
-      <button type="submit" class="bg-green-400 text-white p-4 flex justify-center items-center w-36 h-10 rounded-4xl">
-        Recherche
-      </button>
-    </div>
+    <app-button-filter
+      (onButtonClick)="onButtonClick($event)">
+    </app-button-filter>
+
 
   </form>
 

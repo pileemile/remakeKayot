@@ -5,11 +5,14 @@ import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {SearchInterface} from '../../../models/search/search';
 import {QuizzesService} from '../../../service/quizzes/quizzes-service';
 import {ButtonEnum} from '../../tabs/constants';
+import {ButtonFilter} from '../../button-filter/button-filter';
+import {ButtonFilterEnum} from '../../button-filter/constent';
 
 @Component({
   selector: 'app-search-component',
   imports: [
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ButtonFilter
   ],
   templateUrl: './search-component.html',
   styleUrl: './search-component.css'
@@ -45,4 +48,20 @@ export class SearchComponent {
       this.activateFilter.emit(ButtonEnum.FILTER);
     }
   }
+
+  public onReset() {
+    this.form.reset();
+  }
+
+  public onButtonClick(buttonType: ButtonFilterEnum) {
+    switch (buttonType) {
+      case ButtonFilterEnum.CLEAR:
+        this.onReset();
+        break;
+      case ButtonFilterEnum.SEARCH:
+        this.onSubmit();
+        break;
+    }
+  }
+
 }
