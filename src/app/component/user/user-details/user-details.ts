@@ -37,6 +37,7 @@ export class UserDetails implements OnInit{
 
   async ngOnInit() {
     await this.userService.getUserById(this.id_user);
+    await this.userService.getQuizzesByUserId(this.id_user);
     this.updateFormValues();
   }
 

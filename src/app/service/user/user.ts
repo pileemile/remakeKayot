@@ -1,17 +1,19 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {supabase} from '../../../environments/environment';
-import {UserModele} from '../../models/user/user-modele';
+import {UserCompletedQuiz, UserModele} from '../../models/user/user-modele';
 import {BehaviorSubject} from 'rxjs';
 import {TablesUpdate} from '../../../environments/supabase';
+import {Quizzes} from '../../models/quizzes/quizzes';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
   private readonly _adress_url: string = "https://api-adresse.data.gouv.fr/search/";
-  private http =  inject(HttpClient);
+  private http = inject(HttpClient);
 
+  public userByQuizzes = new BehaviorSubject<Quizzes[] | null>(null)
   public getUser: UserModele | null = null;
   public editUser = new BehaviorSubject<UserModele | null>(null);
 
@@ -27,9 +29,8 @@ export class UserService {
 
     if (error) {
       console.log("erreur sur l'insertion des attempts", error);
-    }
-    else {
-      console.log('data',data)
+    } else {
+      console.log('data', data)
     }
   }
 
@@ -41,15 +42,14 @@ export class UserService {
       .maybeSingle<UserModele>();
     if (error) {
       console.log("erreur sur le user", error);
-    }
-    else {
+    } else {
       this.getUser = data;
     }
   }
 
   public async updateUser(user: UserModele, user_id: string) {
 
-    const updateUser : TablesUpdate<'user_roles'> = {
+    const updateUser: TablesUpdate<'user_roles'> = {
       first_name: this.editUser.value?.first_name ?? user.first_name,
       last_name: this.editUser.value?.last_name ?? user.last_name,
       adress: this.editUser.value?.adress ?? user.adress,
@@ -57,18 +57,42 @@ export class UserService {
       cp: this.editUser.value?.cp ?? user.cp,
     }
 
-
-    const { data, error } = await supabase
+    const {data, error} = await supabase
       .from('user_roles')
-      .update(updateUser )
+      .update(updateUser)
       .eq('user_id', user_id)
       .select()
 
     if (error) {
       console.log("erreur sur l'insertion des attempts", error);
-    }
-    else {
-      console.log('data',data)
+    } else {
+      console.log('data', data)
     }
   }
+
+  public async getQuizzesByUserId(user_id: string) {
+    const {data, error} = await supabase
+      .from('attempt_answers')
+      .select(`quizzes!inner(*)`)
+      .eq('user_id', user_id)
+
+    if (error) {
+      console.log("erreur sur ", error);
+    } else {
+      console.log('data', data)
+
+      const dataTable: Quizzes[] = [];
+      data?.forEach(item => {
+        if (Array.isArray(item.quizzes)) {
+          item.quizzes.forEach(quiz => dataTable.push(quiz));
+        } else if (item.quizzes) {
+          dataTable.push(item.quizzes);
+        }
+      });
+
+      this.userByQuizzes.next(dataTable);
+      console.log("user by quizzes", this.userByQuizzes.value)
+    }
+  }
+
 }
