@@ -23,6 +23,12 @@ export enum Difficulty {
   Moyen = "Moyen",
   Difficile = "Difficile",
 }
+
+export const AllEnumQuizz = {
+  Category,
+  Difficulty,
+} as const;
+
 export interface QuestionCreate {
   answers: Answers[]
   created_at?: string

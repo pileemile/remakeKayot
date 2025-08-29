@@ -7,12 +7,15 @@ import {QuizzesService} from '../../../service/quizzes/quizzes-service';
 import {ButtonEnum} from '../../tabs/constants';
 import {ButtonFilter} from '../../button-filter/button-filter';
 import {ButtonFilterEnum} from '../../button-filter/constent';
+import {FilterForm} from '../../filter/filter-form/filter-form';
+import {FilterTypeEnum, IFilterType} from '../../filter/constent';
 
 @Component({
   selector: 'app-search-component',
   imports: [
     ReactiveFormsModule,
-    ButtonFilter
+    ButtonFilter,
+    FilterForm
   ],
   templateUrl: './search-component.html',
   styleUrl: './search-component.css'
@@ -31,6 +34,10 @@ export class SearchComponent {
       created_at: [''],
       finish_at: ['']
     })
+  }
+
+  public get filterConfiguration(): IFilterType {
+    return {[FilterTypeEnum.CREATED_AT]: true, [FilterTypeEnum.FINISH_AT]: true}
   }
 
   public get categories() {

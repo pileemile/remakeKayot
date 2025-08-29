@@ -9,13 +9,14 @@ export enum FilterTypeEnum {
   ADRESS = 'adress',
   CP = 'cp',
   CITY = 'city',
+  ALL = 'all',
 }
 
 export type IFilterType = {
-  [key in FilterTypeEnum]: boolean
+  [key in FilterTypeEnum]?: boolean
 }
 
-export const label = {
+export const labelInput = {
   [FilterTypeEnum.CATEGORY]: 'Category',
   [FilterTypeEnum.DIFFICULTY]: 'Difficulty',
   [FilterTypeEnum.CREATED_AT]: 'Created at',
@@ -26,4 +27,5 @@ export const label = {
   [FilterTypeEnum.ADRESS]: 'Adress',
   [FilterTypeEnum.CP]: 'CP',
   [FilterTypeEnum.CITY]: 'City',
+  [FilterTypeEnum.ALL]: 'All',
 }

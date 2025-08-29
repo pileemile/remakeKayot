@@ -1,0 +1,10 @@
+<div [formGroup]="form">
+  <input [formControlName]="state" datepicker id="default-datepicker" type="text"
+         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
+         placeholder="{{label}}">
+  <select [formControlName]="state" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5">
+    <option value=""></option>
+    @for (option of options; track $index) {
+    }
+  </select>
+</div>
