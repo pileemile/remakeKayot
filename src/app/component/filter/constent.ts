@@ -23,19 +23,25 @@ export enum ButtonFilterEnum {
   SEARCH = 'search',
 }
 
-export interface IFilter {
+export interface IFilterQuizz {
   category?: Category;
   difficulty?: Difficulty;
   created_at?: string;
   finish_at?: string;
+}
+
+export interface IFilterUser {
   last_name?: string;
   first_name?: string;
-  email?: string;
   adress?: string;
   cp?: string;
   city?: string;
 }
 
+export interface IFilter {
+  quizz?: IFilterQuizz;
+  user?: IFilterUser;
+}
 
 export type IFilterType = {
   [key in FilterTypeEnum | SelectFilterEnum]?: boolean
