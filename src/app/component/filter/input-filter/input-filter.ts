@@ -1,5 +1,5 @@
-import {Component, Input} from '@angular/core';
-import {FormsModule, ReactiveFormsModule, FormGroup, FormGroupDirective, ControlContainer} from "@angular/forms";
+import {Component, Input, OnInit} from '@angular/core';
+import {FormsModule, ReactiveFormsModule, FormGroupDirective, ControlContainer, FormGroup} from "@angular/forms";
 import {FilterTypeEnum, labelInput} from '../constent';
 
 @Component({
@@ -8,17 +8,23 @@ import {FilterTypeEnum, labelInput} from '../constent';
     FormsModule,
     ReactiveFormsModule
   ],
-  viewProviders: [
-    { provide: ControlContainer, useExisting: FormGroupDirective }
-  ],
+  viewProviders: [{ provide: ControlContainer, useExisting: FormGroupDirective }],
+
   templateUrl: './input-filter.html',
   styleUrl: './input-filter.css'
 })
-export class InputFilter {
-  @Input() state: FilterTypeEnum = FilterTypeEnum.ALL;
-  @Input() form!: FormGroup;
+export class InputFilter implements OnInit{
+  @Input() state!: FilterTypeEnum;
+  @Input() parentForm!: FormGroup;
 
+  ngOnInit() {
+    console.log('state',this.state)
+  }
   public get label() {
     return labelInput[this.state];
+  }
+
+  public test(){
+    console.log('test')
   }
 }

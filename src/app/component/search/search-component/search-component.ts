@@ -1,20 +1,13 @@
 import {Component, EventEmitter, Output} from '@angular/core';
-import {Category, Difficulty} from '../../../models/quizzes/quizzes';
-import {SearchService} from '../../../service/search-service/search-service';
-import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {SearchInterface} from '../../../models/search/search';
-import {QuizzesService} from '../../../service/quizzes/quizzes-service';
+import {ReactiveFormsModule} from '@angular/forms';
 import {ButtonEnum} from '../../tabs/constants';
-import {ButtonFilter} from '../../button-filter/button-filter';
-import {ButtonFilterEnum} from '../../button-filter/constent';
 import {FilterForm} from '../../filter/filter-form/filter-form';
-import {FilterTypeEnum, IFilterType} from '../../filter/constent';
+import {ButtonFilterEnum, FilterTypeEnum, IFilterType, SelectFilterEnum} from '../../filter/constent';
 
 @Component({
   selector: 'app-search-component',
   imports: [
     ReactiveFormsModule,
-    ButtonFilter,
     FilterForm
   ],
   templateUrl: './search-component.html',
@@ -22,42 +15,26 @@ import {FilterTypeEnum, IFilterType} from '../../filter/constent';
 })
 export class SearchComponent {
   @Output() activateFilter = new EventEmitter<ButtonEnum>();
-  public form: FormGroup;
   public constructor(
-    private searchService: SearchService,
-    private formBuilder: FormBuilder,
-    private quizzesService: QuizzesService
   ) {
-    this.form = this.formBuilder.group({
-      category: [''],
-      difficulty: [''],
-      created_at: [''],
-      finish_at: ['']
-    })
   }
 
   public get filterConfiguration(): IFilterType {
-    return {[FilterTypeEnum.CREATED_AT]: true, [FilterTypeEnum.FINISH_AT]: true}
-  }
-
-  public get categories() {
-    return Object.values(Category);
-  }
-
-  public get difficulties() {
-    return Object.values(Difficulty);
+    return {[FilterTypeEnum.CREATED_AT]: true, [FilterTypeEnum.FINISH_AT]: true, [SelectFilterEnum.CATEGORY]: true, [SelectFilterEnum.DIFFICULTY]: true};
   }
 
   public async onSubmit() {
-    if (this.form.value) {
-      const search = this.form.value as SearchInterface;
-       await this.searchService.search(search);
-      this.activateFilter.emit(ButtonEnum.FILTER);
-    }
+    // if (this.form.value) {
+    //   const search = this.form.value as SearchInterface;
+    //    await this.searchService.search(search);
+    //   this.activateFilter.emit(ButtonEnum.FILTER);
+    // }
+    console.log("submit")
   }
 
   public onReset() {
-    this.form.reset();
+    // this.form.reset();
+    console.log("reset")
   }
 
   public onButtonClick(buttonType: ButtonFilterEnum) {

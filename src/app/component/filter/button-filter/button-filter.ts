@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Output} from '@angular/core';
-import {ButtonFilterEnum} from './constent';
+import {ButtonFilterEnum} from '../constent';
 
 @Component({
   selector: 'app-button-filter',
