@@ -1,7 +1,9 @@
-<div [formGroup]="parentForm">
-  <input     [formControlName]="state"
-             id="default-datepicker" type="text"
-             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
-             placeholder="{{label}}">
+<div class="mt-4">
+  <input     [(ngModel)]="value"
+              (ngModelChange)="onValueChange($event)"
+             id="default-datepicker" [type]="input"
+             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
+             placeholder="{{label}}"
+  >
 
 </div>

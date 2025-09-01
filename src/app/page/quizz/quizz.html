@@ -3,7 +3,7 @@
     <app-tabs [mode]="tabsConfiguration" (activeTab)="activationPage($event)"></app-tabs>
   </div>
   <ng-content>
-    @switch (this.pageActive) {
+    @switch (this.activePage) {
       @case (ButtonEnum.ALL){
         <app-all-quizzes></app-all-quizzes>
       }

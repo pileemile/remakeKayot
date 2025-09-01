@@ -1,11 +1,11 @@
-<form action="" [formGroup]="form" (ngSubmit)="onSubmit()">
+<form action="">
   <p>Filtre</p>
   @if (filters) {
     @for (filter of filters; track filter) {
-      <app-input-filter [state]="filter" [parentForm]="form"></app-input-filter>
+      <app-input-filter [state]="filter"></app-input-filter>
     }
     @for (select of selects; track select) {
-      <app-select-filter [state]="select" [parentForm]="form"></app-select-filter>
+      <app-select-filter [state]="select"></app-select-filter>
     }
   }
   <app-button-filter

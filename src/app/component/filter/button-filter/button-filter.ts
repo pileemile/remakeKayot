@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Output} from '@angular/core';
-import {ButtonFilterEnum} from '../constent';
+import {ButtonEnum} from '../../tabs/constants';
+import {QuizzesService} from '../../../service/quizzes/quizzes-service';
 
 @Component({
   selector: 'app-button-filter',
@@ -9,14 +10,25 @@ import {ButtonFilterEnum} from '../constent';
 })
 export class ButtonFilter {
 
-  @Output() onButtonClick: EventEmitter<ButtonFilterEnum> = new EventEmitter();
+  @Output() onButtonClick: EventEmitter<ButtonEnum> = new EventEmitter();
+
+  constructor(
+    public quizzesService: QuizzesService,
+  ) {}
 
   public onDeleteClick(){
-    this.onButtonClick.emit(ButtonFilterEnum.CLEAR)
+    this.onButtonClick.emit(ButtonEnum.CLEAR)
   }
 
-  public onFilterClick() {
-    this.onButtonClick.emit(ButtonFilterEnum.SEARCH)
+  private set activePage(value: ButtonEnum | undefined) {
+    this.quizzesService.pageActive = value;
+  }
+
+  public onFilterClick(event: MouseEvent) {
+    event.preventDefault();
+    this.activePage = ButtonEnum.FILTER;
+    this.onButtonClick.emit(ButtonEnum.FILTER)
+
   }
 
 }

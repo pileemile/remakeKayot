@@ -18,11 +18,6 @@ export enum SelectFilterEnum {
   ALL = 'all',
 }
 
-export enum ButtonFilterEnum {
-  CLEAR = 'clear',
-  SEARCH = 'search',
-}
-
 export interface IFilterQuizz {
   category?: Category;
   difficulty?: Difficulty;
@@ -59,6 +54,20 @@ export const labelInput = {
   [FilterTypeEnum.CP]: 'CP',
   [FilterTypeEnum.CITY]: 'City',
   [FilterTypeEnum.ALL]: 'All',
+}
+
+export const typeInput = {
+  [SelectFilterEnum.CATEGORY]: 'select',
+  [SelectFilterEnum.DIFFICULTY]: 'select',
+  [FilterTypeEnum.CREATED_AT]: 'date',
+  [FilterTypeEnum.FINISH_AT]: 'date',
+  [FilterTypeEnum.LAST_NAME]: 'text',
+  [FilterTypeEnum.FIRST_NAME]: 'text',
+  [FilterTypeEnum.ADRESS]: 'text',
+  [FilterTypeEnum.CP]: 'number',
+  [FilterTypeEnum.CITY]: 'text',
+  [FilterTypeEnum.EMAIL]: 'email',
+  [FilterTypeEnum.ALL]: 'text',
 }
 
 export const selectedFilter = {

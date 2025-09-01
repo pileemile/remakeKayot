@@ -4,6 +4,7 @@ import {QuestionCreate, Quizzes} from '../../models/quizzes/quizzes';
 import {TablesInsert} from '../../../environments/supabase';
 import {supabase} from '../../../environments/environment';
 import {Answers} from '../../models/answer/answer';
+import {ButtonEnum} from '../../component/tabs/constants';
 
 
 @Injectable({
@@ -16,6 +17,7 @@ export class QuizzesService {
   public allQuizzes$ = new BehaviorSubject<Quizzes[] |null>(null);
   public quizzesId$ = new BehaviorSubject<Quizzes | null>(null);
   public activeTab: 'search' | 'all' | 'create' | 'filter' |  null = null;
+  public pageActive?: ButtonEnum;
 
   public async InsertQuizzes(quiz: Quizzes)  {
 

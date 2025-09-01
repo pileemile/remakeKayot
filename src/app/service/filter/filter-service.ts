@@ -6,5 +6,13 @@ import {IFilter} from '../../component/filter/constent';
   providedIn: 'root'
 })
 export class FilterService {
-  public filterQuzzes = new BehaviorSubject< IFilter | null>(null);
+  public filterQuizzes = new BehaviorSubject< IFilter | null>(null);
+
+  updateFilter(field: string, value: string | number) {
+    const current = this.filterQuizzes.value || {};
+    this.filterQuizzes.next({
+      ...current,
+      [field]: value
+    });
+  }
 }

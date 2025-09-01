@@ -1,20 +1,18 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ButtonFilter} from "../button-filter/button-filter";
-import {FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
-import {ButtonFilterEnum, SelectFilterEnum} from '../constent';
+import {SelectFilterEnum} from '../constent';
 import {SearchInterface} from '../../../models/search/search';
 import {ButtonEnum} from '../../tabs/constants';
 import {SearchService} from '../../../service/search-service/search-service';
-import {QuizzesService} from '../../../service/quizzes/quizzes-service';
 import {InputFilter} from '../input-filter/input-filter';
 import {FilterTypeEnum, IFilterType} from '../constent';
 import {SelectFilter} from '../select-filter/select-filter';
+import {FilterService} from '../../../service/filter/filter-service';
 
 @Component({
   selector: 'app-filter-form',
   imports: [
     ButtonFilter,
-    ReactiveFormsModule,
     InputFilter,
     SelectFilter
   ],
@@ -38,57 +36,53 @@ export class FilterForm implements OnInit{
         Object.values(SelectFilterEnum).includes(k as SelectFilterEnum)
       ) as SelectFilterEnum[];
 
-      const group: { [key: string]: any } = {};
-      [...this.filters, ...this.selects].forEach(key => {
-        group[key] = [''];
-      });
-      this.form = this.formBuilder.group(group);
-
     } else {
       this.filters = [];
       this.selects = [];
-      this.form = this.formBuilder.group({});
     }
   }
 
   @Output() activateFilter = new EventEmitter<ButtonEnum>();
 
   ngOnInit() {
-    console.log("form", this.form.value)
   }
 
   private _filter?: IFilterType;
 
   public filters?: FilterTypeEnum[];
   public selects?: SelectFilterEnum[];
-  public form: FormGroup;
 
   public constructor(
     private searchService: SearchService,
-    private formBuilder: FormBuilder,
-    private quizzesService: QuizzesService
+    private filterService: FilterService,
   ) {
-    this.form = this.formBuilder.group({})
   }
   public async onSubmit() {
-    if (this.form.value) {
-      const search = this.form.value as SearchInterface;
+    if (this.filterGet) {
+      const search = this.filterGet as SearchInterface;
       await this.searchService.search(search);
       this.activateFilter.emit(ButtonEnum.FILTER);
+      console.log("search", this.filterGet)
+    }
+
+  }
+
+
+  public onReset() {
+  }
+
+  public async onButtonClick(buttonType: ButtonEnum) {
+    switch (buttonType) {
+      case ButtonEnum.CLEAR:
+        this.onReset();
+        break;
+      case ButtonEnum.FILTER:
+        await this.onSubmit();
+        break;
     }
   }
 
-  public onReset() {
-    this.form.reset();
-  }
-  public onButtonClick(buttonType: ButtonFilterEnum) {
-    switch (buttonType) {
-      case ButtonFilterEnum.CLEAR:
-        this.onReset();
-        break;
-      case ButtonFilterEnum.SEARCH:
-        this.onSubmit();
-        break;
-    }
+  public get filterGet() {
+    return this.filterService.filterQuizzes.value
   }
 }
