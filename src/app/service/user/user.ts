@@ -16,6 +16,7 @@ export class UserService {
   public userByQuizzes = new BehaviorSubject<Quizzes[] | null>(null)
   public getUser: UserModele | null = null;
   public editUser = new BehaviorSubject<UserModele | null>(null);
+  public allUser = new BehaviorSubject<UserModele[] | null>(null);
 
   public async getAdress(address: string) {
     return this.http.get(this._adress_url + address)
@@ -92,6 +93,19 @@ export class UserService {
 
       this.userByQuizzes.next(dataTable);
       console.log("user by quizzes", this.userByQuizzes.value)
+    }
+  }
+
+  public async getUserRoleALl() {
+    const {data: user, error} = await supabase
+      .from('user_roles')
+      .select(`*`)
+
+    if (error) {
+      console.log("erreur sur le user", error);
+    } else {
+      this.allUser.next(user);
+      console.log('data', user)
     }
   }
 

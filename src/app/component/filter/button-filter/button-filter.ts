@@ -1,6 +1,7 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ButtonEnum} from '../../tabs/constants';
 import {QuizzesService} from '../../../service/quizzes/quizzes-service';
+import {ButtonFilterType} from './constent';
 
 @Component({
   selector: 'app-button-filter',
@@ -9,6 +10,7 @@ import {QuizzesService} from '../../../service/quizzes/quizzes-service';
   styleUrl: './button-filter.css'
 })
 export class ButtonFilter {
+  @Input() buttonType: ButtonFilterType = ButtonFilterType.ALL;
 
   @Output() onButtonClick: EventEmitter<ButtonEnum> = new EventEmitter();
 

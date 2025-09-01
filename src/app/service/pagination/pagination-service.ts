@@ -3,6 +3,7 @@ import {Pagination} from '../../models/pagination/pagination';
 import {supabase} from '../../../environments/environment';
 import {QuizzesService} from '../quizzes/quizzes-service';
 import {BehaviorSubject} from 'rxjs';
+import {UserService} from '../user/user';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,8 @@ import {BehaviorSubject} from 'rxjs';
 export class PaginationService {
 
   constructor(
-    private quizzesService: QuizzesService
+    private quizzesService: QuizzesService,
+    private userService: UserService,
   ) {}
 
   public pagination$ = new BehaviorSubject<Pagination>({
@@ -26,6 +28,20 @@ export class PaginationService {
           .range(page, limit)
       this.quizzesService.allQuizzes$.next(quizzes);
       console.log("all quizzes", quizzes)
+    }
+    else {
+      console.log("erreur sur la pagination")
+    }
+  }
+
+  public async paginationUser(page: number | undefined, limit: number | undefined) {
+    if (page != null && limit != null) {
+      let {data: user, error} = await supabase
+        .from('user_roles')
+        .select('*')
+        .range(page, limit)
+      this.userService.allUser.next(user);
+      console.log("all quizzes", user)
     }
     else {
       console.log("erreur sur la pagination")

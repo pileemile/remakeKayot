@@ -1,7 +1,7 @@
 import {Answers} from '../answer/answer';
 
 export interface Quizzes {
-  [key: string]: any;
+  [key: string]: string | number | boolean | undefined | null | QuestionCreate[];
   id: string;
   user_id: string;
   title: string;

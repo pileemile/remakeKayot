@@ -13,8 +13,6 @@ import {FilterTypeEnum, IFilterType, SelectFilterEnum} from '../../filter/conste
 })
 export class SearchComponent {
   @Output() activateFilter = new EventEmitter<ButtonEnum>();
-  public constructor(
-  ) {}
 
   public get filterConfiguration(): IFilterType {
     return {[FilterTypeEnum.CREATED_AT]: true, [FilterTypeEnum.FINISH_AT]: true, [SelectFilterEnum.CATEGORY]: true, [SelectFilterEnum.DIFFICULTY]: true};

@@ -1,6 +1,6 @@
 import {Quizzes} from '../quizzes/quizzes';
 
-export interface UserModele {
+export interface  UserModele {
   adress?: string | null
   first_name?: string | null
   id?: number
@@ -9,6 +9,7 @@ export interface UserModele {
   user_id: string
   cp: number
   ville: string
+  [key: string]: string | number | boolean | undefined | null;
 }
 
 export enum RoleEnum {

@@ -1,1 +1,9 @@
-<p>all-users works!</p>
+<div class="p-4 bg-white rounded-lg shadow-md">
+  <app-table
+    [data]="allUsers"
+    [columns]="tableColumns"
+    >
+  </app-table>
+  <app-pagination [Type]="PaginationType.ALLUSERS"></app-pagination>
+</div>
+
