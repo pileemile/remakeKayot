@@ -1,14 +1,15 @@
 import {Quizzes} from '../quizzes/quizzes';
 
-export interface UserModele {
+export interface  UserModele {
   adress?: string | null
   first_name?: string | null
   id?: number
   last_name?: string | null
   role: RoleEnum
-  user_id: string
+  user_id?: string
   cp: number
   ville: string
+  [key: string]: string | number | boolean | undefined | null;
 }
 
 export enum RoleEnum {

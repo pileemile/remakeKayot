@@ -1,7 +1,7 @@
 import {Answers} from '../answer/answer';
 
 export interface Quizzes {
-  [key: string]: any;
+  [key: string]: string | number | boolean | undefined | null | QuestionCreate[];
   id: string;
   user_id: string;
   title: string;
@@ -23,6 +23,12 @@ export enum Difficulty {
   Moyen = "Moyen",
   Difficile = "Difficile",
 }
+
+export const AllEnumQuizz = {
+  Category,
+  Difficulty,
+} as const;
+
 export interface QuestionCreate {
   answers: Answers[]
   created_at?: string

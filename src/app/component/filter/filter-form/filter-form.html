@@ -1,0 +1,14 @@
+<form action="">
+  <p>Filtre</p>
+  @if (filters) {
+    @for (filter of filters; track filter) {
+      <app-input-filter [state]="filter"></app-input-filter>
+    }
+    @for (select of selects; track select) {
+      <app-select-filter [state]="select"></app-select-filter>
+    }
+  }
+  <app-button-filter
+    (onButtonClick)="onButtonClick($event)">
+  </app-button-filter>
+</form>

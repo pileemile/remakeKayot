@@ -1,0 +1,15 @@
+<div class="flex flex-col">
+  <span>{{ label }}</span>
+  <select
+    [(ngModel)]="value"
+    (ngModelChange)="onValueChange($event)"
+    name=""
+    id=""
+    class="h-9 border border-gray-300 rounded-lg bg-gray-100">
+    <option value=""></option>
+    <option value="">Toutes</option>
+    @for (model of select; track model) {
+      <option [value]="model">{{model}}</option>
+    }
+  </select>
+</div>

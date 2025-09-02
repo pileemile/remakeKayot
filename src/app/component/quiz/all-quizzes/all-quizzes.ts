@@ -5,6 +5,7 @@ import {PaginationService} from '../../../service/pagination/pagination-service'
 import {Pagination} from '../../pagination/pagination';
 import {TableAction, TableColumn} from '../../../models/tables/tables-interface';
 import {Table} from '../../table/table';
+import {PaginationType} from '../../pagination/constent';
 
 @Component({
   selector: 'app-all-quizzes',
@@ -52,4 +53,5 @@ export class AllQuizzes implements OnInit{
   }
 
 
+  protected readonly PaginationType = PaginationType;
 }

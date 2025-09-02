@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Output, Input} from '@angular/core';
 import {TableAction, TableColumn} from '../../models/tables/tables-interface';
 import {Quizzes} from '../../models/quizzes/quizzes';
+import {UserModele} from '../../models/user/user-modele';
 
 @Component({
   selector: 'app-table',
@@ -9,7 +10,7 @@ import {Quizzes} from '../../models/quizzes/quizzes';
   styleUrl: './table.css'
 })
 export class Table {
-  @Input() data: Quizzes[] | null = null;
+  @Input() data: Quizzes[] | UserModele[] | null = null;
   @Input() columns: TableColumn[] = [];
   @Input() actions: TableAction[] = [];
 
