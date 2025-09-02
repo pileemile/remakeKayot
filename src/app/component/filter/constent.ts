@@ -15,6 +15,11 @@ export enum FilterTypeEnum {
 export enum SelectFilterEnum {
   CATEGORY = 'category',
   DIFFICULTY = 'difficulty',
+}
+
+export enum FilterType {
+  QUIZ = 'quiz',
+  USER = 'user',
   ALL = 'all',
 }
 

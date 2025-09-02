@@ -19,7 +19,7 @@ export class Users {
 
 
   public get tabsConfiguration(): ITabsMode {
-    return {[ButtonEnum.Find_USER]: true, [ButtonEnum.ALL_USERS]: true};
+    return {[ButtonEnum.FIND_USER]: true, [ButtonEnum.ALL_USERS]: true};
   }
 
   public activationPage(event: ButtonEnum) {

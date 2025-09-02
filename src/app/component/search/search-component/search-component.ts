@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Output} from '@angular/core';
 import {ButtonEnum} from '../../tabs/constants';
 import {FilterForm} from '../../filter/filter-form/filter-form';
-import {FilterTypeEnum, IFilterType, SelectFilterEnum} from '../../filter/constent';
+import {FilterType, FilterTypeEnum, IFilterType, SelectFilterEnum} from '../../filter/constent';
 
 @Component({
   selector: 'app-search-component',
@@ -18,4 +18,5 @@ export class SearchComponent {
     return {[FilterTypeEnum.CREATED_AT]: true, [FilterTypeEnum.FINISH_AT]: true, [SelectFilterEnum.CATEGORY]: true, [SelectFilterEnum.DIFFICULTY]: true};
   }
 
+  protected readonly FilterType = FilterType;
 }

@@ -4,7 +4,8 @@ export enum ButtonEnum {
   CREATE = 'create',
   FILTER = 'filter',
   ALL_USERS = 'all_users',
-  Find_USER = 'find_users',
+  FIND_USER = 'find_users',
+  SEARCH_USER = 'search_users',
   CLEAR = 'clear',
 }
 
@@ -18,7 +19,8 @@ export const labels = {
   [ButtonEnum.CREATE]: 'Create',
   [ButtonEnum.FILTER]: 'Filter',
   [ButtonEnum.ALL_USERS]: 'User',
-  [ButtonEnum.Find_USER]: 'Find User',
+  [ButtonEnum.FIND_USER]: 'Find User',
+  [ButtonEnum.SEARCH_USER]: 'Search User',
   [ButtonEnum.CLEAR]: 'Clear',
 }
 

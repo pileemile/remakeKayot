@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ButtonFilter} from "../button-filter/button-filter";
-import {SelectFilterEnum} from '../constent';
-import {SearchInterface} from '../../../models/search/search';
+import {FilterType, SelectFilterEnum} from '../constent';
+import {SearchQuizzesInterface, SearchUsersInterface} from '../../../models/search/search';
 import {ButtonEnum} from '../../tabs/constants';
 import {SearchService} from '../../../service/search-service/search-service';
 import {InputFilter} from '../input-filter/input-filter';
@@ -41,6 +41,7 @@ export class FilterForm implements OnInit{
       this.selects = [];
     }
   }
+  @Input() filterType: FilterType = FilterType.ALL;
 
   @Output() activateFilter = new EventEmitter<ButtonEnum>();
 
@@ -59,9 +60,16 @@ export class FilterForm implements OnInit{
   }
   public async onSubmit() {
     if (this.filterGet) {
-      const search = this.filterGet as SearchInterface;
-      await this.searchService.search(search);
-      this.activateFilter.emit(ButtonEnum.FILTER);
+      const search = this.filterGet as SearchQuizzesInterface;
+      const user = this.filterGet as SearchUsersInterface;
+      if(this.filterType === FilterType.QUIZ) {
+        await this.searchService.searchQuizzes(search);
+        this.activateFilter.emit(ButtonEnum.FILTER);
+      } else if (this.filterType === FilterType.USER  ) {
+        await this.searchService.searchUser(user);
+        this.activateFilter.emit(ButtonEnum.SEARCH_USER);
+      } else
+        console.log("errorr");
       console.log("search", this.filterGet)
     }
 

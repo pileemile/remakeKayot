@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {FilterTypeEnum} from '../../filter/constent';
+import {FilterType, FilterTypeEnum} from '../../filter/constent';
 import {FilterForm} from '../../filter/filter-form/filter-form';
 
 @Component({
@@ -22,4 +22,5 @@ export class FindUser {
     }
   }
 
+  protected readonly FilterType = FilterType;
 }
