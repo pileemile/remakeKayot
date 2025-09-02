@@ -32,7 +32,9 @@ export class AllQuizzes implements OnInit{
     { key: 'description', label: 'Description' },
     { key: 'category', label: 'Category' },
     { key: 'difficulty', label: 'Difficulty' },
-    { key: 'action', label: 'Action', type: 'action' }
+    { key: 'action', label: 'Action', type: 'action' },
+    { key: 'note', label: 'Note', type: 'action'},
+    {key: 'classement', label: 'Classement'}
   ];
 
   public tableActions: TableAction[] = [
