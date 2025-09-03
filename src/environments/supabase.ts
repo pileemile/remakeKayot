@@ -149,6 +149,41 @@ export type Database = {
           },
         ]
       }
+      leaderboards: {
+        Row: {
+          attempts_count: number | null
+          best_score: number | null
+          id: string
+          quiz_id: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          attempts_count?: number | null
+          best_score?: number | null
+          id?: string
+          quiz_id?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          attempts_count?: number | null
+          best_score?: number | null
+          id?: string
+          quiz_id?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "leaderboards_quiz_id_fkey"
+            columns: ["quiz_id"]
+            isOneToOne: false
+            referencedRelation: "quizzes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       questions: {
         Row: {
           created_at: string | null
@@ -171,6 +206,67 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "questions_quiz_id_fkey"
+            columns: ["quiz_id"]
+            isOneToOne: false
+            referencedRelation: "quizzes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quiz_comments: {
+        Row: {
+          created_at: string | null
+          id: string
+          quiz_id: string
+          text: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          quiz_id: string
+          text: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          quiz_id?: string
+          text?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quiz_comments_quiz_id_fkey"
+            columns: ["quiz_id"]
+            isOneToOne: false
+            referencedRelation: "quizzes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quiz_ratings: {
+        Row: {
+          created_at: string | null
+          quiz_id: string
+          rating: number | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          quiz_id: string
+          rating?: number | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          quiz_id?: string
+          rating?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quiz_ratings_quiz_id_fkey"
             columns: ["quiz_id"]
             isOneToOne: false
             referencedRelation: "quizzes"
