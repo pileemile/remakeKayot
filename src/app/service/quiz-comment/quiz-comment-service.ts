@@ -3,15 +3,18 @@ import {supabase} from '../../../environments/environment';
 import {QuizComment} from '../../models/quiz-comment/quiz-comment';
 import {TablesInsert} from '../../../environments/supabase';
 import {Quizzes} from '../../models/quizzes/quizzes';
+import {BehaviorSubject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuizCommentService {
+  public allComments = new BehaviorSubject<QuizComment[]>([]);
+
   //todo: l'enlever après
   private readonly currentUserId = '22ce5a89-1db2-46e7-a265-c929697ff1d0';
 
-  public async getCommentsByQuizId(quizId: Quizzes): Promise<QuizComment[]> {
+  public async getCommentsByQuizId(quizId: Quizzes) {
     const { data, error } = await supabase
       .from('quiz_comments')
       .select('*')
@@ -20,9 +23,9 @@ export class QuizCommentService {
     if (error) {
       console.error('Erreur lors de la récupération des commentaires:', error);
       throw error;
+    } else {
+      this.allComments.next(data)
     }
-
-    return data || [];
   }
 
   public async addComment(quizId: Quizzes, text: string): Promise<QuizComment> {

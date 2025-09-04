@@ -69,7 +69,14 @@ export class AnswerQuestions implements OnInit{
       if (this.index === this.questionService.question$.value?.length - 1) {
         this.index = this.questionService.question$.value?.length - 1;
       }
+      if (this.index + 1 === (this.quizz?.questions?.length ?? 0)) {
+
+        console.log("ici")
+      }
     }
+    console.log("question_next", this.quizz?.questions?.length, this.index)
+    console.log("Quiz value:", this.quizz);
+    console.log("Questions:", this.quizz?.questions);
   }
 
   public question_back () {

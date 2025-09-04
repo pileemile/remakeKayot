@@ -9,7 +9,7 @@ export interface Quizzes {
   category: Category;
   difficulty: Difficulty;
   created_at: string;
-  question: QuestionCreate[]
+  questions: QuestionCreate[]
 }
 
 export enum Category {

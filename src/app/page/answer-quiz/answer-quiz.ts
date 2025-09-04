@@ -16,8 +16,6 @@ import {ActivatedRoute} from '@angular/router';
   styleUrl: './answer-quiz.css'
 })
 export class AnswerQuiz implements OnInit{
-  public quizId: string | null = null;
-
   public quizId: Quizzes | null = null;
 
   constructor(

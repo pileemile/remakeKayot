@@ -102,7 +102,7 @@ export class QuizzesService {
   public async getQuizzesById(id: string) {
     let { data: quizzes, error } = await supabase
       .from('quizzes')
-      .select('*')
+      .select('*, questions(*)')
       .eq('id', id)
       .single();
     this.quizzesId$.next(quizzes);
