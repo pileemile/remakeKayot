@@ -2,19 +2,20 @@ import { Injectable } from '@angular/core';
 import {supabase} from '../../../environments/environment';
 import {QuizComment} from '../../models/quiz-comment/quiz-comment';
 import {TablesInsert} from '../../../environments/supabase';
+import {Quizzes} from '../../models/quizzes/quizzes';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuizCommentService {
+  //todo: l'enlever après
   private readonly currentUserId = '22ce5a89-1db2-46e7-a265-c929697ff1d0';
 
-  public async getCommentsByQuizId(quizId: string): Promise<QuizComment[]> {
+  public async getCommentsByQuizId(quizId: Quizzes): Promise<QuizComment[]> {
     const { data, error } = await supabase
       .from('quiz_comments')
       .select('*')
       .eq('quiz_id', quizId)
-      .order('created_at', { ascending: false });
 
     if (error) {
       console.error('Erreur lors de la récupération des commentaires:', error);
@@ -24,9 +25,9 @@ export class QuizCommentService {
     return data || [];
   }
 
-  public async addComment(quizId: string, text: string): Promise<QuizComment> {
+  public async addComment(quizId: Quizzes, text: string): Promise<QuizComment> {
     const newComment: TablesInsert<'quiz_comments'> = {
-      quiz_id: quizId,
+      quiz_id: quizId.id,
       user_id: this.currentUserId,
       text: text,
       created_at: new Date().toISOString()
@@ -46,7 +47,7 @@ export class QuizCommentService {
     return data;
   }
 
-  public async deleteComment(commentId: string): Promise<void> {
+  public async deleteComment(commentId: QuizComment): Promise<void> {
     const { error } = await supabase
       .from('quiz_comments')
       .delete()
@@ -59,7 +60,7 @@ export class QuizCommentService {
     }
   }
 
-  public async updateComment(commentId: string, text: string): Promise<QuizComment> {
+  public async updateComment(commentId: QuizComment, text: string): Promise<QuizComment> {
     const { data, error } = await supabase
       .from('quiz_comments')
       .update({ text })

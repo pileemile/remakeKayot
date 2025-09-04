@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import {differenceInMinutes} from 'date-fns';
 import {QuizComment} from '../../../models/quiz-comment/quiz-comment';
 import {QuizCommentService} from '../../../service/quiz-comment/quiz-comment-service';
+import {Quizzes} from '../../../models/quizzes/quizzes';
 
 @Component({
   selector: 'app-quiz-comments',
@@ -13,7 +14,7 @@ import {QuizCommentService} from '../../../service/quiz-comment/quiz-comment-ser
   styleUrl: './quiz-comments.css'
 })
 export class QuizComments implements OnInit{
-  @Input() quizId!: string;
+  @Input() quizId!: Quizzes;
 
   public commentForm: FormGroup;
   public comments: QuizComment[] = [];
