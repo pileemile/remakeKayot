@@ -16,9 +16,7 @@ import {ActivatedRoute} from '@angular/router';
   styleUrl: './answer-quiz.css'
 })
 export class AnswerQuiz implements OnInit{
-  public quizId: string | null = null;
-
-  public quizId: Quizzes | null = null;
+  public currentQuiz: Quizzes | null = null;
 
   constructor(
     private answerService: AnswerService,
@@ -26,8 +24,11 @@ export class AnswerQuiz implements OnInit{
     private route: ActivatedRoute,
   ) {}
 
-  ngOnInit() {
-    this.answerService.answersAll$.value;
-    this.quizId = this.quizzesService.quizzesId$.value;
+  async ngOnInit() {
+    const quizId = this.route.snapshot.paramMap.get('id');
+    if (quizId) {
+      await this.quizzesService.getQuizzesById(quizId);
+      this.currentQuiz = this.quizzesService.quizzesId$.value;
+    }
   }
 }
