@@ -1,8 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { QuizCommentsService } from '../../../service/quiz-comments/quiz-comments-service';
-import { QuizComment } from '../../../models/quiz-comments/quiz-comments';
+import {Component, Input, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {differenceInMinutes} from 'date-fns';
+import {QuizComment} from '../../../models/quiz-comment/quiz-comment';
+import {QuizCommentService} from '../../../service/quiz-comment/quiz-comment-service';
+import {Quizzes} from '../../../models/quizzes/quizzes';
 
 @Component({
   selector: 'app-quiz-comments',
@@ -14,8 +15,8 @@ import { QuizComment } from '../../../models/quiz-comments/quiz-comments';
   templateUrl: './quiz-comments.html',
   styleUrl: './quiz-comments.css'
 })
-export class QuizComments implements OnInit {
-  @Input() quizId!: string;
+export class QuizComments implements OnInit{
+  @Input() quizId!: Quizzes;
 
   public commentForm: FormGroup;
   public comments: QuizComment[] = [];
@@ -23,7 +24,7 @@ export class QuizComments implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private quizCommentsService: QuizCommentsService
+    private quizCommentsService: QuizCommentService
   ) {
     this.commentForm = this.formBuilder.group({
       text: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(500)]]
@@ -47,15 +48,10 @@ export class QuizComments implements OnInit {
   public async onSubmitComment() {
     if (this.commentForm.valid && !this.isSubmitting) {
       this.isSubmitting = true;
-      
       try {
         const commentText = this.commentForm.get('text')?.value;
         await this.quizCommentsService.addComment(this.quizId, commentText);
-        
-        // Recharger les commentaires
         await this.loadComments();
-        
-        // Réinitialiser le formulaire
         this.commentForm.reset();
       } catch (error) {
         console.error('Erreur lors de l\'ajout du commentaire:', error);
@@ -68,18 +64,18 @@ export class QuizComments implements OnInit {
   public formatDate(dateString: string): string {
     const date = new Date(dateString);
     const now = new Date();
-    const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
+    const dateMinute = differenceInMinutes(now, date);
 
-    if (diffInMinutes < 1) {
-      return 'À l\'instant';
-    } else if (diffInMinutes < 60) {
-      return `Il y a ${diffInMinutes} minute${diffInMinutes > 1 ? 's' : ''}`;
-    } else if (diffInMinutes < 1440) {
-      const hours = Math.floor(diffInMinutes / 60);
-      return `Il y a ${hours} heure${hours > 1 ? 's' : ''}`;
-    } else {
-      const days = Math.floor(diffInMinutes / 1440);
-      return `Il y a ${days} jour${days > 1 ? 's' : ''}`;
+    switch (true) {
+      case dateMinute < 1:
+        return `Il y a ${dateMinute} minute${dateMinute > 1 ? 's' : ''}`;
+      case dateMinute < 60:
+        return `Il y a  }`;
+      case dateMinute < 1440:
+        return `Il y a ${dateMinute} heure${dateMinute > 1 ? 's' : ''}`;
+      default:
+        return `Il y a ${dateMinute} jour${dateMinute > 1 ? 's' : ''}`;
     }
   }
+
 }

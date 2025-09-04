@@ -1,8 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {AnswerService} from '../../service/answers/answer-service';
 import {AnswerQuestions} from '../../component/question/answer-questions/answer-questions';
-import {ActivatedRoute} from '@angular/router';
 import {QuizComments} from '../../component/quiz/quiz-comments/quiz-comments';
+import {QuizzesService} from '../../service/quizzes/quizzes-service';
+import {Quizzes} from '../../models/quizzes/quizzes';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-answer-quiz',
@@ -16,13 +18,16 @@ import {QuizComments} from '../../component/quiz/quiz-comments/quiz-comments';
 export class AnswerQuiz implements OnInit{
   public quizId: string | null = null;
 
+  public quizId: Quizzes | null = null;
+
   constructor(
     private answerService: AnswerService,
+    private quizzesService: QuizzesService,
     private route: ActivatedRoute,
   ) {}
 
   ngOnInit() {
-    this.quizId = this.route.snapshot.paramMap.get('id');
-    this.answerService.answersAll$.value
+    this.answerService.answersAll$.value;
+    this.quizId = this.quizzesService.quizzesId$.value;
   }
 }
