@@ -59,6 +59,5 @@ export class AllQuizzes implements OnInit{
     await this.router.navigate(['/answer-quiz/' + id]);
   }
 
-
   protected readonly PaginationType = PaginationType;
 }

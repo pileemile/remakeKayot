@@ -7,7 +7,9 @@ import {Quizzes} from '../../../models/quizzes/quizzes';
 
 @Component({
   selector: 'app-quiz-comments',
+  standalone: true,
   imports: [
+    CommonModule,
     ReactiveFormsModule
   ],
   templateUrl: './quiz-comments.html',
@@ -46,7 +48,6 @@ export class QuizComments implements OnInit{
   public async onSubmitComment() {
     if (this.commentForm.valid && !this.isSubmitting) {
       this.isSubmitting = true;
-
       try {
         const commentText = this.commentForm.get('text')?.value;
         await this.quizCommentsService.addComment(this.quizId, commentText);

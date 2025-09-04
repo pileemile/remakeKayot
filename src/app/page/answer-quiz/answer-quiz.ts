@@ -4,6 +4,7 @@ import {AnswerQuestions} from '../../component/question/answer-questions/answer-
 import {QuizComments} from '../../component/quiz/quiz-comments/quiz-comments';
 import {QuizzesService} from '../../service/quizzes/quizzes-service';
 import {Quizzes} from '../../models/quizzes/quizzes';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-answer-quiz',
@@ -15,13 +16,16 @@ import {Quizzes} from '../../models/quizzes/quizzes';
   styleUrl: './answer-quiz.css'
 })
 export class AnswerQuiz implements OnInit{
+  public quizId: string | null = null;
 
   public quizId: Quizzes | null = null;
 
   constructor(
     private answerService: AnswerService,
     private quizzesService: QuizzesService,
+    private route: ActivatedRoute,
   ) {}
+
   ngOnInit() {
     this.answerService.answersAll$.value;
     this.quizId = this.quizzesService.quizzesId$.value;
