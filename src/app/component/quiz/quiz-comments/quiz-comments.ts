@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {differenceInMinutes} from 'date-fns';
+import {CommonModule} from '@angular/common';
+import {differenceInMinutes, differenceInHours, differenceInDays} from 'date-fns';
 import {QuizComment} from '../../../models/quiz-comment/quiz-comment';
 import {QuizCommentService} from '../../../service/quiz-comment/quiz-comment-service';
 import {Quizzes} from '../../../models/quizzes/quizzes';
@@ -33,14 +34,14 @@ export class QuizComments implements OnInit{
   }
 
   async ngOnInit() {
-    if (this.quizId) {
+    if (this.quizId?.id) {
       await this.loadComments();
     }
   }
 
   private async loadComments() {
     try {
-      this.comments = await this.quizCommentsService.getCommentsByQuizId(this.quizId);
+      this.comments = await this.quizCommentsService.getCommentsByQuizId(this.quizId.id);
     } catch (error) {
       console.error('Erreur lors du chargement des commentaires:', error);
     }
@@ -51,7 +52,7 @@ export class QuizComments implements OnInit{
       this.isSubmitting = true;
       try {
         const commentText = this.commentForm.get('text')?.value;
-        await this.quizCommentsService.addComment(this.quizId, commentText);
+        await this.quizCommentsService.addComment(this.quizId.id, commentText);
         await this.loadComments();
         this.commentForm.reset();
       } catch (error) {
@@ -65,18 +66,18 @@ export class QuizComments implements OnInit{
   public formatDate(dateString: string): string {
     const date = new Date(dateString);
     const now = new Date();
-    const dateMinute = differenceInMinutes(now, date);
+    const minutesDiff = differenceInMinutes(now, date);
+    const hoursDiff = differenceInHours(now, date);
+    const daysDiff = differenceInDays(now, date);
 
-    switch (true) {
-      case dateMinute < 1:
-        return `Il y a ${dateMinute} minute${dateMinute > 1 ? 's' : ''}`;
-      case dateMinute < 60:
-        return `Il y a  }`;
-      case dateMinute < 1440:
-        return `Il y a ${dateMinute} heure${dateMinute > 1 ? 's' : ''}`;
-      default:
-        return `Il y a ${dateMinute} jour${dateMinute > 1 ? 's' : ''}`;
+    if (minutesDiff < 1) {
+      return 'À l\'instant';
+    } else if (minutesDiff < 60) {
+      return `Il y a ${minutesDiff} minute${minutesDiff > 1 ? 's' : ''}`;
+    } else if (hoursDiff < 24) {
+      return `Il y a ${hoursDiff} heure${hoursDiff > 1 ? 's' : ''}`;
+    } else {
+      return `Il y a ${daysDiff} jour${daysDiff > 1 ? 's' : ''}`;
     }
   }
-
 }
