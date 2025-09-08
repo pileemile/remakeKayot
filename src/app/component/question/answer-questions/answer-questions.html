@@ -18,7 +18,7 @@
           <h1 class="text-2xl font-bold text-gray-900 mb-2">{{ this.quizz.title }}</h1>
           <p class="text-gray-600">{{ this.quizz.description }}</p>
         </div>
-        
+
         <app-timer></app-timer>
 
 
@@ -29,22 +29,14 @@
               {{ this.quizz.category }}
             </div>
           </div>
-          
-          <!-- Barre de progression -->
-          <div class="w-full bg-gray-200 rounded-full h-2 mb-4">
-            <div 
-              class="bg-blue-600 h-2 rounded-full transition-all duration-300"
-              [style.width.%]="((this.index + 1) / (this.quizz.question?.length || 1)) * 100"
-            ></div>
-          </div>
         </div>
-        
+
         @if (this.question)  {
           <div class="mb-6">
             <h3 class="text-lg font-medium text-gray-900 mb-4">{{ this.question.text }}</h3>
           </div>
         }
-        
+
         @if (this.question)  {
           @if (this.question.answers) {
             <div class="space-y-3 mb-6">
@@ -63,9 +55,10 @@
                   </label>
                 </div>
               }
+            </div>
             }
-          }
-          
+
+
           <div class="flex justify-between pt-6 border-t border-gray-200">
             <button
               type="button"
@@ -78,11 +71,11 @@
               </svg>
               question précédente
             </button>
-            
+
             @if (this.question.answers.length) {
               @if (this.index === (this.quizz?.question?.length ?? 0) - 1) {
-                <button 
-                  (click)="submit_answer()" 
+                <button
+                  (click)="submit_answer()"
                   class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors"
                 >
                   Terminer le quiz
@@ -105,7 +98,6 @@
             }
           </div>
         }
-
       </div>
     </div>
   </form>
