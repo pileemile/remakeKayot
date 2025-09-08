@@ -9,7 +9,7 @@ export interface Quizzes {
   category: Category;
   difficulty: Difficulty;
   created_at: string;
-  question: QuestionCreate[]
+  questions: QuestionCreate[]
 }
 
 export enum Category {
@@ -23,11 +23,6 @@ export enum Difficulty {
   Moyen = "Moyen",
   Difficile = "Difficile",
 }
-
-export const AllEnumQuizz = {
-  Category,
-  Difficulty,
-} as const;
 
 export interface QuestionCreate {
   answers: Answers[]

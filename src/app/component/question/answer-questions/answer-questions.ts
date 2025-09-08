@@ -70,6 +70,9 @@ export class AnswerQuestions implements OnInit{
         this.index = this.questionService.question$.value?.length - 1;
       }
     }
+    console.log("index", this.index);
+    console.log("question", this.questionService.question$.value?.length);
+    console.log("question", this.question);
   }
 
   public question_back () {

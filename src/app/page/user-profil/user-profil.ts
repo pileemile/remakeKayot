@@ -3,12 +3,14 @@ import {UserDetails} from '../../component/user/user-details/user-details';
 import {Table} from '../../component/table/table';
 import {UserService} from '../../service/user/user';
 import {TableColumn} from '../../models/tables/tables-interface';
+import {UserComments} from '../../component/user/user-comments/user-comments';
 
 @Component({
   selector: 'app-user-profil',
   imports: [
     UserDetails,
-    Table
+    Table,
+    UserComments
   ],
   templateUrl: './user-profil.html',
   styleUrl: './user-profil.css'
