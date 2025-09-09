@@ -19,6 +19,7 @@ export class QuizCommentService {
 
   public comments = new BehaviorSubject<QuizComment[]>([])
   public commentUser = new BehaviorSubject<QuizComment[]>([])
+  public commentByQuiz: QuizComment[] = [];
 
   //todo: l'enlever après
   private currentUserId = '22ce5a89-1db2-46e7-a265-c929697ff1d0';
@@ -102,6 +103,22 @@ export class QuizCommentService {
     return data || [];
   }
 
+  public async getAllCommentsByQuiz(quizId: Quizzes[] | null) {
+    if(quizId === null) return [];
+
+    const filterQuizId = quizId.map(quiz => quiz.id);
+
+    const { data, error } = await supabase
+    .from('quiz_comments')
+    .select('*')
+    .in('quiz_id', filterQuizId);
+
+    if (error){
+      console.log("erreur sur la récupération des commentaires", error);
+    }
+    return data || [];
+  }
+
   public async loadCommentsByQuiz() {
     try {
       if (this.quizzesService.quizzesId$.value) {
@@ -120,5 +137,21 @@ export class QuizCommentService {
     } catch (error) {
       console.error('Erreur chargement des commentaires:', error);
     }
+  }
+
+  public async getCommentByQuizId(quizId: string){
+    const { data, error } = await supabase
+      .from('quiz_comments')
+      .select('*')
+      .eq('quiz_id', quizId);
+
+    if (error){
+      console.log("erreur de la récupération des commentaires", error);
+    }
+    console.log("data des coms ", data);
+
+    this.commentByQuiz = data || [];
+    console.log("commentByQuiz", this.commentByQuiz);
+    return data || [];
   }
 }

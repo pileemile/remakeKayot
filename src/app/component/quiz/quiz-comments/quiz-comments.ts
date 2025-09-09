@@ -1,7 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {differenceInMinutes} from 'date-fns';
-import {QuizComment} from '../../../models/quiz-comment/quiz-comment';
 import {QuizCommentService} from '../../../service/quiz-comment/quiz-comment-service';
 import {Quizzes} from '../../../models/quizzes/quizzes';
 import {CommonModule} from '@angular/common';

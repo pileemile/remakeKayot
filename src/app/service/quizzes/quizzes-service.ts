@@ -117,10 +117,12 @@ export class QuizzesService {
 
 
   public async filterQuizzesByQuizId(quiz_id: QuizComment[] ) {
+    const quiz_id_array = quiz_id.map(quiz => quiz.quiz_id)
+
     let { data: quizzes, error } = await supabase
     .from('quizzes')
     .select('*')
-    .eq('id', quiz_id)
+    .in('id', quiz_id_array)
 
     if (error) {
       console.log("error", error)
