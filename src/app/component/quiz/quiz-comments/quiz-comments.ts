@@ -5,6 +5,7 @@ import {Quizzes} from '../../../models/quizzes/quizzes';
 import {CommonModule} from '@angular/common';
 import {Comments} from '../../comments/comments';
 import {QuizzesService} from '../../../service/quizzes/quizzes-service';
+import {QuizComment} from '../../../models/quiz-comment/quiz-comment';
 
 @Component({
   selector: 'app-quiz-comments',
@@ -56,5 +57,4 @@ export class QuizComments implements OnInit{
   public get comments() {
     return this.quizCommentsService.comments.value;
   }
-
 }
