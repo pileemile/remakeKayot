@@ -28,7 +28,6 @@ export class Accordion implements OnInit{
   }
 
   public async clickQuizComment(quiz_id: string) {
-    console.log("click", quiz_id);
     await this.quizCommentService.getCommentByQuizId(quiz_id);
   }
 

@@ -98,8 +98,6 @@ export class QuizCommentService {
     if (error) {
       console.error('Erreur récupération des commentaires:', error);
     }
-    console.log("data", data);
-
     return data || [];
   }
 
@@ -148,10 +146,7 @@ export class QuizCommentService {
     if (error){
       console.log("erreur de la récupération des commentaires", error);
     }
-    console.log("data des coms ", data);
-
     this.commentByQuiz = data || [];
-    console.log("commentByQuiz", this.commentByQuiz);
     return data || [];
   }
 }

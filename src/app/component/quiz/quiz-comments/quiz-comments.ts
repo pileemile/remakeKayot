@@ -42,8 +42,6 @@ export class QuizComments implements OnInit{
 
   public async onSubmitComment() {
     if (this.commentForm.valid && !this.isSubmitting) {
-      console.log("ici")
-      console.log("isSubmite=ing", this.isSubmitting);
       try {
         const commentText = this.commentForm.get('comment')?.value;
         await this.quizCommentsService.addComment(this.quizId, commentText);

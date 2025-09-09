@@ -2,8 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {Accordion} from '../../accordion/accordion';
 import {QuizCommentService} from '../../../service/quiz-comment/quiz-comment-service';
 import {QuizzesService} from '../../../service/quizzes/quizzes-service';
-import {QuizComment} from '../../../models/quiz-comment/quiz-comment';
-import {log10} from 'chart.js/helpers';
 import {initAccordions} from 'flowbite';
 
 @Component({
@@ -28,8 +26,6 @@ export class UserComments implements OnInit {
     await this.quizCommentService.loadCommentByUser();
     await this.quizzesService.filterQuizzesByQuizId(this.commentUserByQuizId);
     await this.quizCommentService.getAllCommentsByQuiz(this.quizId);
-
-    console.log('les quizz',this.quizId);
   }
 
   private get commentUserByQuizId() {
