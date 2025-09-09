@@ -5,6 +5,8 @@ import {TablesInsert} from '../../../environments/supabase';
 import {supabase} from '../../../environments/environment';
 import {Answers} from '../../models/answer/answer';
 import {ButtonEnum} from '../../component/tabs/constants';
+import {QuizComments} from '../../component/quiz/quiz-comments/quiz-comments';
+import {QuizComment} from '../../models/quiz-comment/quiz-comment';
 
 
 @Injectable({
@@ -16,6 +18,7 @@ export class QuizzesService {
   public answers$ = new BehaviorSubject<Answers[] | null>(null)
   public allQuizzes$ = new BehaviorSubject<Quizzes[] |null>(null);
   public quizzesId$ = new BehaviorSubject<Quizzes | null>(null);
+  public quizzesFilterByComment$ = new BehaviorSubject<Quizzes[] | null>(null);
   public activeTab: 'search' | 'all' | 'create' | 'filter' |  null = null;
   public pageActive?: ButtonEnum;
 
@@ -99,7 +102,7 @@ export class QuizzesService {
     }
   }
 
-  public async getQuizzesById(id: string) {
+  public async getQuizzesById(id: string ) {
     let { data: quizzes, error } = await supabase
       .from('quizzes')
       .select('*, questions(*)')
@@ -112,4 +115,18 @@ export class QuizzesService {
     }
   }
 
+
+  public async filterQuizzesByQuizId(quiz_id: QuizComment[] ) {
+    const quiz_id_array = quiz_id.map(quiz => quiz.quiz_id)
+
+    let { data: quizzes, error } = await supabase
+    .from('quizzes')
+    .select('*')
+    .in('id', quiz_id_array)
+
+    if (error) {
+      console.log("error", error)
+    }
+    this.quizzesFilterByComment$.next(quizzes);
+  }
 }
