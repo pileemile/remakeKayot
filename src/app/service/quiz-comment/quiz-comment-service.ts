@@ -1,12 +1,13 @@
-import { Injectable } from '@angular/core';
-import {supabase} from '../../../environments/environment';
+import {inject, Injectable} from '@angular/core';
+import {environment, supabase} from '../../../environments/environment';
 import {QuizComment} from '../../models/quiz-comment/quiz-comment';
 import {TablesInsert} from '../../../environments/supabase';
 import {Quizzes} from '../../models/quizzes/quizzes';
 import {QuizzesService} from '../quizzes/quizzes-service';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, lastValueFrom} from 'rxjs';
 import {QuizComments} from '../../component/quiz/quiz-comments/quiz-comments';
 import {UserModele} from '../../models/user/user-modele';
+import {HttpClient, HttpParams} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -23,41 +24,46 @@ export class QuizCommentService {
 
   //todo: l'enlever après
   private currentUserId = '22ce5a89-1db2-46e7-a265-c929697ff1d0';
+  //TODO: les variables sont peut être au bonne endroit
+  private apiUrl = environment.supabaseUrl + '/rest/v1';
+  private http = inject(HttpClient);
 
-  public async getCommentsByQuizId(quizId: Quizzes) {
-    const { data, error } = await supabase
-      .from('quiz_comments')
-      .select('*')
-      .eq('quiz_id', quizId.id)
-
-    if (error) {
-      console.error('Erreur récupération des commentaires:', error);
+  public async getCommentsByQuizIdRest(quizId: Quizzes) {
+    try {
+      const data: QuizComment [] | undefined = await this.http.get<QuizComment[]>(`${this.apiUrl}/quiz_comments?select=*&quiz_id=eq.${quizId.id}`).toPromise();
+      console.log(' succès', data);
+      return data || [];
+    } catch (error) {
+      console.error('erreur:', error);
       throw error;
     }
-
-    return data || [];
   }
 
-  public async addComment(quizId: Quizzes, text: string) {
-    const newComment: TablesInsert<'quiz_comments'> = {
+  public async addCommentRest(quizId: Quizzes, text: string): Promise<QuizComment> {
+    const newComment: Omit<QuizComment, 'id'> = {
       quiz_id: quizId.id,
       user_id: this.currentUserId,
       text: text,
       created_at: new Date().toISOString()
     };
 
-    const { data, error } = await supabase
-      .from('quiz_comments')
-      .insert([newComment])
-      .select()
-      .single();
+    const params = new HttpParams().set('select', '*');
 
-    if (error) {
-      console.error('Erreur ajout du commentaire:', error);
+    try {
+      console.log('Ajout d\'un nouveau commentaire via REST API', newComment);
+      const data = await lastValueFrom(
+        this.http.post<QuizComment>(
+          `${this.apiUrl}/quiz_comments`,
+          newComment,
+          { params }
+        )
+      );
+      console.log('Commentaire ajouté avec succès via REST API', data);
+      return data;
+    } catch (error) {
+      console.error('Erreur lors de l\'ajout du commentaire via REST API:', error);
       throw error;
     }
-
-    return data;
   }
 
   public async deleteComment(commentId: string) {
@@ -120,7 +126,7 @@ export class QuizCommentService {
   public async loadCommentsByQuiz() {
     try {
       if (this.quizzesService.quizzesId$.value) {
-        this.comments.next(await this.getCommentsByQuizId(this.quizzesService.quizzesId$.value));
+        this.comments.next(await this.getCommentsByQuizIdRest(this.quizzesService.quizzesId$.value));
       }
     } catch (error) {
       console.error('Erreur chargement des commentaires:', error);

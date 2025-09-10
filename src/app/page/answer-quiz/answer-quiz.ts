@@ -4,7 +4,6 @@ import {AnswerQuestions} from '../../component/question/answer-questions/answer-
 import {QuizComments} from '../../component/quiz/quiz-comments/quiz-comments';
 import {QuizzesService} from '../../service/quizzes/quizzes-service';
 import {Quizzes} from '../../models/quizzes/quizzes';
-import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-answer-quiz',
@@ -21,7 +20,6 @@ export class AnswerQuiz implements OnInit{
   constructor(
     private answerService: AnswerService,
     private quizzesService: QuizzesService,
-    private route: ActivatedRoute,
   ) {}
 
   ngOnInit() {
