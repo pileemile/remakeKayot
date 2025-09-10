@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
+import {inject, Injectable} from '@angular/core';
+import {BehaviorSubject, lastValueFrom} from 'rxjs';
 import {Login} from '../../models/login/login';
-import {supabase} from '../../../environments/environment';
+import {environment, supabase} from '../../../environments/environment';
 import {SessionService} from '../session-service/session-service';
+import {HttpClient, HttpParams} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,8 @@ export class LoginService {
   public user_create_at: string | number | Date = "";
 
   private isAuthentificated = false;
+  private apiUrl = environment.supabaseUrl + '/rest/v1';
+  private http = inject(HttpClient);
 
   constructor(
     private sessionService: SessionService,
@@ -43,7 +46,29 @@ export class LoginService {
       this.user_create_at = data.user.created_at;
       console.log("user", data.user)
     }
+  }
 
+  public async loginSigInRest(login: Login): Promise<Login>{
+    const user: Login = {
+      email: login.email,
+      password: login.password,
+    };
+
+    const params = new HttpParams().set('email', user.email).set('password', user.password);
+
+    try {
+      const data = await lastValueFrom(
+        this.http.post<Login>(
+          `${this.apiUrl}/auth/v1/token?grant_type=password`,
+          user,
+          { params }
+        )
+      );
+      return data;
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
   }
 
   public async forgotPassword(login: Login) {

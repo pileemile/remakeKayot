@@ -1,6 +1,6 @@
 <div class="max-w-4xl mx-auto p-6">
   <app-answer-questions></app-answer-questions>
-  @if (currentQuiz) {
-    <app-quiz-comments [quizId]="currentQuiz"></app-quiz-comments>
+  @if (quizId) {
+    <app-quiz-comments [quizId]="quizId"></app-quiz-comments>
   }
 </div>

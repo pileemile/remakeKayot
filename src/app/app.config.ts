@@ -1,20 +1,16 @@
-import {
-  ApplicationConfig,
-  importProvidersFrom,
-  provideBrowserGlobalErrorListeners,
-  provideZoneChangeDetection
+import {ApplicationConfig, importProvidersFrom, provideBrowserGlobalErrorListeners, provideZoneChangeDetection
 } from '@angular/core';
-import { provideRouter } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
-
-import { routes } from './app.routes';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
-import {provideHttpClient} from '@angular/common/http';
-import {FormsModule} from '@angular/forms';
+import { provideRouter } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { routes } from './app.routes';
+import { supabaseInterceptor } from './service/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([supabaseInterceptor])),
     importProvidersFrom(FormsModule),
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
