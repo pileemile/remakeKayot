@@ -37,7 +37,7 @@
     "@auth0/angular-jwt": "^5.2.0",
     "@auth0/auth0-spa-js": "^2.3.0",
     "@canvasjs/angular-charts": "^1.2.0",
-    "@supabase/supabase-js": "^2.53.0",
+    "@supabase/supabase-js": "^2.57.4",
     "@tailwindcss/postcss": "^4.1.12",
     "chart.js": "^4.5.0",
     "date-fns": "^4.1.0",

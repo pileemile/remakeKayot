@@ -32,12 +32,12 @@ export const routes: Routes = [
   {
     path: 'quizz',
     component: Quizz,
-    // canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path:'all-quizzes',
     component:Quizz,
-    // canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path:'quiz-filter',
@@ -46,7 +46,7 @@ export const routes: Routes = [
   {
     path: 'answer-quiz/:id',
     component: AnswerQuiz,
-    // canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: 'dashboard',
