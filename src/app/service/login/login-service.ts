@@ -15,7 +15,7 @@ export class LoginService {
   public user_create_at: string | number | Date = "";
 
   private isAuthentificated = false;
-  private apiUrl = environment.supabaseUrl + '/rest/v1';
+  private apiUrl = environment.supabaseUrl + '/auth/v1';
   private http = inject(HttpClient);
 
   constructor(
@@ -48,26 +48,46 @@ export class LoginService {
     }
   }
 
-  public async loginSigInRest(login: Login): Promise<Login>{
-    const user: Login = {
-      email: login.email,
-      password: login.password,
-    };
+  public async loginSigInRest(login: Login) {
+    console.log(":loginSigInRest: ", { email: login.email, password: "[MASKED]" });
 
-    const params = new HttpParams().set('email', user.email).set('password', user.password);
+    const requestBody = {
+      email: login.email,
+      password: login.password
+    };
 
     try {
       const data = await lastValueFrom(
-        this.http.post<Login>(
-          `${this.apiUrl}/auth/v1/token?grant_type=password`,
-          user,
-          { params }
+        this.http.post<any>(
+          `${environment.supabaseUrl}/auth/v1/token?grant_type=password`,
+          requestBody,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'apikey': environment.supabaseKey
+            }
+          }
         )
       );
-      return data;
+      await this.storeSession(data);
 
+      console.log('Login success:', data);
+      return data;
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('Login error details:', error);
+      throw error;
+    }
+  }
+  private async storeSession(authData: any) {
+    const { data, error } = await supabase.auth.setSession({
+      access_token: authData.access_token,
+      refresh_token: authData.refresh_token
+    });
+
+    if (error) {
+      console.error('Erreur lors du stockage de session:', error);
+    } else {
+      console.log('Session stockée avec succès');
     }
   }
 

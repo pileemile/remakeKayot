@@ -14,6 +14,10 @@ export const supabaseInterceptor: HttpInterceptorFn = (req, next) => {
     return url.startsWith(supabaseUrl) || url.includes(environment.supabaseUrl);
   };
 
+  const isSupabaseAuthRequest = (url: string): boolean => {
+    return url.includes('/auth/v1/token') || url.includes('/auth/v1/signup');
+  };
+
   const handleError = (error: HttpErrorResponse) => {
     let errorMessage = 'Une erreur est survenue';
 
@@ -36,7 +40,7 @@ export const supabaseInterceptor: HttpInterceptorFn = (req, next) => {
           console.error('[Interceptor] Conflit - Données déjà existantes');
           break;
         default:
-          console.error('[Interceptor] Erreur:', error);
+          console.error('[Interceptor] Erreur inconnue');
       }
     }
 
@@ -44,12 +48,22 @@ export const supabaseInterceptor: HttpInterceptorFn = (req, next) => {
     return throwError(() => error);
   };
 
+  console.log('[Interceptor] Interception de la requête:', req.url);
+
+  if (isSupabaseAuthRequest(req.url)) {
+    console.log('[Interceptor] Requête d’authentification détectée (pas d’Authorization ajouté)');
+    return next(req).pipe(catchError(handleError));
+  }
+
   if (isSupabaseRequest(req.url)) {
+    console.log('[Interceptor] Requête Supabase protégée ✅');
 
     return from(supabase.auth.getSession()).pipe(
       switchMap(({ data: { session }, error }) => {
         if (error) {
           console.error('[Interceptor] Erreur lors de la récupération de la session:', error);
+        } else {
+          console.log('[Interceptor] Session récupérée:', session);
         }
 
         const headers: any = {
@@ -60,20 +74,24 @@ export const supabaseInterceptor: HttpInterceptorFn = (req, next) => {
 
         if (session?.access_token) {
           headers['Authorization'] = `Bearer ${session.access_token}`;
+          console.log('[Interceptor] Utilisation du token de session');
         } else {
           headers['Authorization'] = `Bearer ${supabaseKey}`;
+          console.log('[Interceptor] Utilisation de la clé API publique');
         }
 
         const modifiedRequest = req.clone({
           setHeaders: headers
         });
 
+        console.log('[Interceptor] Requête modifiée avec headers:', modifiedRequest.headers);
+
         return next(modifiedRequest);
       }),
       catchError(handleError)
     );
   }
-  return next(req).pipe(
-    catchError(handleError)
-  );
+
+  console.log('[Interceptor] Requête classique (hors Supabase)');
+  return next(req).pipe(catchError(handleError));
 };

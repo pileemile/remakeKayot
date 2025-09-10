@@ -59,7 +59,7 @@ export class ComponentLogin implements OnInit{
           const login = this.form.value;
           this.loginService.login$.next(login);
           if (this.loginService.login$.value) {
-            await this.loginService.loginSigIn(login);
+            await this.loginService.loginSigInRest(login);
             await this.navigateRoute.navigate(['/all-quizzes']);
 
           }
