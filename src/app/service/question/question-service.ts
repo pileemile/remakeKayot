@@ -17,7 +17,7 @@ export class QuestionService {
     this.questionsAll$.next(questions);
   }
 
-  public async getQuestionByIdWithAnswer(id: string) {
+  public async getAnswersByQuestionId(id: string) {
     let {data: questions , error} = await supabase
       .from('questions')
       .select(

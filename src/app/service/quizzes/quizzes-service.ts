@@ -1,12 +1,13 @@
-import { Injectable } from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import {QuestionCreate, Quizzes} from '../../models/quizzes/quizzes';
 import {TablesInsert} from '../../../environments/supabase';
-import {supabase} from '../../../environments/environment';
+import {environment, supabase} from '../../../environments/environment';
 import {Answers} from '../../models/answer/answer';
 import {ButtonEnum} from '../../component/tabs/constants';
 import {QuizComments} from '../../component/quiz/quiz-comments/quiz-comments';
 import {QuizComment} from '../../models/quiz-comment/quiz-comment';
+import {HttpClient} from '@angular/common/http';
 
 
 @Injectable({
@@ -21,6 +22,8 @@ export class QuizzesService {
   public quizzesFilterByComment$ = new BehaviorSubject<Quizzes[] | null>(null);
   public activeTab: 'search' | 'all' | 'create' | 'filter' |  null = null;
   public pageActive?: ButtonEnum;
+
+  private http = inject(HttpClient);
 
   public async InsertQuizzes(quiz: Quizzes)  {
 
@@ -99,6 +102,17 @@ export class QuizzesService {
 
     if (error) {
       console.log("error", error)
+    }
+  }
+
+  public async getAllQuizzesRest() {
+    try {
+      const data: Quizzes[] | undefined = await this.http.get<Quizzes[]>(`${environment.supabaseUrl}/rest/v1/quizzes`).toPromise();
+      console.log('data', data);
+      return data || [];
+    } catch (error) {
+      console.error("error", error);
+      throw error;
     }
   }
 

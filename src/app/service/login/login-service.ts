@@ -15,7 +15,6 @@ export class LoginService {
   public user_create_at: string | number | Date = "";
 
   private isAuthentificated = false;
-  private apiUrl = environment.supabaseUrl + '/auth/v1';
   private http = inject(HttpClient);
 
   constructor(
@@ -49,7 +48,7 @@ export class LoginService {
   }
 
   public async loginSigInRest(login: Login) {
-    console.log(":loginSigInRest: ", { email: login.email, password: "[MASKED]" });
+    console.log(":loginSigInRest: ", { email: login.email, password: "Oui" });
 
     const requestBody = {
       email: login.email,

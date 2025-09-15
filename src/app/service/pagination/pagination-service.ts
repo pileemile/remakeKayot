@@ -1,14 +1,17 @@
-import { Injectable } from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {Pagination} from '../../models/pagination/pagination';
-import {supabase} from '../../../environments/environment';
+import {environment, supabase} from '../../../environments/environment';
 import {QuizzesService} from '../quizzes/quizzes-service';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {UserService} from '../user/user';
+import {HttpClient} from '@angular/common/http';
+import {Quizzes} from '../../models/quizzes/quizzes';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PaginationService {
+  private http = inject(HttpClient);
 
   constructor(
     private quizzesService: QuizzesService,
@@ -31,6 +34,20 @@ export class PaginationService {
     }
     else {
       console.log("erreur sur la pagination")
+    }
+  }
+
+  public async paginationQuizzesRest(page: number | undefined, limit: number | undefined) {
+    try {
+      const data: Quizzes[] | undefined = await this.http.get<Quizzes[]>(`${environment.supabaseUrl}/rest/v1/quizzes?select=*&limit=${limit}&offset=${page}`).toPromise()
+      console.log("data pagination rest", data);
+      if (data) {
+        this.quizzesService.allQuizzes$.next(data);
+      }
+      return data || [];
+    } catch (error) {
+      console.error('erreur:', error);
+      throw error;
     }
   }
 

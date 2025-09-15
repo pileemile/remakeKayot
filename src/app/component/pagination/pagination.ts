@@ -20,7 +20,7 @@ export class Pagination implements OnInit{
       await this.paginationService.paginationUser(this.paginationService.pagination$.value?.page, this.paginationService.pagination$.value?.limit);
     }
     else if (this.Type === PaginationType.ALLQUIZZES){
-      await this.paginationService.paginationQuizzes(this.paginationService.pagination$.value?.page, this.paginationService.pagination$.value?.limit);
+      await this.paginationService.paginationQuizzesRest(this.paginationService.pagination$.value?.page, this.paginationService.pagination$.value?.limit);
 
     }
   }
@@ -30,7 +30,7 @@ export class Pagination implements OnInit{
       const page = this.paginationService.pagination$.value?.page - 10;
       const limit = this.paginationService.pagination$.value?.limit - 10;
       this.paginationService.pagination$.next({page, limit});
-      return await this.paginationService.paginationQuizzes(page, limit)
+      return await this.paginationService.paginationQuizzesRest(page, limit)
     }
     else
       return 0
@@ -40,6 +40,6 @@ export class Pagination implements OnInit{
       const page = this.paginationService.pagination$.value?.page + 10;
       const limit = this.paginationService.pagination$.value?.limit + 10;
       this.paginationService.pagination$.next({page, limit});
-      return await this.paginationService.paginationQuizzes(page, limit)
+      return await this.paginationService.paginationQuizzesRest(page, limit)
   }
 }
