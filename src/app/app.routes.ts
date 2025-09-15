@@ -30,15 +30,11 @@ export const routes: Routes = [
     ]
   },
   {
-    path: 'quizz',
-    component: Quizz,
-    canActivate: [AuthGuard]
-  },
-  {
     path:'all-quizzes',
     component:Quizz,
-    canActivate: [AuthGuard]
+    // canActivate: [AuthGuard]
   },
+  // TODO ajuster la convention de nommage
   {
     path:'quiz-filter',
     component:QuizFilter
@@ -46,7 +42,7 @@ export const routes: Routes = [
   {
     path: 'answer-quiz/:id',
     component: AnswerQuiz,
-    canActivate: [AuthGuard]
+    // canActivate: [AuthGuard]
   },
   {
     path: 'dashboard',

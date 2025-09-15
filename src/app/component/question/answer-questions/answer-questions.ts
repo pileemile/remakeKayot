@@ -32,8 +32,9 @@ export class AnswerQuestions implements OnInit{
   ) {}
 
  async ngOnInit() {
+   console.log("ngOnInit answer question", this.quizzesService.quizzesId$.value)
     if (this.quizzesService.quizzesId$.value) {
-      await this.questionService.getQuestionByIdWithAnswer(this.quizzesService.quizzesId$.value?.id)
+      await this.questionService.getAnswersByQuestionId(this.quizzesService.quizzesId$.value?.id)
     }
 
   }
@@ -60,7 +61,7 @@ export class AnswerQuestions implements OnInit{
 
   public set quizz(quizz: Quizzes) {
     this.quizzesService.quizzesId$.next(quizz);
-    this.questionService.getQuestionByIdWithAnswer(quizz?.id);
+    this.questionService.getAnswersByQuestionId(quizz?.id);
   }
 
   public question_next() {

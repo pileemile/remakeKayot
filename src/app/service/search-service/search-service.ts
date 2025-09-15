@@ -48,6 +48,7 @@ export class SearchService {
     let query = supabase
       .from('user_roles')
       .select('*');
+    /* TODO modif en switch case */
     if (search.first_name) {
       query = query.ilike('first_name', `%${search.first_name}%`);
     }
