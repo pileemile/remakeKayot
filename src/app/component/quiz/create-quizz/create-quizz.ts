@@ -170,48 +170,49 @@ export class CreateQuizz implements OnInit {
     });
   }
 
-  private debugFormErrors(): void {
-    console.log('=== DEBUG FORM VALIDATION ===');
-    console.log('Form valid:', this.form.valid);
-    console.log('Form errors:', this.form.errors);
-
-    Object.keys(this.form.controls).forEach(key => {
-      const control = this.form.get(key);
-      if (control && control.errors) {
-        console.log(`${key} errors:`, control.errors);
-      }
-    });
-
-    this.questions.controls.forEach((questionControl, qIndex) => {
-      console.log(`Question ${qIndex + 1}:`);
-      console.log('  Valid:', questionControl.valid);
-      console.log('  Errors:', questionControl.errors);
-
-      const answersArray = questionControl.get('answers') as FormArray;
-      console.log('  Answers valid:', answersArray.valid);
-      console.log('  Answers errors:', answersArray.errors);
-      console.log('  Answers length:', answersArray.length);
-
-      const correctAnswers = answersArray.controls.filter(
-        answerControl => answerControl.get('is_correct')?.value === true
-      );
-      console.log('  Correct answers count:', correctAnswers.length);
-    });
-  }
-
   public async onSubmit() {
+
     if (this.form.valid) {
       const quiz = this.form.value as Quizzes;
       this.addQuizz(quiz);
       this.quizzesService.createQuestion$.next(this.questions.value);
+
       try {
+        if (this.quizzesService.quiz$.value) {
+          await this.quizzesService.InsertQuizzes(this.quizzesService.quiz$.value);
+        }
+
         const questionsValue = this.quizzesService.createQuestion$.value;
         if (questionsValue) {
+          await this.quizzesService.InsertQuestion(questionsValue);
+
+          const questionsWithIds = this.quizzesService.createQuestion$.value;
+          const allAnswers: Answers[] = [];
+
+          questionsWithIds?.forEach((question, index) => {
+            const answersControl = this.questions.at(index)?.get('answers');
+            const questionAnswers = answersControl?.value;
+
+            if (question?.id && questionAnswers) {
+              questionAnswers.forEach((answer: any) => {
+                allAnswers.push({
+                  ...answer,
+                  question_id: question.id!
+                });
+              });
+            }
+          });
+
+          if (allAnswers.length > 0) {
+            await this.quizzesService.InsertAnswers(allAnswers);
+          }
         }
       } catch (error) {
+        console.error('Erreur', error);
       }
     } else {
-      this.debugFormErrors();
+      console.log('=== FORMULAIRE INVALIDE ===');
+      console.log('Erreurs du formulaire:', this.form.errors);
       this.markFormGroupTouched(this.form);
     }
   }
