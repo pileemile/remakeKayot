@@ -15,7 +15,6 @@ import {HttpClient} from '@angular/common/http';
 })
 export class QuizzesService {
   public  quiz$ = new BehaviorSubject<Quizzes | null>(null)
-  public createQuestion$ = new BehaviorSubject<QuestionCreate[] | null>(null);
   public answers$ = new BehaviorSubject<Answers[] | null>(null)
   public allQuizzes$ = new BehaviorSubject<Quizzes[] |null>(null);
   public quizzesId$ = new BehaviorSubject<Quizzes | null>(null);
@@ -51,28 +50,6 @@ export class QuizzesService {
     }
   }
 
-  public async InsertQuestion(question: QuestionCreate[]) {
-    const questionInsert = question.map(questions => ({
-      created_at: questions.created_at ?? new Date().toISOString(),
-      text: questions.text ?? '',
-      quiz_id: this.quiz$.value?.id ?? null,
-    }));
-
-    const { data, error } = await supabase
-      .from('questions')
-      .insert(
-        questionInsert
-      )
-      .select()
-
-    if (error){
-      console.log("erreur sur l'insertion des questions", error);
-    } else {
-      if (data) {
-        this.createQuestion$.next(data);
-      }
-    }
-  }
 
   public async InsertAnswers(answers: Answers[]) {
     const answersInsert = answers.map(answer => ({
@@ -92,6 +69,61 @@ export class QuizzesService {
     this.answers$.next(data);
     }
   }
+
+  public async insertFullQuiz(quiz: Quizzes, questions: QuestionCreate[]) {
+    const quizInsert: Partial<Quizzes> = {
+      title: quiz.title,
+      description: quiz.description,
+      category: quiz.category,
+      difficulty: quiz.difficulty,
+      created_at: quiz.created_at ?? new Date().toISOString(),
+      user_id: quiz.user_id
+    };
+
+    const { data: quizData, error: quizError } = await supabase
+      .from('quizzes')
+      .insert([quizInsert])
+      .select();
+
+    if (quizError || !quizData?.[0]) throw quizError;
+
+    const quizId = quizData[0].id;
+
+    const questionInsert = questions.map(q => ({
+      text: q.text,
+      created_at: q.created_at ?? new Date().toISOString(),
+      quiz_id: quizId
+    }));
+
+    const { data: questionData, error: questionError } = await supabase
+      .from('questions')
+      .insert(questionInsert)
+      .select();
+
+    if (questionError) throw questionError;
+
+    const answersInsert: any[] = [];
+    questionData.forEach((q, index) => {
+      questions[index].answers?.forEach(a => {
+        answersInsert.push({
+          question_id: q.id,
+          text: a.text,
+          is_correct: a.is_correct
+        });
+      });
+    });
+
+    const { data: answersData, error: answersError } = await supabase
+      .from('answers')
+      .insert(answersInsert)
+      .select();
+
+    if (answersError) throw answersError;
+
+    return { quiz: quizData[0], questions: questionData, answers: answersData };
+  }
+
+
 
   public async getAllQuizzes() {
 
