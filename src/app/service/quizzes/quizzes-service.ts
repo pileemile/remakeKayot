@@ -15,60 +15,12 @@ import {HttpClient} from '@angular/common/http';
 })
 export class QuizzesService {
   public  quiz$ = new BehaviorSubject<Quizzes | null>(null)
-  public answers$ = new BehaviorSubject<Answers[] | null>(null)
   public allQuizzes$ = new BehaviorSubject<Quizzes[] |null>(null);
-  public quizzesId$ = new BehaviorSubject<Quizzes | null>(null);
-  public quizzesFilterByComment$ = new BehaviorSubject<Quizzes[] | null>(null);
+  public quizzesFromUserComments = new BehaviorSubject<Quizzes[] | null>(null);
   public activeTab: 'search' | 'all' | 'create' | 'filter' |  null = null;
   public pageActive?: ButtonEnum;
 
   private http = inject(HttpClient);
-
-  public async InsertQuizzes(quiz: Quizzes)  {
-
-    const newQuiz: TablesInsert<'quizzes'> = {
-      category: this.quiz$.value?.category ?? null,
-      title: this.quiz$.value?.title ?? '',
-      description: this.quiz$.value?.description ?? null,
-      difficulty: this.quiz$.value?.difficulty ?? null,
-      created_at: this.quiz$.value?.created_at ?? new Date().toISOString(),
-      user_id: '0d67a0d7-140c-4c8d-a2e4-61016720ae3a',
-    };
-
-    const { data, error } = await supabase
-      .from('quizzes')
-      .insert([newQuiz])
-      .select();
-
-    if (error) {
-      console.error('Erreur lors de l\'insertion :', error);
-    } else {
-      if (data && data[0]) {
-        this.quiz$.next(data[0] as Quizzes);
-      }
-      return data?.[0]?.id;
-    }
-  }
-
-
-  public async InsertAnswers(answers: Answers[]) {
-    const answersInsert = answers.map(answer => ({
-      is_correct: answer.is_correct,
-      text: answer.text,
-      question_id: answer.question_id,
-    }));
-
-    const { data, error } = await supabase
-      .from('answers')
-      .insert(answersInsert)
-      .select()
-
-    if (error) {
-      console.log("erreur sur l'insertion des answers", error);
-    } else {
-    this.answers$.next(data);
-    }
-  }
 
   public async insertFullQuiz(quiz: Quizzes, questions: QuestionCreate[]) {
     const quizInsert: Partial<Quizzes> = {
@@ -148,31 +100,30 @@ export class QuizzesService {
     }
   }
 
-  public async getQuizzesById(id: string ) {
+  public async getQuizById(id: string ) {
     let { data: quizzes, error } = await supabase
       .from('quizzes')
       .select('*, questions(*)')
       .eq('id', id)
       .single();
-    this.quizzesId$.next(quizzes);
+    this.quiz$.next(quizzes);
 
     if (error) {
       console.log("error", error)
     }
   }
 
-
-  public async filterQuizzesByQuizId(quiz_id: QuizComment[] ) {
-    const quiz_id_array = quiz_id.map(quiz => quiz.quiz_id)
+  public async fetchQuizzesFromUserComments(userComments: QuizComment[] ) {
+    const quizIds  = userComments.map(comment => comment.quiz_id)
 
     let { data: quizzes, error } = await supabase
     .from('quizzes')
     .select('*')
-    .in('id', quiz_id_array)
+    .in('id', quizIds)
 
     if (error) {
       console.log("error", error)
     }
-    this.quizzesFilterByComment$.next(quizzes);
+    this.quizzesFromUserComments.next(quizzes);
   }
 }

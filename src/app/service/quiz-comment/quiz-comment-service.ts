@@ -137,8 +137,8 @@ export class QuizCommentService {
 
   public async loadCommentsByQuiz() {
     try {
-      if (this.quizzesService.quizzesId$.value) {
-        this.comments.next(await this.getCommentsByQuizIdRest(this.quizzesService.quizzesId$.value));
+      if (this.quizzesService.quiz$.value) {
+        this.comments.next(await this.getCommentsByQuizIdRest(this.quizzesService.quiz$.value));
       }
     } catch (error) {
       console.error('Erreur chargement des commentaires:', error);

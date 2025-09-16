@@ -40,12 +40,12 @@ export class QuizFilter implements OnInit{
   public tableActions: TableAction[] = [
     {
       icon: 'arrow-right',
-      handler: (quiz) => this.getQuizById(quiz.id)
+      handler: (quiz) => this.getQuizByIdLoad(quiz.id)
     }
   ];
 
-  public async getQuizById(id: string) {
-    await this.allQuizzesService.getQuizzesById(id);
+  public async getQuizByIdLoad(id: string) {
+    await this.allQuizzesService.getQuizById(id);
     await this.router.navigate(['/answer-quiz/' + id]);
   }
 

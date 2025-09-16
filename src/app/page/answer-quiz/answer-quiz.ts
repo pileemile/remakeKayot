@@ -24,6 +24,6 @@ export class AnswerQuiz implements OnInit{
 
   ngOnInit() {
     this.answerService.answersAll$.value;
-    this.quizId = this.quizzesService.quizzesId$.value;
+    this.quizId = this.quizzesService.quiz$.value;
   }
 }
