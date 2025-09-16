@@ -194,10 +194,7 @@ export class CreateQuizz implements OnInit {
         height: '170px',
         data: { message: 'Le quiz a été enregistré avec succès !', type: 'success' }
       });
-
-      console.log('Quiz inséré :', result.quiz);
-      console.log('Questions insérées :', result.questions);
-      console.log('Réponses insérées :', result.answers);
+      this.form.reset();
 
     } catch (error) {
       console.error('Erreur lors de l\'insertion du quiz complet', error);

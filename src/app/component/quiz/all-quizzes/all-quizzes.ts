@@ -39,7 +39,7 @@ export class AllQuizzes implements OnInit{
     {
       label: 'Voir',
       icon: 'arrow-right',
-      handler: (quiz) => this.getQuizById(quiz.id)
+      handler: (quiz) => this.getQuizByIdLoad(quiz.id)
     },
     // {
     //   label: 'Modifier',
@@ -49,7 +49,7 @@ export class AllQuizzes implements OnInit{
   ];
 
   public get all_quizzes() {
-    const allQuizzes = this.allQuizzesService.allQuizzes$.value;
+    const allQuizzes = this.allQuizzesService.allQuizs$.value;
 
     if (!allQuizzes) {
       return null;
@@ -60,14 +60,14 @@ export class AllQuizzes implements OnInit{
     }));
   }
 
-  public async getQuizById(id: string) {
-  await this.allQuizzesService.getQuizzesById(id);
+  public async getQuizByIdLoad(id: string) {
+  await this.allQuizzesService.getQuizById(id);
   await this.router.navigate(['/answer-quiz/' + id]);
 
   }
 
   public async viewComments(id: string) {
-    await this.allQuizzesService.getQuizzesById(id);
+    await this.allQuizzesService.getQuizById(id);
     await this.router.navigate(['/answer-quiz/' + id]);
   }
 

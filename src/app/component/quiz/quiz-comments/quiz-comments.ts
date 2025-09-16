@@ -36,7 +36,7 @@ export class QuizComments implements OnInit{
   }
 
   async ngOnInit() {
-    if (this.quizzesService.quizzesId$.value) {
+    if (this.quizzesService.quiz$.value) {
       await this.quizCommentsService.loadCommentsByQuiz();
     }
   }

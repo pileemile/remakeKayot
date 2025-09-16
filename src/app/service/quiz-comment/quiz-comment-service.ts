@@ -28,43 +28,26 @@ export class QuizCommentService {
   private apiUrl = environment.supabaseUrl + '/rest/v1';
   private http = inject(HttpClient);
 
-  public async getCommentsByQuizIdRest(quizId: Quizzes) {
+  public async getCommentsByQuizId(quizId: Quizzes) {
     try {
-      const data: QuizComment [] | undefined = await this.http.get<QuizComment[]>(`${this.apiUrl}/quiz_comments?select=*&quiz_id=eq.${quizId.id}`).toPromise();
-      console.log(' succès', data);
+      const { data, error } = await supabase
+        .from('quiz_comments')
+        .select('*')
+        .eq('quiz_id', quizId.id);
+
+      if (error) {
+        console.error('Erreur Supabase:', error);
+        throw error;
+      }
+
+      console.log('Succès', data);
       return data || [];
     } catch (error) {
-      console.error('erreur:', error);
+      console.error('Erreur inattendue:', error);
       throw error;
     }
   }
 
-  public async addCommentRest(quizId: Quizzes, text: string): Promise<QuizComment> {
-    const newComment: Omit<QuizComment, 'id'> = {
-      quiz_id: quizId.id,
-      user_id: this.currentUserId,
-      text: text,
-      created_at: new Date().toISOString()
-    };
-
-    const params = new HttpParams().set('select', '*');
-
-    try {
-      console.log('Ajout d\'un nouveau commentaire via REST API', newComment);
-      const data = await lastValueFrom(
-        this.http.post<QuizComment>(
-          `${this.apiUrl}/quiz_comments`,
-          newComment,
-          { params }
-        )
-      );
-      console.log('Commentaire ajouté avec succès via REST API', data);
-      return data;
-    } catch (error) {
-      console.error('Erreur lors de l\'ajout du commentaire via REST API:', error);
-      throw error;
-    }
-  }
 
   public async addComment(quizId: Quizzes, text: string) {
     const { data, error } = await supabase
@@ -107,7 +90,7 @@ export class QuizCommentService {
     return data;
   }
 
-  public async getAllCommentsByUser(userId: string) {
+  public async getAllCommentsByUserId(userId: string) {
     const { data, error } = await supabase
     .from('quiz_comments')
     .select('*')
@@ -137,8 +120,8 @@ export class QuizCommentService {
 
   public async loadCommentsByQuiz() {
     try {
-      if (this.quizzesService.quizzesId$.value) {
-        this.comments.next(await this.getCommentsByQuizIdRest(this.quizzesService.quizzesId$.value));
+      if (this.quizzesService.quiz$.value) {
+        this.comments.next(await this.getCommentsByQuizId(this.quizzesService.quiz$.value));
       }
     } catch (error) {
       console.error('Erreur chargement des commentaires:', error);
@@ -148,7 +131,7 @@ export class QuizCommentService {
   public async loadCommentByUser() {
     try {
       if (this.currentUserId) {
-        this.commentUser.next(await this.getAllCommentsByUser(this.currentUserId));
+        this.commentUser.next(await this.getAllCommentsByUserId(this.currentUserId));
       }
     } catch (error) {
       console.error('Erreur chargement des commentaires:', error);

@@ -10,8 +10,7 @@ import {Answers} from '../../models/answer/answer';
 export class QuestionService {
   public question$ = new BehaviorSubject<QuestionCreate[] | null>(null);
 
-
-  public async getAnswersByQuestionId(id: string) {
+  public async fetchQuestionsWithAnswersByQuizId(id: string) {
     let {data: questions , error} = await supabase
       .from('questions')
       .select(
