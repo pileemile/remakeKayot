@@ -29,7 +29,7 @@ export class PaginationService {
           .from('quizzes')
           .select('*, questions(*)')
           .range(page, limit)
-      this.quizzesService.allQuizzes$.next(quizzes);
+      this.quizzesService.allQuizs$.next(quizzes);
       console.log("all quizzes", quizzes)
     }
     else {

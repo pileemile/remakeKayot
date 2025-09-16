@@ -61,7 +61,7 @@ export class DashboardService {
   } | undefined
 
   private get lenght_quizzes() {
-    return this.quizzesService.allQuizzes$.value?.length ?? 0;
+    return this.quizzesService.allQuizs$.value?.length ?? 0;
   }
 
   private get lenght_attempts() {

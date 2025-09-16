@@ -49,7 +49,7 @@ export class AllQuizzes implements OnInit{
   ];
 
   public get all_quizzes() {
-    const allQuizzes = this.allQuizzesService.allQuizzes$.value;
+    const allQuizzes = this.allQuizzesService.allQuizs$.value;
 
     if (!allQuizzes) {
       return null;
