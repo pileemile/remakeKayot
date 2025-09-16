@@ -64,13 +64,11 @@ export class AnswerQuestions implements OnInit{
     this.questionService.getAnswersByQuestionId(quizz?.id);
   }
 
-  // Nouvelle méthode pour vérifier si une réponse a été sélectionnée
   public get isCurrentQuestionAnswered(): boolean {
     return this.answers_user[this.index] !== undefined;
   }
 
   public question_next() {
-    // Vérifier si une réponse a été sélectionnée avant de passer à la question suivante
     if (!this.isCurrentQuestionAnswered) {
       return;
     }
@@ -103,7 +101,6 @@ export class AnswerQuestions implements OnInit{
   }
 
   public async submit_answer() {
-    // Vérifier si une réponse a été sélectionnée avant de soumettre
     if (!this.isCurrentQuestionAnswered) {
       return;
     }
