@@ -48,22 +48,16 @@ export const supabaseInterceptor: HttpInterceptorFn = (req, next) => {
     return throwError(() => error);
   };
 
-  console.log('Interception de la requête:', req.url);
-
   if (isSupabaseAuthRequest(req.url)) {
-    console.log('Requête d’authentification détectée (pas d’Authorization ajouté)');
     return next(req).pipe(catchError(handleError));
   }
 
   if (isSupabaseRequest(req.url)) {
-    console.log('Requête Supabase');
 
     return from(supabase.auth.getSession()).pipe(
       switchMap(({ data: { session }, error }) => {
         if (error) {
           console.error('Erreur lors de la récupération de la session:', error);
-        } else {
-          console.log('Session récupérée:', session);
         }
 
         const headers: any = {
@@ -74,17 +68,13 @@ export const supabaseInterceptor: HttpInterceptorFn = (req, next) => {
 
         if (session?.access_token) {
           headers['Authorization'] = `Bearer ${session.access_token}`;
-          console.log('Utilisation du token de session');
         } else {
           headers['Authorization'] = `Bearer ${supabaseKey}`;
-          console.log('Utilisation de l API');
         }
 
         const modifiedRequest = req.clone({
           setHeaders: headers
         });
-
-        console.log('Requête modifiée avec headers:', modifiedRequest.headers);
 
         return next(modifiedRequest);
       }),
@@ -92,6 +82,5 @@ export const supabaseInterceptor: HttpInterceptorFn = (req, next) => {
     );
   }
 
-  console.log('Requête classique');
   return next(req).pipe(catchError(handleError));
 };

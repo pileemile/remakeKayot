@@ -3,24 +3,26 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import {differenceInMinutes} from 'date-fns';
 import {QuizComment} from '../../models/quiz-comment/quiz-comment';
 import {QuizCommentService} from '../../service/quiz-comment/quiz-comment-service';
-import {NgClass} from '@angular/common';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-comments',
   imports: [
     ReactiveFormsModule,
-    NgClass
+    CommonModule,
+    FormsModule
   ],
   templateUrl: './comments.html',
   styleUrl: './comments.css'
 })
 export class Comments {
-  @Input() comments: QuizComment [] = [];
-
+  @Input() comments: QuizComment[] = [];
   @Output() loadComment = new EventEmitter<QuizComment>();
 
   public commentForm: FormGroup;
-  public isEditing: boolean = false;
+  public editingCommentId: string | null = null;
+  public editText: string = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -28,36 +30,67 @@ export class Comments {
   ) {
     this.commentForm = this.formBuilder.group({
       comment_updated: ['', [Validators.minLength(3), Validators.maxLength(500)]],
-    })
+    });
   }
 
-  public toggleEdit() {
-    this.isEditing = !this.isEditing;
-    if (this.isEditing) {
-      this.commentForm.get('comment_updated')?.enable();
-    } else {
-      this.commentForm.get('comment_updated')?.disable();
+  public startEdit(comment: QuizComment) {
+    this.editingCommentId = comment.id;
+    this.editText = comment.text;
+    console.log(comment.text);
+    console.log(this.editText);
+  }
+
+  public cancelEdit() {
+    this.editingCommentId = null;
+    this.editText = '';
+  }
+
+  public async saveEdit(commentId: string) {
+    if (!this.editText.trim()) {
+      return;
+    }
+    console.log(this.editText);
+    try {
+      console.log(commentId, this.editText);
+      await this.quizCommentsService.updateComment(commentId, this.editText);
+      this.editingCommentId = null;
+      this.editText = '';
+      await this.quizCommentsService.loadCommentsByQuiz();
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour du commentaire:', error);
     }
   }
 
   public formatDate(dateString: string) {
-    const date = new Date(dateString);
+    const date = new Date(
+      dateString.endsWith("Z") ? dateString : dateString + "Z"
+    );
     const now = new Date();
-    const dateMinute = differenceInMinutes(now, date);
 
-    return dateMinute < 1 ? 'il y a moins une minute' : `${dateMinute} minutes`;
+    const diffMs = now.getTime() - date.getTime();
+    const diffMinutes = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMinutes / 60);
+    const diffDays = Math.floor(diffHours / 24);
+
+    if (diffMinutes < 1) {
+      return "il y a moins d'une minute";
+    } else if (diffMinutes < 60) {
+      return `il y a ${diffMinutes} minute${diffMinutes > 1 ? "s" : ""}`;
+    } else if (diffHours < 24) {
+      return `il y a ${diffHours} heure${diffHours > 1 ? "s" : ""}`;
+    } else {
+      return `il y a ${diffDays} jour${diffDays > 1 ? "s" : ""}`;
+    }
   }
+
 
 
   public async deleteComment(commentId: string) {
-    await this.quizCommentsService.deleteComment(commentId);
-    await this.quizCommentsService.loadCommentsByQuiz();
+    try {
+      await this.quizCommentsService.deleteComment(commentId);
+      await this.quizCommentsService.loadCommentsByQuiz();
+    } catch (error) {
+      console.error('Erreur lors de la suppression du commentaire:', error);
+    }
   }
-
-  public async updateComment(commentId: string) {
-    await this.quizCommentsService.updateComment(commentId, this.commentForm.get('comment_updated')?.value);
-    this.isEditing = false;
-    await this.quizCommentsService.loadCommentsByQuiz();
-  }
-
 }
