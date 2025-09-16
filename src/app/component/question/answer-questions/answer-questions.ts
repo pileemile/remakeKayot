@@ -34,7 +34,7 @@ export class AnswerQuestions implements OnInit{
   async ngOnInit() {
     console.log("ngOnInit answer question", this.quizzesService.quiz$.value)
     if (this.quizzesService.quiz$.value) {
-      await this.questionService.getAnswersByQuestionId(this.quizzesService.quiz$.value?.id)
+      await this.questionService.fetchQuestionsWithAnswersByQuizId(this.quizzesService.quiz$.value?.id)
     }
 
   }
@@ -61,7 +61,7 @@ export class AnswerQuestions implements OnInit{
 
   public set quizz(quizz: Quizzes) {
     this.quizzesService.quiz$.next(quizz);
-    this.questionService.getAnswersByQuestionId(quizz?.id);
+    this.questionService.fetchQuestionsWithAnswersByQuizId(quizz?.id);
   }
 
   public get isCurrentQuestionAnswered(): boolean {
