@@ -50,6 +50,6 @@ export class QuizFilter implements OnInit{
   }
 
   public get filterquiz() {
-    return this.searchService.quizeFilter.value
+    return this.searchService.quizsSearch.value
   }
 }

@@ -9,8 +9,7 @@ import {UserModele} from '../../models/user/user-modele';
   providedIn: 'root'
 })
 export class SearchService {
-  public quizeFilter = new BehaviorSubject<Quizzes[] | null>(null)
-  public userFilter = new BehaviorSubject<UserModele[] | null>(null)
+  public quizsSearch = new BehaviorSubject<Quizzes[] | null>(null)
 
   public async searchQuizzes(search: SearchQuizzesInterface) {
     let query = supabase
@@ -39,46 +38,39 @@ export class SearchService {
       throw error;
     }
 
-    this.quizeFilter.next(data);
+    this.quizsSearch.next(data);
 
     return data;
   }
 
   public async searchUser(search: SearchUsersInterface) {
-    let query = supabase
-      .from('user_roles')
-      .select('*');
-    /* TODO modif en switch case */
-    if (search.first_name) {
-      query = query.ilike('first_name', `%${search.first_name}%`);
-    }
-    if (search.last_name) {
-      query = query.ilike('last_name', `%${search.last_name}%`);
-    }
-    if (search.adress) {
-      query = query.ilike('adress', `%${search.adress}%`);
-    }
-    if (search.role) {
-      query = query.eq('role', search.role);
-    }
-    if (search.cp) {
-      query = query.ilike('cp', `%${search.cp}%`);
-    }
-    if (search.ville) {
-      query = query.ilike('ville', `%${search.ville}%`);
+    let query = supabase.from('user_roles').select('*');
+    for (const key in search) {
+      if (search[key as keyof SearchUsersInterface]) {
+        switch (key) {
+          case 'first_name':
+          case 'last_name':
+          case 'adress':
+          case 'ville':
+          case 'cp':
+            query = query.ilike(key, `%${search[key as keyof SearchUsersInterface]}%`);
+            break;
+          case 'role':
+            query = query.eq(key, search[key as keyof SearchUsersInterface]);
+            break;
+        }
+      }
     }
 
     const { data, error } = await query;
-    console.log("data", data)
+    console.log("data", data);
 
     if (error) {
       console.error(error);
       throw error;
     }
 
-    this.userFilter.next(data);
-
     return data;
-
   }
+
 }

@@ -33,6 +33,6 @@ export class UserFilter {
   ];
 
   public get filterquiz() {
-    return this.searchService.quizeFilter.value
+    return this.searchService.quizsSearch.value
   }
 }
