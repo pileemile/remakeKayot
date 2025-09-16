@@ -5,6 +5,8 @@ import {QuizzesService} from '../../../service/quizzes/quizzes-service';
 import {MatButtonModule} from '@angular/material/button';
 import {Answers} from '../../../models/answer/answer';
 import {CommonModule} from '@angular/common';
+import {CreateQuizDialog} from '../create-quiz-dialog/create-quiz-dialog';
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-create-quizz',
@@ -27,6 +29,7 @@ export class CreateQuizz implements OnInit {
 
   constructor(
     private readonly formBuilder: FormBuilder,
+    private dialog: MatDialog,
     public quizzesService: QuizzesService,
   ) {
     this.form = this.formBuilder.group({
@@ -171,6 +174,15 @@ export class CreateQuizz implements OnInit {
   }
 
   public async onSubmit() {
+    if (!this.form.valid) {
+      this.markFormGroupTouched(this.form);
+      this.dialog.open(CreateQuizDialog, {
+        width: '400px',
+        height: '170px',
+        data: { message: 'Le formulaire est invalide. Veuillez vérifier vos champs.', type: 'error' }
+      });
+      return;
+    }
 
     if (this.form.valid) {
       const quiz = this.form.value as Quizzes;
@@ -207,8 +219,18 @@ export class CreateQuizz implements OnInit {
             await this.quizzesService.InsertAnswers(allAnswers);
           }
         }
-      } catch (error) {
+        this.dialog.open(CreateQuizDialog, {
+          width: '400px',
+          height: '170px',
+          data: {message: 'Le quiz a été enregistré avec succès !', type: 'success'}
+        })
+        } catch (error) {
         console.error('Erreur', error);
+        this.dialog.open(CreateQuizDialog, {
+          width: '400px',
+          height: '170px',
+          data: { message: 'Une erreur est survenue lors de l\'enregistrement du quiz.', type: 'error' }
+        });
       }
     } else {
       console.log('=== FORMULAIRE INVALIDE ===');

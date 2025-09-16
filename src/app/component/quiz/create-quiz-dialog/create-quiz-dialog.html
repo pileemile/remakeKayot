@@ -1,0 +1,6 @@
+<div class="w-full h-full flex flex-col items-center justify-center">
+  <h2 [ngClass]="data.type">{{ data.type === 'success' ? 'Succès' : 'Erreur' }}</h2>
+  <p>{{ data.message }}</p>
+  <button mat-dialog-close class="p-4 flex justify-center rounded-lg w-24" [ngClass]="{'bg-blue-400': data.type === 'success' ? 'bg-red-500': data.type === 'error'}">OK</button>
+</div>
+
