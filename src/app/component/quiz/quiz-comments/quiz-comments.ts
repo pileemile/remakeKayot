@@ -45,7 +45,7 @@ export class QuizComments implements OnInit{
     if (this.commentForm.valid && !this.isSubmitting) {
       try {
         const commentText = this.commentForm.get('comment')?.value;
-        await this.quizCommentsService.addCommentRest(this.quizId, commentText);
+        await this.quizCommentsService.addComment(this.quizId, commentText);
         await this.quizCommentsService.loadCommentsByQuiz();
         this.commentForm.reset();
       } catch (error) {

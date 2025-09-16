@@ -66,6 +66,18 @@ export class QuizCommentService {
     }
   }
 
+  public async addComment(quizId: Quizzes, text: string) {
+    const { data, error } = await supabase
+      .from('quiz_comments')
+      .insert({
+        quiz_id: quizId.id,
+        user_id: this.currentUserId,
+        text: text,
+        created_at: new Date().toISOString()
+      })
+      .select()
+  }
+
   public async deleteComment(commentId: string) {
     const { error } = await supabase
       .from('quiz_comments')
