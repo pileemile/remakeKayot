@@ -184,60 +184,31 @@ export class CreateQuizz implements OnInit {
       return;
     }
 
-    if (this.form.valid) {
-      const quiz = this.form.value as Quizzes;
-      this.addQuizz(quiz);
-      this.quizzesService.createQuestion$.next(this.questions.value);
+    try {
+      const quizValue = this.form.value as Quizzes;
+      const questionsValue = this.questions.value as QuestionCreate[];
+      const result = await this.quizzesService.insertFullQuiz(quizValue, questionsValue);
 
-      try {
-        if (this.quizzesService.quiz$.value) {
-          await this.quizzesService.InsertQuizzes(this.quizzesService.quiz$.value);
-        }
+      this.dialog.open(CreateQuizDialog, {
+        width: '400px',
+        height: '170px',
+        data: { message: 'Le quiz a été enregistré avec succès !', type: 'success' }
+      });
 
-        const questionsValue = this.quizzesService.createQuestion$.value;
-        if (questionsValue) {
-          await this.quizzesService.InsertQuestion(questionsValue);
+      console.log('Quiz inséré :', result.quiz);
+      console.log('Questions insérées :', result.questions);
+      console.log('Réponses insérées :', result.answers);
 
-          const questionsWithIds = this.quizzesService.createQuestion$.value;
-          const allAnswers: Answers[] = [];
-
-          questionsWithIds?.forEach((question, index) => {
-            const answersControl = this.questions.at(index)?.get('answers');
-            const questionAnswers = answersControl?.value;
-
-            if (question?.id && questionAnswers) {
-              questionAnswers.forEach((answer: any) => {
-                allAnswers.push({
-                  ...answer,
-                  question_id: question.id!
-                });
-              });
-            }
-          });
-
-          if (allAnswers.length > 0) {
-            await this.quizzesService.InsertAnswers(allAnswers);
-          }
-        }
-        this.dialog.open(CreateQuizDialog, {
-          width: '400px',
-          height: '170px',
-          data: {message: 'Le quiz a été enregistré avec succès !', type: 'success'}
-        })
-        } catch (error) {
-        console.error('Erreur', error);
-        this.dialog.open(CreateQuizDialog, {
-          width: '400px',
-          height: '170px',
-          data: { message: 'Une erreur est survenue lors de l\'enregistrement du quiz.', type: 'error' }
-        });
-      }
-    } else {
-      console.log('=== FORMULAIRE INVALIDE ===');
-      console.log('Erreurs du formulaire:', this.form.errors);
-      this.markFormGroupTouched(this.form);
+    } catch (error) {
+      console.error('Erreur lors de l\'insertion du quiz complet', error);
+      this.dialog.open(CreateQuizDialog, {
+        width: '400px',
+        height: '170px',
+        data: { message: 'Une erreur est survenue lors de l\'enregistrement du quiz.', type: 'error' }
+      });
     }
   }
+
 
   private markFormGroupTouched(formGroup: FormGroup | FormArray) {
     Object.keys(formGroup.controls).forEach(key => {
