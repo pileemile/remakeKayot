@@ -37,20 +37,6 @@ export class PaginationService {
     }
   }
 
-  // public async paginationQuizzesRest(page: number | undefined, limit: number | undefined) {
-  //   try {
-  //     const data: Quizzes[] | undefined = await this.http.get<Quizzes[]>(`${environment.supabaseUrl}/rest/v1/quizzes?select=*&limit=${limit}&offset=${page}`).toPromise()
-  //     console.log("data pagination rest", data);
-  //     if (data) {
-  //       this.quizzesService.allQuizzes$.next(data);
-  //     }
-  //     return data || [];
-  //   } catch (error) {
-  //     console.error('erreur:', error);
-  //     throw error;
-  //   }
-  // }
-
   public async paginationUser(page: number | undefined, limit: number | undefined) {
     if (page != null && limit != null) {
       let {data: user, error} = await supabase
