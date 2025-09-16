@@ -28,24 +28,36 @@ export class AllQuizzes implements OnInit{
 
  }
   public tableColumns: TableColumn[] = [
-    { key: 'title', label: 'Titre' },
-    { key: 'description', label: 'Description' },
-    { key: 'category', label: 'Category' },
-    { key: 'difficulty', label: 'Difficulty' },
-    { key: 'action', label: 'Action', type: 'action' },
-    { key: 'note', label: 'Note', type: 'action'},
-    {key: 'classement', label: 'Classement'}
+    { key: 'title', label: 'Titre', type: 'text' },
+    { key: 'description', label: 'Description', type: 'text' },
+    { key: 'questionCount', label: 'Nombre de questions', type: 'number' },
+    { key: 'created_at', label: 'Date de création', type: 'date' },
+    { key: 'actions', label: 'Actions', type: 'action' }
   ];
 
   public tableActions: TableAction[] = [
     {
+      label: 'Voir',
       icon: 'arrow-right',
       handler: (quiz) => this.getQuizById(quiz.id)
-    }
+    },
+    // {
+    //   label: 'Modifier',
+    //   icon: 'edit',
+    //   handler: (quiz) => this.editQuiz(quiz.id)
+    // }
   ];
 
   public get all_quizzes() {
-    return this.allQuizzesService.allQuizzes$.value;
+    const allQuizzes = this.allQuizzesService.allQuizzes$.value;
+
+    if (!allQuizzes) {
+      return null;
+    }
+    return allQuizzes.map(quiz => ({
+      ...quiz,
+      questionCount: quiz.questions?.length || 0
+    }));
   }
 
   public async getQuizById(id: string) {
@@ -57,6 +69,14 @@ export class AllQuizzes implements OnInit{
   public async viewComments(id: string) {
     await this.allQuizzesService.getQuizzesById(id);
     await this.router.navigate(['/answer-quiz/' + id]);
+  }
+
+  private viewQuiz(quiz: any) {
+    console.log('Voir quiz:', quiz);
+  }
+
+  private editQuiz(quiz: any) {
+    console.log('Modifier quiz:', quiz);
   }
 
   protected readonly PaginationType = PaginationType;

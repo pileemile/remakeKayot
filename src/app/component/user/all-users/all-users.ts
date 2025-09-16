@@ -21,11 +21,11 @@ export class AllUsers {
   ) {}
 
   public tableColumns: TableColumn[] = [
-    { key: 'first_name', label: 'Prenom' },
-    { key: 'last_name', label: 'Nom' },
-    { key: 'role', label: 'Role' },
-    { key: 'ville', label: 'Ville' },
-    { key: 'cp', label: 'Code Postal' },
+    { key: 'first_name', label: 'Prenom', type: 'text' },
+    { key: 'last_name', label: 'Nom', type: 'text' },
+    { key: 'role', label: 'Role', type: 'text' },
+    { key: 'ville', label: 'Ville', type: 'text' },
+    { key: 'cp', label: 'Code Postal', type: 'text' },
   ];
 
   public get allUsers() {

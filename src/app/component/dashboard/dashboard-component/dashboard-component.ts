@@ -43,7 +43,7 @@ export class DashboardComponent implements OnInit{
 
  async ngOnInit() {
    await this.attemptsService.getAttempts("22ce5a89-1db2-46e7-a265-c929697ff1d0");
-   await this.quizzesService.getAllQuizzesRest();
+   await this.quizzesService.getAllQuizzes();
 
 
   }

@@ -96,7 +96,7 @@ export class QuizzesService {
   public async getAllQuizzes() {
 
     let { data: quizzes, error } = await supabase
-      .from('quizzes')
+      .from('quizzes, questions(*)')
       .select('*')
     this.allQuizzes$.next(quizzes);
 

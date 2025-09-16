@@ -10,7 +10,7 @@ import {UserModele} from '../../models/user/user-modele';
   styleUrl: './table.css'
 })
 export class Table {
-  @Input() data: Quizzes[] | UserModele[] | null = null;
+  @Input() data: (Quizzes & { questionCount?: number })[] | UserModele[] | number[] | null = null;
   @Input() columns: TableColumn[] = [];
   @Input() actions: TableAction[] = [];
 
@@ -18,6 +18,18 @@ export class Table {
 
   public onActionClick(action: TableAction, item: any) {
     action.handler(item);
+  }
+
+  public getColumnValue(item: any, column: TableColumn): any {
+    const value = item[column.key];
+    switch (column.type) {
+      case 'date':
+        return value ? new Date(value).toLocaleDateString('fr-FR') : '';
+      case 'number':
+        return value || 0;
+      default:
+        return value || '';
+    }
   }
 
 }

@@ -30,6 +30,11 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                           </svg>
                         }
+                        @if (action.icon === 'edit') {
+                          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                          </svg>
+                        }
                         @if (action.icon === 'comment') {
                           <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
@@ -47,11 +52,17 @@
               } @else {
                 @if ($index === 0) {
                   <th scope="row" class="px-6 py-4 font-semibold text-gray-900 whitespace-nowrap">
-                    {{ item[column.key] }}
+                    {{ getColumnValue(item, column) }}
                   </th>
                 } @else {
                   <td class="px-6 py-4 text-gray-700">
-                    {{ item[column.key] }}
+                    @if (column.key === 'questionCount') {
+                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        {{ getColumnValue(item, column) }} question{{ getColumnValue(item, column) > 1 ? 's' : '' }}
+                      </span>
+                    } @else {
+                      {{ getColumnValue(item, column) }}
+                    }
                   </td>
                 }
               }
