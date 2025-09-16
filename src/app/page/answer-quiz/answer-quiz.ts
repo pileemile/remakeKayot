@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {AnswerService} from '../../service/answers/answer-service';
 import {AnswerQuestions} from '../../component/question/answer-questions/answer-questions';
 import {QuizComments} from '../../component/quiz/quiz-comments/quiz-comments';
 import {QuizzesService} from '../../service/quizzes/quizzes-service';
@@ -18,12 +17,10 @@ export class AnswerQuiz implements OnInit{
   public quizId: Quizzes | null = null;
 
   constructor(
-    private answerService: AnswerService,
     private quizzesService: QuizzesService,
   ) {}
 
   ngOnInit() {
-    this.answerService.answersAll$.value;
     this.quizId = this.quizzesService.quiz$.value;
   }
 }
