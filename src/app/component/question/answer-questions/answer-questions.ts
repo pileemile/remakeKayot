@@ -31,8 +31,8 @@ export class AnswerQuestions implements OnInit{
     public attemptsAnswersService: AttemptsAnswersService
   ) {}
 
- async ngOnInit() {
-   console.log("ngOnInit answer question", this.quizzesService.quizzesId$.value)
+  async ngOnInit() {
+    console.log("ngOnInit answer question", this.quizzesService.quizzesId$.value)
     if (this.quizzesService.quizzesId$.value) {
       await this.questionService.getAnswersByQuestionId(this.quizzesService.quizzesId$.value?.id)
     }
@@ -64,14 +64,21 @@ export class AnswerQuestions implements OnInit{
     this.questionService.getAnswersByQuestionId(quizz?.id);
   }
 
+  public get isCurrentQuestionAnswered(): boolean {
+    return this.answers_user[this.index] !== undefined;
+  }
+
   public question_next() {
+    if (!this.isCurrentQuestionAnswered) {
+      return;
+    }
+
     this.index ++;
     if (this.questionService.question$.value?.length)  {
       if (this.index === this.questionService.question$.value?.length - 1) {
         this.index = this.questionService.question$.value?.length - 1;
       }
       if (this.index + 1 === (this.quizz?.questions?.length ?? 0)) {
-
         console.log("ici")
       }
     }
@@ -87,21 +94,23 @@ export class AnswerQuestions implements OnInit{
     }
   }
 
-  public answers_user_true(is_correct: boolean, text: string, index: number, id: string | undefined) {
+  public answers_user_true(is_correct: boolean, text: string, index: number, id: string | undefined ) {
     if (this.questionService.question$.value && this.question && this.quizz) {
       this.answers_user[index] = {question_id: this.question.id, is_correct, text, id, quiz_id: this.quizz.id};
-
     }
   }
 
   public async submit_answer() {
+    if (!this.isCurrentQuestionAnswered) {
+      return;
+    }
+
     const total_answers: number = Object.values(this.answers_user).length;
 
     // this.attemptsAnswersService.matchAnswers(this.question?.answers, this.index, this.answers_user);
-     await this.attemptsAnswersService.insertAttemptAnswers(this.answers_user);
-     await this.attemptsAnswersService.getAttemptsAnswers(this.quizz?.id);
-     await this.attemptsAnswersService.matchAnswersUser(this.attemptsAnswersService.getAllAnswersQuiz, this.answers_user);
-     await this.attemptsAnswersService.insertAttempts(total_answers, this.quizz?.id);
+    await this.attemptsAnswersService.insertAttemptAnswers(this.answers_user);
+    await this.attemptsAnswersService.getAttemptsAnswers(this.quizz?.id);
+    await this.attemptsAnswersService.matchAnswersUser(this.attemptsAnswersService.getAllAnswersQuiz, this.answers_user);
+    await this.attemptsAnswersService.insertAttempts(total_answers, this.quizz?.id);
   }
-
 }
