@@ -15,7 +15,7 @@ import {HttpClient} from '@angular/common/http';
 })
 export class QuizzesService {
   public  quiz$ = new BehaviorSubject<Quizzes | null>(null)
-  public allQuizzes$ = new BehaviorSubject<Quizzes[] |null>(null);
+  public allQuizs$ = new BehaviorSubject<Quizzes[] |null>(null);
   public quizzesFromUserComments = new BehaviorSubject<Quizzes[] | null>(null);
   public activeTab: 'search' | 'all' | 'create' | 'filter' |  null = null;
   public pageActive?: ButtonEnum;
@@ -82,21 +82,10 @@ export class QuizzesService {
     let { data: quizzes, error } = await supabase
       .from('quizzes, questions(*)')
       .select('*')
-    this.allQuizzes$.next(quizzes);
+    this.allQuizs$.next(quizzes);
 
     if (error) {
       console.log("error", error)
-    }
-  }
-
-  public async getAllQuizzesRest() {
-    try {
-      const data: Quizzes[] | undefined = await this.http.get<Quizzes[]>(`${environment.supabaseUrl}/rest/v1/quizzes`).toPromise();
-      console.log('data', data);
-      return data || [];
-    } catch (error) {
-      console.error("error", error);
-      throw error;
     }
   }
 
