@@ -3,15 +3,15 @@ import {NgClass} from '@angular/common';
 import {QuizzesService} from '../../../service/quizzes/quizzes-service';
 
 @Component({
-  selector: 'app-search-bar',
+  selector: 'app-search-tabs',
   standalone: true,
   imports: [
     NgClass,
   ],
-  templateUrl: './search-bar.html',
-  styleUrl: './search-bar.css'
+  templateUrl: './search-tabs.html',
+  styleUrl: './search-tabs.css'
 })
-export class SearchBar {
+export class SearchTabs {
 
   constructor(
     private quizzesService: QuizzesService,
