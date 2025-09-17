@@ -150,13 +150,6 @@
                     Ajouter
                   </button>
                 </div>
-                @if (getQuestionErrors(qIndex).length > 0) {
-                  <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-                    @for (error of getQuestionErrors(qIndex); track error) {
-                      <p class="text-sm text-red-600">{{ error }}</p>
-                    }
-                  </div>
-                }
                 <div class="space-y-3">
                   @for (answerGroup of getAnswersControls(qIndex); track aIndex; let aIndex = $index) {
                     <div [formGroupName]="aIndex" class="flex items-center space-x-3 p-3 bg-white border border-gray-200 rounded-lg">
