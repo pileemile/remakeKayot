@@ -77,6 +77,7 @@ export class SearchService {
       console.error(error);
       throw error;
     }
+    this.quizsSearch.next(data);
 
     return data;
   }

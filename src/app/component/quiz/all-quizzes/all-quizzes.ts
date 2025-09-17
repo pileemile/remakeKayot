@@ -18,9 +18,9 @@ import {PaginationType} from '../../pagination/constent';
 })
 export class AllQuizzes implements OnInit{
   constructor(
-    private allQuizzesService: QuizzesService,
-    private router: Router,
-    private paginationService: PaginationService,
+    private readonly allQuizzesService: QuizzesService,
+    private readonly router: Router,
+    private readonly paginationService: PaginationService,
   ) {}
 
  async ngOnInit() {

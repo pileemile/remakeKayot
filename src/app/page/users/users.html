@@ -10,6 +10,9 @@
       @case (ButtonEnum.FIND_USER) {
         <app-find-user (activateFilter)="onSearchActivated($event)"></app-find-user>
       }
+      @case (ButtonEnum.FILTER){
+        <app-user-filter></app-user-filter>
+      }
       @default {
         <p>aucune case sélectionner</p>
       }
