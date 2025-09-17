@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Output} from '@angular/core';
 import {ButtonEnum} from '../../tabs/constants';
 import {FilterForm} from '../../filter/filter-form/filter-form';
-import {FilterType, FilterTypeEnum, IFilterType, SelectFilterEnum} from '../../filter/constent';
+import {FilterEnum, IFilters} from '../../filter/constent';
 
 @Component({
   selector: 'app-search-component',
@@ -14,9 +14,7 @@ import {FilterType, FilterTypeEnum, IFilterType, SelectFilterEnum} from '../../f
 export class SearchComponent {
   @Output() activateFilter = new EventEmitter<ButtonEnum>();
 
-  public get filterConfiguration(): IFilterType {
-    return {[FilterTypeEnum.CREATED_AT]: true, [FilterTypeEnum.FINISH_AT]: true, [SelectFilterEnum.CATEGORY]: true, [SelectFilterEnum.DIFFICULTY]: true};
+  public get filterConfiguration(): IFilters {
+    return {[FilterEnum.CREATED_AT]: true, [FilterEnum.FINISH_AT]: true, [FilterEnum.CATEGORY]: true, [FilterEnum.DIFFICULTY]: true};
   }
-
-  protected readonly FilterType = FilterType;
 }

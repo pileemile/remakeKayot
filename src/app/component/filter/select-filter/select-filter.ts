@@ -1,7 +1,7 @@
-import {Component, Input} from '@angular/core';
-import {ControlContainer, FormGroup, FormGroupDirective, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {labelInput, selectedFilter, SelectFilterEnum} from '../constent';
-import {FilterService} from '../../../service/filter/filter-service';
+import { Component, Input } from '@angular/core';
+import { ControlContainer, FormGroup, FormGroupDirective, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FilterService } from '../../../service/filter/filter-service';
+import { FilterEnum, filterConfig } from '../constent';
 
 @Component({
   selector: 'app-select-filter',
@@ -14,26 +14,21 @@ import {FilterService} from '../../../service/filter/filter-service';
   styleUrl: './select-filter.css'
 })
 export class SelectFilter {
-  @Input() state!: SelectFilterEnum;
+  @Input() state!: FilterEnum;
   @Input() parentForm!: FormGroup;
 
-  public value: string = '';
+  public value = '';
 
   constructor(
-    private filterService: FilterService
-  ){}
+    private readonly filterService: FilterService
+  ) {}
 
-  public get label() {
-    return labelInput[this.state];
+  get label(): string {
+    return filterConfig[this.state]?.label ?? '';
   }
-
-  public get select()  {
-    return selectedFilter[this.state];
-  }
-
 
   onValueChange(newValue: string) {
     this.filterService.updateFilter(this.state, newValue);
-    console.log("newValue", this.filterService.filterQuizzes.value)
+    console.log("newValue", this.filterService.filterQuizzes.value);
   }
 }

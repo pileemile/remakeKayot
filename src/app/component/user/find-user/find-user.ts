@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {FilterType, FilterTypeEnum} from '../../filter/constent';
+import {FilterEnum} from '../../filter/constent';
 import {FilterForm} from '../../filter/filter-form/filter-form';
 
 @Component({
@@ -14,13 +14,12 @@ export class FindUser {
 
   public get filterConfiguration() {
     return {
-      [FilterTypeEnum.FIRST_NAME]: true,
-      [FilterTypeEnum.LAST_NAME]: true,
-      [FilterTypeEnum.ADRESS]: true,
-      [FilterTypeEnum.CP]: true,
-      [FilterTypeEnum.CITY]: true,
+      [FilterEnum.FIRST_NAME]: true,
+      [FilterEnum.LAST_NAME]: true,
+      [FilterEnum.ADRESS]: true,
+      [FilterEnum.CP]: true,
+      [FilterEnum.CITY]: true,
     }
   }
 
-  protected readonly FilterType = FilterType;
 }
