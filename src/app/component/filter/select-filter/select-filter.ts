@@ -27,6 +27,22 @@ export class SelectFilter {
     return filterConfig[this.state]?.label ?? '';
   }
 
+  get values(): string[] {
+    const config = filterConfig[this.state];
+
+    if (config && 'values' in config) {
+      return config.values ?? [];
+    }
+
+    if (config?.type === 'select') {
+      return [];
+    }
+
+    return [];
+  }
+
+
+
   onValueChange(newValue: string) {
     this.filterService.updateFilter(this.state, newValue);
     console.log("newValue", this.filterService.filterQuizzes.value);

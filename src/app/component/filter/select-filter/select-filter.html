@@ -8,7 +8,7 @@
     class="h-9 border border-gray-300 rounded-lg bg-gray-100">
     <option value=""></option>
     <option value="">Toutes</option>
-    @for (model of state; track model) {
+    @for (model of values; track model) {
       <option [value]="model">{{model}}</option>
     }
   </select>
