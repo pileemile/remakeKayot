@@ -6,6 +6,7 @@ import {CommonModule} from '@angular/common';
 import {Comments} from '../../comments/comments';
 import {QuizzesService} from '../../../service/quizzes/quizzes-service';
 import {QuizComment} from '../../../models/quiz-comment/quiz-comment';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-quiz-comments',
@@ -23,11 +24,13 @@ export class QuizComments implements OnInit{
 
   public commentForm: FormGroup;
   public isSubmitting = false;
+  public quizIdForComments: string | null = null
 
   constructor(
     private formBuilder: FormBuilder,
-    private quizCommentsService: QuizCommentService,
-    private quizzesService: QuizzesService,
+    protected quizCommentsService: QuizCommentService,
+    private readonly quizzesService: QuizzesService,
+    private readonly route: ActivatedRoute,
   ) {
     this.commentForm = this.formBuilder.group({
       comment: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(500)]],
@@ -36,10 +39,15 @@ export class QuizComments implements OnInit{
   }
 
   async ngOnInit() {
-    if (this.quizzesService.quiz$.value) {
-      await this.quizCommentsService.loadCommentsByQuiz();
-    }
+    this.quizIdForComments = this.route.snapshot.paramMap.get('id');
+    console.log("quizIdForComments", this.quizIdForComments);
+
+    await this.loadCommentsByQuiz();
+
+    console.log("quizCommentsService.comments.value", this.quizCommentsService.comments.value);
   }
+
+
 
   public async onSubmitComment() {
     if (this.commentForm.valid && !this.isSubmitting) {
@@ -54,7 +62,14 @@ export class QuizComments implements OnInit{
     }
   }
 
-  public get comments() {
-    return this.quizCommentsService.comments.value;
+  public async loadCommentsByQuiz() {
+    try {
+        const comments = await this.quizCommentsService.getCommentsByQuizId(this.quizIdForComments);
+        this.quizCommentsService.comments.next(comments);
+        console.log("commentaires", this.quizCommentsService.comments.value);
+    } catch (error) {
+      console.error('Erreur chargement des commentaires:', error);
+    }
   }
+
 }

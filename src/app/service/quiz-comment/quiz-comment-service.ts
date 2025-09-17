@@ -28,12 +28,12 @@ export class QuizCommentService {
   private apiUrl = environment.supabaseUrl + '/rest/v1';
   private http = inject(HttpClient);
 
-  public async getCommentsByQuizId(quizId: Quizzes) {
+  public async getCommentsByQuizId(quizId: string | null) {
     try {
       const { data, error } = await supabase
         .from('quiz_comments')
         .select('*')
-        .eq('quiz_id', quizId.id);
+        .eq('quiz_id', quizId);
 
       if (error) {
         console.error('Erreur Supabase:', error);
@@ -41,6 +41,7 @@ export class QuizCommentService {
       }
 
       console.log('Succès', data);
+      this.comments.next(data);
       return data || [];
     } catch (error) {
       console.error('Erreur inattendue:', error);
@@ -121,7 +122,8 @@ export class QuizCommentService {
   public async loadCommentsByQuiz() {
     try {
       if (this.quizzesService.quiz$.value) {
-        this.comments.next(await this.getCommentsByQuizId(this.quizzesService.quiz$.value));
+         // this.comments.next(await this.getCommentsByQuizId(this.quizzesService.quiz$.value));
+        console.log("commentaires", this.comments.value);
       }
     } catch (error) {
       console.error('Erreur chargement des commentaires:', error);
