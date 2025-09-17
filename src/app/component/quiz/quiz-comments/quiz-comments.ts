@@ -19,7 +19,7 @@ import {QuizComment} from '../../../models/quiz-comment/quiz-comment';
   styleUrl: './quiz-comments.css'
 })
 export class QuizComments implements OnInit{
-  @Input() quizId!: Quizzes;
+  @Input() quizId!: string;
 
   public commentForm: FormGroup;
   public isSubmitting = false;

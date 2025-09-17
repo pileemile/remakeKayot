@@ -16,6 +16,7 @@ import {HttpClient} from '@angular/common/http';
 export class QuizzesService {
   public  quiz$ = new BehaviorSubject<Quizzes | null>(null)
   public allQuizs$ = new BehaviorSubject<Quizzes[] |null>(null);
+  public quizId: string | null = null;
   public quizzesFromUserComments = new BehaviorSubject<Quizzes[] | null>(null);
   public activeTab: 'search' | 'all' | 'create' | 'filter' |  null = null;
   public pageActive?: ButtonEnum;

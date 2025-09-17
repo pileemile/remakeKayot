@@ -14,13 +14,13 @@ import {Quizzes} from '../../models/quizzes/quizzes';
   styleUrl: './answer-quiz.css'
 })
 export class AnswerQuiz implements OnInit{
-  public quizId: Quizzes | null = null;
+  public quizId: string | null = null;
 
   constructor(
-    private quizzesService: QuizzesService,
+    private readonly quizzesService: QuizzesService,
   ) {}
 
   ngOnInit() {
-    this.quizId = this.quizzesService.quiz$.value;
+    this.quizId = this.quizzesService.quizId;
   }
 }

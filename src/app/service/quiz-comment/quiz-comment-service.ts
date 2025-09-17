@@ -49,11 +49,11 @@ export class QuizCommentService {
   }
 
 
-  public async addComment(quizId: Quizzes, text: string) {
+  public async addComment(quizId: string, text: string) {
     const { data, error } = await supabase
       .from('quiz_comments')
       .insert({
-        quiz_id: quizId.id,
+        quiz_id: quizId,
         user_id: this.currentUserId,
         text: text,
         created_at: new Date().toISOString()

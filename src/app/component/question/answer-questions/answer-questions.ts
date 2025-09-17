@@ -7,6 +7,8 @@ import {NgClass} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Answers} from '../../../models/answer/answer';
 import {AttemptsAnswersService} from '../../../service/attempts/attempts-answers-service';
+import {ActivatedRoute} from '@angular/router';
+import {QuizComments} from '../../quiz/quiz-comments/quiz-comments';
 
 @Component({
   selector: 'app-answer-questions',
@@ -15,6 +17,7 @@ import {AttemptsAnswersService} from '../../../service/attempts/attempts-answers
     NgClass,
     ReactiveFormsModule,
     FormsModule,
+    QuizComments,
   ],
   templateUrl: './answer-questions.html',
   styleUrl: './answer-questions.css'
@@ -22,21 +25,27 @@ import {AttemptsAnswersService} from '../../../service/attempts/attempts-answers
 export class AnswerQuestions implements OnInit{
   protected readonly Category = Category;
 
+  public quizId: string | null = null
   public index: number = 0;
   public answers_user: { [index: number]: Answers} = {};
 
   constructor(
     public questionService: QuestionService,
     public quizzesService: QuizzesService,
-    public attemptsAnswersService: AttemptsAnswersService
+    public attemptsAnswersService: AttemptsAnswersService,
+    private readonly route: ActivatedRoute,
+    private readonly allQuizzesService: QuizzesService,
   ) {}
 
   async ngOnInit() {
-    console.log("ngOnInit answer question", this.quizzesService.quiz$.value)
+    const id = this.route.snapshot.paramMap.get('id');
+    this.quizId = id;
+    if (id) {
+      await this.allQuizzesService.getQuizById(id);
+    }    console.log("ngOnInit answer question", this.quizzesService.quiz$.value)
     if (this.quizzesService.quiz$.value) {
       await this.questionService.fetchQuestionsWithAnswersByQuizId(this.quizzesService.quiz$.value?.id)
     }
-
   }
 
   public get question(): QuestionCreate | null  {

@@ -60,10 +60,8 @@ export class AllQuizzes implements OnInit{
     }));
   }
 
-  public async getQuizByIdLoad(id: string) {
-  await this.allQuizzesService.getQuizById(id);
-  await this.router.navigate(['/answer-quiz/' + id]);
-
+  public getQuizByIdLoad(id: string) {
+   this.router.navigate(['/answer-quiz/' + id]).then();
   }
 
   public async viewComments(id: string) {
