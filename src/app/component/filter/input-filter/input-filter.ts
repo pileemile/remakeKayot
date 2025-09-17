@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
-import {FilterTypeEnum, labelInput, typeInput} from '../constent';
 import {FilterService} from '../../../service/filter/filter-service';
-import {FormsModule} from '@angular/forms';
+import {ControlContainer, FormGroup, FormGroupDirective, FormsModule} from '@angular/forms';
+import {filterConfig, FilterEnum} from '../constent';
 
 @Component({
   selector: 'app-input-filter',
@@ -9,24 +9,27 @@ import {FormsModule} from '@angular/forms';
     FormsModule
   ],
   templateUrl: './input-filter.html',
+  viewProviders: [{ provide: ControlContainer, useExisting: FormGroupDirective }],
   styleUrl: './input-filter.css'
 })
 export class InputFilter {
-  @Input() state!: FilterTypeEnum;
+  @Input() state!: FilterEnum;
+  @Input() parentForm!: FormGroup;
 
   public value: string = '';
 
   constructor(
-    private filterService: FilterService
+    private readonly filterService: FilterService
   ){}
 
   public get label() {
-    return labelInput[this.state];
+    return filterConfig[this.state].label ?? '';
   }
 
-  public get input() {
-    return typeInput[this.state];
+  public get type() {
+    return filterConfig[this.state].type ?? '';
   }
+
 
   onValueChange(newValue: string) {
     this.filterService.updateFilter(this.state, newValue);

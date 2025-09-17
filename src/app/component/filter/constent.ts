@@ -1,82 +1,92 @@
-import {Category, Difficulty} from '../../models/quizzes/quizzes';
+import { Category, Difficulty } from '../../models/quizzes/quizzes';
 
-export enum FilterTypeEnum {
+export enum FilterEnum {
+  CATEGORY = 'category',
+  DIFFICULTY = 'difficulty',
   CREATED_AT = 'created_at',
   FINISH_AT = 'finish_at',
   LAST_NAME = 'last_name',
   FIRST_NAME = 'first_name',
   EMAIL = 'email',
   ADRESS = 'adress',
+  ROLE = 'role',
   CP = 'cp',
   CITY = 'city',
   ALL = 'all',
 }
 
-export enum SelectFilterEnum {
-  CATEGORY = 'category',
-  DIFFICULTY = 'difficulty',
-}
-
 export enum FilterType {
-  QUIZ = 'quiz',
   USER = 'user',
-  ALL = 'all',
+  QUIZ = 'quiz',
 }
 
-export interface IFilterQuizz {
-  category?: Category;
-  difficulty?: Difficulty;
-  created_at?: string;
-  finish_at?: string;
+export type IFilters = {
+  [key in FilterEnum]?: boolean;
 }
 
-export interface IFilterUser {
-  last_name?: string;
-  first_name?: string;
-  adress?: string;
-  cp?: string;
-  city?: string;
-}
-
-export interface IFilter {
-  quizz?: IFilterQuizz;
-  user?: IFilterUser;
-}
-
-export type IFilterType = {
-  [key in FilterTypeEnum | SelectFilterEnum]?: boolean
-}
-
-export const labelInput = {
-  [SelectFilterEnum.CATEGORY]: 'Filtrer par catégorie',
-  [SelectFilterEnum.DIFFICULTY]: 'filtrer par dificulter',
-  [FilterTypeEnum.CREATED_AT]: 'Created at',
-  [FilterTypeEnum.FINISH_AT]: 'Finish at',
-  [FilterTypeEnum.LAST_NAME]: 'Last name',
-  [FilterTypeEnum.FIRST_NAME]: 'First name',
-  [FilterTypeEnum.EMAIL]: 'Email',
-  [FilterTypeEnum.ADRESS]: 'Adress',
-  [FilterTypeEnum.CP]: 'CP',
-  [FilterTypeEnum.CITY]: 'City',
-  [FilterTypeEnum.ALL]: 'All',
-}
-
-export const typeInput = {
-  [SelectFilterEnum.CATEGORY]: 'select',
-  [SelectFilterEnum.DIFFICULTY]: 'select',
-  [FilterTypeEnum.CREATED_AT]: 'date',
-  [FilterTypeEnum.FINISH_AT]: 'date',
-  [FilterTypeEnum.LAST_NAME]: 'text',
-  [FilterTypeEnum.FIRST_NAME]: 'text',
-  [FilterTypeEnum.ADRESS]: 'text',
-  [FilterTypeEnum.CP]: 'number',
-  [FilterTypeEnum.CITY]: 'text',
-  [FilterTypeEnum.EMAIL]: 'email',
-  [FilterTypeEnum.ALL]: 'text',
-}
-
-export const selectedFilter = {
-  [SelectFilterEnum.CATEGORY]: Object.values(Category),
-  [SelectFilterEnum.DIFFICULTY]: Object.values(Difficulty),
-  [FilterTypeEnum.ALL]: ['All'],
-}
+export const filterConfig = {
+  [FilterEnum.CATEGORY]: {
+    label: 'Filtrer par catégorie',
+    type: 'select',
+    values: Object.values(Category),
+    target: 'quiz'
+  },
+  [FilterEnum.DIFFICULTY]: {
+    label: 'Filtrer par difficulté',
+    type: 'select',
+    values: Object.values(Difficulty),
+    target: 'quiz'
+  },
+  [FilterEnum.CREATED_AT]: {
+    label: 'Created at',
+    type: 'date',
+    target: 'quiz'
+  },
+  [FilterEnum.FINISH_AT]: {
+    label: 'Finish at',
+    type: 'date',
+    target: 'quiz'
+  },
+  [FilterEnum.LAST_NAME]: {
+    label: 'Last name',
+    type: 'text',
+    target: 'user'
+  },
+  [FilterEnum.FIRST_NAME]: {
+    label: 'First name',
+    type: 'text',
+    target: 'user'
+  },
+  [FilterEnum.EMAIL]: {
+    label: 'Email',
+    type: 'email',
+    target: 'user'
+  },
+  [FilterEnum.ADRESS]: {
+    label: 'Adress',
+    type: 'text',
+    target: 'user'
+  },
+  [FilterEnum.ROLE]: {
+    label: 'Rôle',
+    type: 'select',
+    values: ['admin', 'user', 'moderator'],
+    target: 'user'
+  },
+  [FilterEnum.CP]: {
+    label: 'CP',
+    type: 'number',
+    target: 'user'
+  },
+  [FilterEnum.CITY]: {
+    label: 'City',
+    type: 'text',
+    target: 'user'
+  },
+  [FilterEnum.ALL]: {
+    label: 'All',
+    type: 'text',
+    values: ['All'],
+    target: 'all'
+  },
+};

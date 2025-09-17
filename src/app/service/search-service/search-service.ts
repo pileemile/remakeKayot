@@ -1,35 +1,38 @@
 import { Injectable } from '@angular/core';
-import {SearchQuizzesInterface, SearchUsersInterface} from '../../models/search/search';
+import {SearchUsersInterface} from '../../models/search/search';
 import {supabase} from '../../../environments/environment';
 import {BehaviorSubject} from 'rxjs';
 import {Quizzes} from '../../models/quizzes/quizzes';
-import {UserModele} from '../../models/user/user-modele';
+import {IFilters} from '../../component/filter/constent';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class SearchService {
   public quizsSearch = new BehaviorSubject<Quizzes[] | null>(null)
 
-  public async searchQuizzes(search: SearchQuizzesInterface) {
+  public async searchQuizzes(search: IFilters | null) {
     let query = supabase
       .from('quizzes')
       .select('*');
-    if (search.category) {
-      query = query.eq('category', search.category);
-    }
-    if (search.difficulty) {
-      query = query.eq('difficulty', search.difficulty);
-    }
-    if (search.created_at && search.finish_at) {
-      const startDate = new Date(search.created_at).toISOString();
-      const endDate = new Date(search.finish_at + 'T23:59:59.999Z').toISOString();
+    if (search) {
+      if (search.category) {
+        query = query.eq('category', search.category);
+      }
+      if (search.difficulty) {
+        query = query.eq('difficulty', search.difficulty);
+      }
+      if (search.created_at && search.finish_at) {
+        const startDate = new Date(search.created_at + 'T23:59:59.999Z').toISOString();
+        const endDate = new Date(search.finish_at + 'T23:59:59.999Z').toISOString();
+        console.log(startDate, endDate);
+        query = query
+          .gte('created_at', startDate)
+          .lte('created_at', endDate);
+      }
 
-      query = query
-        .gte('created_at', startDate)
-        .lte('created_at', endDate);
     }
-
     const { data, error } = await query;
     console.log("data", data)
 
@@ -43,23 +46,28 @@ export class SearchService {
     return data;
   }
 
-  public async searchUser(search: SearchUsersInterface) {
+  public async searchUser(search: IFilters | null) {
     let query = supabase.from('user_roles').select('*');
-    for (const key in search) {
-      if (search[key as keyof SearchUsersInterface]) {
-        switch (key) {
-          case 'first_name':
-          case 'last_name':
-          case 'adress':
-          case 'ville':
-          case 'cp':
-            query = query.ilike(key, `%${search[key as keyof SearchUsersInterface]}%`);
-            break;
-          case 'role':
-            query = query.eq(key, search[key as keyof SearchUsersInterface]);
-            break;
+
+    if (search) {
+      const filterMap:Partial<Record<keyof IFilters, 'ilike' | 'eq'>> = {
+        first_name: 'ilike',
+        last_name: 'ilike',
+        adress: 'ilike',
+        city: 'ilike',
+        cp: 'ilike',
+        role: 'eq',
+      };
+      Object.entries(search).forEach(([key, value]) => {
+        if (value) {
+          const filterType = filterMap[key as keyof IFilters];
+          if (filterType === 'ilike') {
+            query = query.ilike(key, `%${value}%`);
+          } else {
+            query = query.eq(key, value);
+          }
         }
-      }
+      });
     }
 
     const { data, error } = await query;
@@ -69,8 +77,8 @@ export class SearchService {
       console.error(error);
       throw error;
     }
+    this.quizsSearch.next(data);
 
     return data;
   }
-
 }

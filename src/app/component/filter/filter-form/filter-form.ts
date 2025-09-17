@@ -1,13 +1,11 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ButtonFilter} from "../button-filter/button-filter";
-import {FilterType, SelectFilterEnum} from '../constent';
-import {SearchQuizzesInterface, SearchUsersInterface} from '../../../models/search/search';
-import {ButtonEnum} from '../../tabs/constants';
-import {SearchService} from '../../../service/search-service/search-service';
-import {InputFilter} from '../input-filter/input-filter';
-import {FilterTypeEnum, IFilterType} from '../constent';
-import {SelectFilter} from '../select-filter/select-filter';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ButtonFilter } from "../button-filter/button-filter";
+import {FilterEnum, IFilters, filterConfig, FilterType} from '../constent';
+import { ButtonEnum } from '../../tabs/constants';
+import { InputFilter } from '../input-filter/input-filter';
+import { SelectFilter } from '../select-filter/select-filter';
 import {FilterService} from '../../../service/filter/filter-service';
+import {SearchService} from '../../../service/search-service/search-service';
 
 @Component({
   selector: 'app-filter-form',
@@ -19,64 +17,34 @@ import {FilterService} from '../../../service/filter/filter-service';
   templateUrl: './filter-form.html',
   styleUrl: './filter-form.css'
 })
-export class FilterForm implements OnInit{
+export class FilterForm {
   @Input()
-  get filter(): IFilterType { return this._filter ?? {}; }
-  set filter(new_filter: IFilterType) {
-    this._filter = new_filter;
-    if (new_filter) {
-      const activeKeys = Object.entries(new_filter)
-        .filter(([_, v]) => v)
-        .map(([k]) => k);
-      this.filters = activeKeys.filter((k) =>
-        Object.values(FilterTypeEnum).includes(k as FilterTypeEnum)
-      ) as FilterTypeEnum[];
-
-      this.selects = activeKeys.filter((k) =>
-        Object.values(SelectFilterEnum).includes(k as SelectFilterEnum)
-      ) as SelectFilterEnum[];
-
-    } else {
-      this.filters = [];
-      this.selects = [];
+  get filter(): IFilters { return this._filter || {}; }
+  set filter(newFilter: IFilters) {
+    this._filter = newFilter;
+    if (newFilter) {
+      this.activeFilters = Object.keys(newFilter) as FilterEnum[];
     }
   }
-  @Input() filterType: FilterType = FilterType.ALL;
+
+  @Input() filterType!:FilterType ;
 
   @Output() activateFilter = new EventEmitter<ButtonEnum>();
 
-  ngOnInit() {
-  }
-
-  private _filter?: IFilterType;
-
-  public filters?: FilterTypeEnum[];
-  public selects?: SelectFilterEnum[];
-
-  public constructor(
-    private searchService: SearchService,
-    private filterService: FilterService,
+  constructor(
+    private readonly filterService: FilterService,
+    private readonly searchService: SearchService,
   ) {
   }
-  public async onSubmit() {
-    if (this.filterGet) {
-      const search = this.filterGet as SearchQuizzesInterface;
-      const user = this.filterGet as SearchUsersInterface;
-      if(this.filterType === FilterType.QUIZ) {
-        await this.searchService.searchQuizzes(search);
-        this.activateFilter.emit(ButtonEnum.FILTER);
-      } else if (this.filterType === FilterType.USER  ) {
-        await this.searchService.searchUser(user);
-        this.activateFilter.emit(ButtonEnum.SEARCH_USER);
-      } else
-        console.log("errorr");
-      console.log("search", this.filterGet)
-    }
 
-  }
+  private _filter?: IFilters;
 
+  public activeFilters: FilterEnum[] = [];
+  public filterConfig = filterConfig;
 
   public onReset() {
+    this._filter = {};
+    this.activeFilters = [];
   }
 
   public async onButtonClick(buttonType: ButtonEnum) {
@@ -85,12 +53,23 @@ export class FilterForm implements OnInit{
         this.onReset();
         break;
       case ButtonEnum.FILTER:
-        await this.onSubmit();
+         await this.onSubmit();
         break;
     }
   }
 
-  public get filterGet() {
-    return this.filterService.filterQuizzes.value
+  private get filterQuizzes() {
+    return this.filterService.filterQuizzes.value;
+  }
+
+  public async onSubmit() {
+    if(FilterType.QUIZ === this.filterType) {
+      await this.searchService.searchQuizzes(this.filterQuizzes);
+      console.log("ici");
+    }
+    if(FilterType.USER === this.filterType) {
+      await this.searchService.searchUser(this.filterQuizzes);
+      console.log("la");
+    }
   }
 }

@@ -1,11 +1,8 @@
 import {inject, Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import {QuestionCreate, Quizzes} from '../../models/quizzes/quizzes';
-import {TablesInsert} from '../../../environments/supabase';
-import {environment, supabase} from '../../../environments/environment';
-import {Answers} from '../../models/answer/answer';
+import {supabase} from '../../../environments/environment';
 import {ButtonEnum} from '../../component/tabs/constants';
-import {QuizComments} from '../../component/quiz/quiz-comments/quiz-comments';
 import {QuizComment} from '../../models/quiz-comment/quiz-comment';
 import {HttpClient} from '@angular/common/http';
 
@@ -16,6 +13,7 @@ import {HttpClient} from '@angular/common/http';
 export class QuizzesService {
   public  quiz$ = new BehaviorSubject<Quizzes | null>(null)
   public allQuizs$ = new BehaviorSubject<Quizzes[] |null>(null);
+  public quizId: string | null = null;
   public quizzesFromUserComments = new BehaviorSubject<Quizzes[] | null>(null);
   public activeTab: 'search' | 'all' | 'create' | 'filter' |  null = null;
   public pageActive?: ButtonEnum;

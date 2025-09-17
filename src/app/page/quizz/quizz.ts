@@ -41,11 +41,9 @@ export class Quizz {
 
   public activationPage(event: ButtonEnum) {
     this.activePage = event;
-    console.log('event', this.activePage)
   }
 
-  public onFilterActivated(buttonEnum: ButtonEnum) {
+  public onSearchActivated(buttonEnum: ButtonEnum) {
     this.activePage = buttonEnum;
-    console.log('buttonEnum', this.activePage)
   }
 }

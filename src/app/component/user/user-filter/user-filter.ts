@@ -26,10 +26,11 @@ export class UserFilter {
   }
 
   public tableColumns: TableColumn[] = [
-    { key: 'title', label: 'Titre', type: 'text' },
-    { key: 'description', label: 'Description', type: 'text' },
-    { key: 'category', label: 'Category', type: 'text' },
-    { key: 'difficulty', label: 'Difficulty', type: 'text' },
+    { key: 'first_name', label: 'Prenom', type: 'text' },
+    { key: 'last_name', label: 'Nom', type: 'text' },
+    { key: 'adress', label: 'Adresse', type: 'text' },
+    { key: 'cp', label: 'Code Postale', type: 'text' },
+    { key: 'ville', label: 'Ville', type: 'text' },
   ];
 
   public get filterquiz() {

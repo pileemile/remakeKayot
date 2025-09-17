@@ -19,10 +19,9 @@ import {SearchService} from '../../../service/search-service/search-service';
 export class QuizFilter implements OnInit{
 
   constructor(
-    private allQuizzesService: QuizzesService,
-    private router: Router,
-    private paginationService: PaginationService,
-    private searchService: SearchService,
+    private readonly router: Router,
+    private readonly paginationService: PaginationService,
+    private readonly searchService: SearchService,
   ) {}
 
   async ngOnInit() {
@@ -45,8 +44,7 @@ export class QuizFilter implements OnInit{
   ];
 
   public async getQuizByIdLoad(id: string) {
-    await this.allQuizzesService.getQuizById(id);
-    await this.router.navigate(['/answer-quiz/' + id]);
+    this.router.navigate(['/answer-quiz/' + id]).then();
   }
 
   public get filterquiz() {

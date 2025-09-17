@@ -8,7 +8,7 @@
         <app-all-quizzes></app-all-quizzes>
       }
       @case (ButtonEnum.SEARCH){
-        <app-search-component (activateFilter)="onFilterActivated($event)"></app-search-component>
+        <app-search-component (activateFilter)="onSearchActivated($event)"></app-search-component>
       }
       @case (ButtonEnum.CREATE) {
         <app-create-quizz></app-create-quizz>
