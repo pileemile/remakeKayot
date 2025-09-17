@@ -1,32 +1,24 @@
-import {inject, Injectable} from '@angular/core';
-import {environment, supabase} from '../../../environments/environment';
+import {Injectable} from '@angular/core';
+import {supabase} from '../../../environments/environment';
 import {QuizComment} from '../../models/quiz-comment/quiz-comment';
-import {TablesInsert} from '../../../environments/supabase';
 import {Quizzes} from '../../models/quizzes/quizzes';
-import {QuizzesService} from '../quizzes/quizzes-service';
-import {BehaviorSubject, lastValueFrom} from 'rxjs';
-import {QuizComments} from '../../component/quiz/quiz-comments/quiz-comments';
-import {UserModele} from '../../models/user/user-modele';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {BehaviorSubject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuizCommentService {
 
-  constructor(
-    private quizzesService: QuizzesService,
-  ) {}
 
   public comments = new BehaviorSubject<QuizComment[]>([])
   public commentUser = new BehaviorSubject<QuizComment[]>([])
   public commentByQuiz: QuizComment[] = [];
 
+  public quizIdForComment: string | null = null;
+
   //todo: l'enlever après
-  private currentUserId = '22ce5a89-1db2-46e7-a265-c929697ff1d0';
-  //TODO: les variables sont peut être au bonne endroit
-  private apiUrl = environment.supabaseUrl + '/rest/v1';
-  private http = inject(HttpClient);
+  private readonly currentUserId = '22ce5a89-1db2-46e7-a265-c929697ff1d0';
+
 
   public async getCommentsByQuizId(quizId: string | null) {
     try {
@@ -121,10 +113,9 @@ export class QuizCommentService {
 
   public async loadCommentsByQuiz() {
     try {
-      if (this.quizzesService.quiz$.value) {
-         // this.comments.next(await this.getCommentsByQuizId(this.quizzesService.quiz$.value));
+         this.comments.next(await this.getCommentsByQuizId(this.quizIdForComment));
         console.log("commentaires", this.comments.value);
-      }
+
     } catch (error) {
       console.error('Erreur chargement des commentaires:', error);
     }

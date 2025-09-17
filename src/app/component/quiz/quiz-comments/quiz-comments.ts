@@ -1,11 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {QuizCommentService} from '../../../service/quiz-comment/quiz-comment-service';
-import {Quizzes} from '../../../models/quizzes/quizzes';
 import {CommonModule} from '@angular/common';
 import {Comments} from '../../comments/comments';
-import {QuizzesService} from '../../../service/quizzes/quizzes-service';
-import {QuizComment} from '../../../models/quiz-comment/quiz-comment';
 import {ActivatedRoute} from '@angular/router';
 
 @Component({
@@ -24,12 +21,10 @@ export class QuizComments implements OnInit{
 
   public commentForm: FormGroup;
   public isSubmitting = false;
-  public quizIdForComments: string | null = null
 
   constructor(
-    private formBuilder: FormBuilder,
+    private readonly formBuilder: FormBuilder,
     protected quizCommentsService: QuizCommentService,
-    private readonly quizzesService: QuizzesService,
     private readonly route: ActivatedRoute,
   ) {
     this.commentForm = this.formBuilder.group({
@@ -39,8 +34,8 @@ export class QuizComments implements OnInit{
   }
 
   async ngOnInit() {
-    this.quizIdForComments = this.route.snapshot.paramMap.get('id');
-    console.log("quizIdForComments", this.quizIdForComments);
+    this.quizCommentsService.quizIdForComment = this.route.snapshot.paramMap.get('id');
+    console.log("quizIdForComments", this.quizCommentsService.quizIdForComment);
 
     await this.loadCommentsByQuiz();
 
@@ -64,7 +59,7 @@ export class QuizComments implements OnInit{
 
   public async loadCommentsByQuiz() {
     try {
-        const comments = await this.quizCommentsService.getCommentsByQuizId(this.quizIdForComments);
+        const comments = await this.quizCommentsService.getCommentsByQuizId(this.quizCommentsService.quizIdForComment);
         this.quizCommentsService.comments.next(comments);
         console.log("commentaires", this.quizCommentsService.comments.value);
     } catch (error) {

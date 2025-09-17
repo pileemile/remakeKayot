@@ -32,12 +32,14 @@
                   (click)="startEdit(comment)"
                   >
               </div>
-
-              <p
-                class="text-sm text-gray-700 leading-relaxed"
+              @if (editingCommentId != comment.id) {
+                <p
+                  class="text-sm text-gray-700 leading-relaxed"
                 >
-                {{ comment.text }}
-              </p>
+                  {{ comment.text }}
+                </p>
+              }
+
               @if (editingCommentId === comment.id) {
                 <div class="space-y-2">
                   <input
@@ -65,11 +67,6 @@
                         </svg>
                       </button>
                     </div>
-                    <img
-                      src="delete.svg"
-                      alt="Supprimer"
-                      class="w-4 h-4 cursor-pointer hover:opacity-70 transition-opacity"
-                      (click)="deleteComment(comment.id)">
                   </div>
                 </div>
               }
