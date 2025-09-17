@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ButtonFilter } from "../button-filter/button-filter";
-import { FilterEnum, IFilters, filterConfig } from '../constent';
+import {FilterEnum, IFilters, filterConfig, FilterType} from '../constent';
 import { ButtonEnum } from '../../tabs/constants';
-import { SearchService } from '../../../service/search-service/search-service';
 import { InputFilter } from '../input-filter/input-filter';
 import { SelectFilter } from '../select-filter/select-filter';
-import { FilterService } from '../../../service/filter/filter-service';
+import {FilterService} from '../../../service/filter/filter-service';
+import {SearchService} from '../../../service/search-service/search-service';
 
 @Component({
   selector: 'app-filter-form',
@@ -27,17 +27,20 @@ export class FilterForm {
     }
   }
 
+  @Input() filterType!:FilterType ;
+
   @Output() activateFilter = new EventEmitter<ButtonEnum>();
+
+  constructor(
+    private readonly filterService: FilterService,
+    private readonly searchService: SearchService,
+  ) {
+  }
 
   private _filter?: IFilters;
 
   public activeFilters: FilterEnum[] = [];
   public filterConfig = filterConfig;
-
-  constructor(
-    private readonly searchService: SearchService,
-    private readonly filterService: FilterService,
-  ) {}
 
   public onReset() {
     this._filter = {};
@@ -50,12 +53,33 @@ export class FilterForm {
         this.onReset();
         break;
       case ButtonEnum.FILTER:
-        // await this.onSubmit();
+         await this.onSubmit();
         break;
     }
   }
 
-  public get filterGet() {
+  private get filterQuizzes() {
     return this.filterService.filterQuizzes.value;
+  }
+
+  public async onSubmit() {
+    if(FilterType.QUIZ === this.filterType) {
+      await this.searchService.searchQuizzes(this.filterQuizzes);
+      console.log("ici");
+
+    }
+    // if (this.filterGet) {
+    //   const search = this.filterGet as SearchQuizzesInterface;
+    //   const user = this.filterGet as SearchUsersInterface;
+    //   if(this.filterType === FilterType.QUIZ) {
+    //     await this.searchService.searchQuizzes(search);
+    //     this.activateFilter.emit(ButtonEnum.FILTER);
+    //   } else if (this.filterType === FilterType.USER  ) {
+    //     await this.searchService.searchUser(user);
+    //     this.activateFilter.emit(ButtonEnum.SEARCH_USER);
+    //   } else
+    //     console.log("errorr");
+    //   console.log("search", this.filterGet)
+    // }
   }
 }

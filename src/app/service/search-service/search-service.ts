@@ -3,32 +3,37 @@ import {SearchQuizzesInterface, SearchUsersInterface} from '../../models/search/
 import {supabase} from '../../../environments/environment';
 import {BehaviorSubject} from 'rxjs';
 import {Quizzes} from '../../models/quizzes/quizzes';
-import {UserModele} from '../../models/user/user-modele';
+import {IFilters} from '../../component/filter/constent';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class SearchService {
   public quizsSearch = new BehaviorSubject<Quizzes[] | null>(null)
 
-  public async searchQuizzes(search: SearchQuizzesInterface) {
+  public async searchQuizzes(search: IFilters | null) {
     let query = supabase
       .from('quizzes')
       .select('*');
-    if (search.category) {
-      query = query.eq('category', search.category);
-    }
-    if (search.difficulty) {
-      query = query.eq('difficulty', search.difficulty);
-    }
-    if (search.created_at && search.finish_at) {
-      const startDate = new Date(search.created_at).toISOString();
-      const endDate = new Date(search.finish_at + 'T23:59:59.999Z').toISOString();
+    if (search) {
+      if (search.category) {
+        query = query.eq('category', search.category);
+      }
+      if (search.difficulty) {
+        query = query.eq('difficulty', search.difficulty);
+      }
+      if (search.created_at && search.finish_at) {
+        const startDate = new Date(search.created_at + 'T23:59:59.999Z').toISOString();
+        const endDate = new Date(search.finish_at + 'T23:59:59.999Z').toISOString();
+        console.log(startDate, endDate);
+        query = query
+          .gte('created_at', startDate)
+          .lte('created_at', endDate);
+      }
 
-      query = query
-        .gte('created_at', startDate)
-        .lte('created_at', endDate);
     }
+
 
     const { data, error } = await query;
     console.log("data", data)

@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
-import {FilterEnum} from '../../filter/constent';
+import {Component, EventEmitter, Output} from '@angular/core';
+import {FilterEnum, FilterType} from '../../filter/constent';
 import {FilterForm} from '../../filter/filter-form/filter-form';
+import {ButtonEnum} from '../../tabs/constants';
 
 @Component({
   selector: 'app-find-user',
@@ -11,6 +12,7 @@ import {FilterForm} from '../../filter/filter-form/filter-form';
   styleUrl: './find-user.css'
 })
 export class FindUser {
+  @Output() activateFilter = new EventEmitter<ButtonEnum>()
 
   public get filterConfiguration() {
     return {
@@ -22,4 +24,5 @@ export class FindUser {
     }
   }
 
+  protected readonly FilterType = FilterType;
 }
