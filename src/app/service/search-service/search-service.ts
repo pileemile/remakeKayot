@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {SearchQuizzesInterface, SearchUsersInterface} from '../../models/search/search';
+import {SearchUsersInterface} from '../../models/search/search';
 import {supabase} from '../../../environments/environment';
 import {BehaviorSubject} from 'rxjs';
 import {Quizzes} from '../../models/quizzes/quizzes';
@@ -33,8 +33,6 @@ export class SearchService {
       }
 
     }
-
-
     const { data, error } = await query;
     console.log("data", data)
 
@@ -48,23 +46,28 @@ export class SearchService {
     return data;
   }
 
-  public async searchUser(search: SearchUsersInterface) {
+  public async searchUser(search: IFilters | null) {
     let query = supabase.from('user_roles').select('*');
-    for (const key in search) {
-      if (search[key as keyof SearchUsersInterface]) {
-        switch (key) {
-          case 'first_name':
-          case 'last_name':
-          case 'adress':
-          case 'ville':
-          case 'cp':
-            query = query.ilike(key, `%${search[key as keyof SearchUsersInterface]}%`);
-            break;
-          case 'role':
-            query = query.eq(key, search[key as keyof SearchUsersInterface]);
-            break;
+
+    if (search) {
+      const filterMap:Partial<Record<keyof IFilters, 'ilike' | 'eq'>> = {
+        first_name: 'ilike',
+        last_name: 'ilike',
+        adress: 'ilike',
+        city: 'ilike',
+        cp: 'ilike',
+        role: 'eq',
+      };
+      Object.entries(search).forEach(([key, value]) => {
+        if (value) {
+          const filterType = filterMap[key as keyof IFilters];
+          if (filterType === 'ilike') {
+            query = query.ilike(key, `%${value}%`);
+          } else {
+            query = query.eq(key, value);
+          }
         }
-      }
+      });
     }
 
     const { data, error } = await query;
@@ -77,5 +80,4 @@ export class SearchService {
 
     return data;
   }
-
 }

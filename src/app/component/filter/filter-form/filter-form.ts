@@ -66,20 +66,10 @@ export class FilterForm {
     if(FilterType.QUIZ === this.filterType) {
       await this.searchService.searchQuizzes(this.filterQuizzes);
       console.log("ici");
-
     }
-    // if (this.filterGet) {
-    //   const search = this.filterGet as SearchQuizzesInterface;
-    //   const user = this.filterGet as SearchUsersInterface;
-    //   if(this.filterType === FilterType.QUIZ) {
-    //     await this.searchService.searchQuizzes(search);
-    //     this.activateFilter.emit(ButtonEnum.FILTER);
-    //   } else if (this.filterType === FilterType.USER  ) {
-    //     await this.searchService.searchUser(user);
-    //     this.activateFilter.emit(ButtonEnum.SEARCH_USER);
-    //   } else
-    //     console.log("errorr");
-    //   console.log("search", this.filterGet)
-    // }
+    if(FilterType.USER === this.filterType) {
+      await this.searchService.searchUser(this.filterQuizzes);
+      console.log("la");
+    }
   }
 }
