@@ -7,8 +7,10 @@ import {NgClass} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Answers} from '../../../models/answer/answer';
 import {AttemptsAnswersService} from '../../../service/attempts/attempts-answers-service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {QuizComments} from '../../quiz/quiz-comments/quiz-comments';
+import {MatDialog} from '@angular/material/dialog';
+import {DialogSuccessError} from '../../dialog/dialog-success-error/dialog-success-error';
 
 @Component({
   selector: 'app-answer-questions',
@@ -34,7 +36,9 @@ export class AnswerQuestions implements OnInit{
     public quizzesService: QuizzesService,
     public attemptsAnswersService: AttemptsAnswersService,
     private readonly route: ActivatedRoute,
+    private readonly router: Router,
     private readonly allQuizzesService: QuizzesService,
+    private readonly dialog: MatDialog,
   ) {}
 
   async ngOnInit() {
@@ -111,15 +115,51 @@ export class AnswerQuestions implements OnInit{
 
   public async submit_answer() {
     if (!this.isCurrentQuestionAnswered) {
+      this.dialog.open(DialogSuccessError, {
+        width: '400px',
+        height: '170px',
+        data: {
+          message: 'Veuillez vérifier que les réponses ont bien été cochées',
+          type: 'error'
+        }
+      });
       return;
     }
 
-    const total_answers: number = Object.values(this.answers_user).length;
+    try {
+      const total_answers: number = Object.values(this.answers_user).length;
+      console.log("current", this.answers_user);
 
-    // this.attemptsAnswersService.matchAnswers(this.question?.answers, this.index, this.answers_user);
-    await this.attemptsAnswersService.insertAttemptAnswers(this.answers_user);
-    await this.attemptsAnswersService.getAttemptsAnswers(this.quizz?.id);
-    await this.attemptsAnswersService.matchAnswersUser(this.attemptsAnswersService.getAllAnswersQuiz, this.answers_user);
-    await this.attemptsAnswersService.insertAttempts(total_answers, this.quizz?.id);
+      await this.attemptsAnswersService.insertAttemptAnswers(this.answers_user);
+      await this.attemptsAnswersService.getAttemptsAnswers(this.quizz?.id);
+      await this.attemptsAnswersService.matchAnswersUser(
+        this.attemptsAnswersService.getAllAnswersQuiz,
+        this.answers_user
+      );
+      await this.attemptsAnswersService.insertAttempts(total_answers, this.quizz?.id);
+
+      this.dialog.open(DialogSuccessError, {
+        width: '400px',
+        height: '170px',
+        data: {
+          message: 'Le quiz a été rempli avec succès !',
+          type: 'success'
+        }
+      });
+
+      this.router.navigate(['all-quizzes']);
+
+    } catch (error) {
+      console.error("Erreur lors du quiz", error);
+      this.dialog.open(DialogSuccessError, {
+        width: '400px',
+        height: '170px',
+        data: {
+          message: 'Une erreur est survenue lors de la validation du quiz',
+          type: 'error'
+        }
+      });
+    }
   }
+
 }

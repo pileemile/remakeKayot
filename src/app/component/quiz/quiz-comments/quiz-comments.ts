@@ -1,11 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {QuizCommentService} from '../../../service/quiz-comment/quiz-comment-service';
-import {Quizzes} from '../../../models/quizzes/quizzes';
 import {CommonModule} from '@angular/common';
 import {Comments} from '../../comments/comments';
-import {QuizzesService} from '../../../service/quizzes/quizzes-service';
-import {QuizComment} from '../../../models/quiz-comment/quiz-comment';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-quiz-comments',
@@ -25,9 +23,9 @@ export class QuizComments implements OnInit{
   public isSubmitting = false;
 
   constructor(
-    private formBuilder: FormBuilder,
-    private quizCommentsService: QuizCommentService,
-    private quizzesService: QuizzesService,
+    private readonly formBuilder: FormBuilder,
+    protected quizCommentsService: QuizCommentService,
+    private readonly route: ActivatedRoute,
   ) {
     this.commentForm = this.formBuilder.group({
       comment: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(500)]],
@@ -36,10 +34,15 @@ export class QuizComments implements OnInit{
   }
 
   async ngOnInit() {
-    if (this.quizzesService.quiz$.value) {
-      await this.quizCommentsService.loadCommentsByQuiz();
-    }
+    this.quizCommentsService.quizIdForComment = this.route.snapshot.paramMap.get('id');
+    console.log("quizIdForComments", this.quizCommentsService.quizIdForComment);
+
+    await this.loadCommentsByQuiz();
+
+    console.log("quizCommentsService.comments.value", this.quizCommentsService.comments.value);
   }
+
+
 
   public async onSubmitComment() {
     if (this.commentForm.valid && !this.isSubmitting) {
@@ -54,7 +57,14 @@ export class QuizComments implements OnInit{
     }
   }
 
-  public get comments() {
-    return this.quizCommentsService.comments.value;
+  public async loadCommentsByQuiz() {
+    try {
+        const comments = await this.quizCommentsService.getCommentsByQuizId(this.quizCommentsService.quizIdForComment);
+        this.quizCommentsService.comments.next(comments);
+        console.log("commentaires", this.quizCommentsService.comments.value);
+    } catch (error) {
+      console.error('Erreur chargement des commentaires:', error);
+    }
   }
+
 }

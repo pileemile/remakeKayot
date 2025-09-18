@@ -1,10 +1,8 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {differenceInMinutes} from 'date-fns';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormsModule} from '@angular/forms';
 import {QuizComment} from '../../models/quiz-comment/quiz-comment';
 import {QuizCommentService} from '../../service/quiz-comment/quiz-comment-service';
 import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-comments',
@@ -25,8 +23,8 @@ export class Comments {
   public editText: string = '';
 
   constructor(
-    private formBuilder: FormBuilder,
-    private quizCommentsService: QuizCommentService
+    private readonly formBuilder: FormBuilder,
+    private readonly quizCommentsService: QuizCommentService
   ) {
     this.commentForm = this.formBuilder.group({
       comment_updated: ['', [Validators.minLength(3), Validators.maxLength(500)]],
@@ -36,8 +34,6 @@ export class Comments {
   public startEdit(comment: QuizComment) {
     this.editingCommentId = comment.id;
     this.editText = comment.text;
-    console.log(comment.text);
-    console.log(this.editText);
   }
 
   public cancelEdit() {

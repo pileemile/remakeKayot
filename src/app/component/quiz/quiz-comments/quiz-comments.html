@@ -1,7 +1,7 @@
 <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mt-6">
   <div class="flex items-center justify-between mb-6">
     <h3 class="text-lg font-semibold text-gray-900">Commentaires</h3>
-    <span class="text-sm text-gray-500">{{ comments.length }} commentaire(s)</span>
+    <span class="text-sm text-gray-500">{{ this.quizCommentsService.comments.value.length }} commentaire(s)</span>
   </div>
   <form [formGroup]="commentForm" (ngSubmit)="onSubmitComment()" class="mb-6">
     <div class="space-y-4">
@@ -28,5 +28,5 @@
       </div>
     </div>
   </form>
-  <app-comments [comments]="comments"></app-comments>
+  <app-comments [comments]="this.quizCommentsService.comments.value"></app-comments>
 </div>
