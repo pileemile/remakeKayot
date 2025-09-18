@@ -18,6 +18,7 @@ export class PaginationService {
   public pagination$ = new BehaviorSubject<Pagination>({
     page: 0,
     limit: 10,
+    total: 0
   })
 
   public async paginationQuizzes(page: number | undefined, limit: number | undefined) {

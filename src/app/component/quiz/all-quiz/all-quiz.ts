@@ -11,7 +11,8 @@ import {PaginationType} from '../../pagination/constent';
   selector: 'app-all-quiz',
   imports: [
     Pagination,
-    Table
+    Table,
+    Pagination
   ],
   templateUrl: './all-quiz.html',
   styleUrl: './all-quiz.css'

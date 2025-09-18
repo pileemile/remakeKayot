@@ -1,24 +1,24 @@
-import { Component } from '@angular/core';
-import {Pagination} from "../../pagination/pagination";
+import {Component, OnInit} from '@angular/core';
 import {Table} from "../../table/table";
 import {PaginationService} from '../../../service/pagination/pagination-service';
 import {SearchService} from '../../../service/search-service/search-service';
 import {TableColumn} from '../../../models/tables/tables-interface';
+import {Pagination} from '../../pagination/pagination';
 
 @Component({
   selector: 'app-user-filter',
-    imports: [
-        Pagination,
-        Table
-    ],
+  imports: [
+    Table,
+    Pagination
+  ],
   templateUrl: './user-filter.html',
   styleUrl: './user-filter.css'
 })
-export class UserFilter {
+export class UserFilter implements OnInit{
 
   constructor(
-    private paginationService: PaginationService,
-    private searchService: SearchService,
+    private readonly paginationService: PaginationService,
+    private readonly searchService: SearchService,
   ) {}
 
   async ngOnInit() {

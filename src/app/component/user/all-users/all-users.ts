@@ -1,23 +1,24 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {UserService} from '../../../service/user/user';
-import {Pagination} from '../../pagination/pagination';
 import {Table} from '../../table/table';
 import {TableColumn} from '../../../models/tables/tables-interface';
 import {PaginationType} from '../../pagination/constent';
+import {Pagination} from '../../pagination/pagination';
 
 @Component({
   selector: 'app-all-users',
   imports: [
-    Pagination,
-    Table
+    Table,
+    Pagination
   ],
   templateUrl: './all-users.html',
   styleUrl: './all-users.css'
 })
 export class AllUsers {
+  protected readonly PaginationType = PaginationType;
 
   constructor(
-    private userService: UserService,
+    private readonly userService: UserService,
   ) {}
 
   public tableColumns: TableColumn[] = [
@@ -32,5 +33,4 @@ export class AllUsers {
     return this.userService.allUser.value
   }
 
-  protected readonly PaginationType = PaginationType;
 }
