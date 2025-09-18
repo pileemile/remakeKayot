@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {AttemptsService} from '../attempts/attempts-service';
-import {QuizzesService} from '../quizzes/quizzes-service';
+import {QuizService} from '../quiz/quiz-service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +8,7 @@ import {QuizzesService} from '../quizzes/quizzes-service';
 export class DashboardService {
   constructor(
     public attemptsService: AttemptsService,
-    public quizzesService: QuizzesService,
+    public quizzesService: QuizService,
   ) {}
 
   private average_quiz: number = 0;
@@ -85,7 +85,7 @@ export class DashboardService {
         yValueFormatString: "#,###.##'%'",
         dataPoints: [
           { y: this.average_quiz, name: " Completed Quizzes" },
-          { y: this.stay_all_quizzes, name: "stay of quizzes" },
+          { y: this.stay_all_quizzes, name: "stay of quiz" },
         ]
       }]
     }
@@ -98,13 +98,13 @@ export class DashboardService {
     this.stay_quiz = {
       animationEnabled: true,
       title: {
-        text: "total of quizzes vs completed quizzes"
+        text: "total of quiz vs completed quiz"
       },
       axisX: {
         labelAngle: -90
       },
       axisY: {
-        title: "number of quizzes"
+        title: "number of quiz"
       },
       axisY2: {
         title: "million barrels/day"
@@ -130,8 +130,8 @@ export class DashboardService {
         legendText: "quiz",
         showInLegend: true,
         dataPoints:[
-          {label: "number of quizzes", y: lenght_quizzes},
-          {label: "completed quizzes", y: lenght_attempts},
+          {label: "number of quiz", y: lenght_quizzes},
+          {label: "completed quiz", y: lenght_attempts},
         ]
       }]
     }

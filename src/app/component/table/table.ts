@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Output, Input} from '@angular/core';
 import {TableAction, TableColumn} from '../../models/tables/tables-interface';
-import {Quizzes} from '../../models/quizzes/quizzes';
+import {Quiz} from '../../models/quizzes/quizzes';
 import {UserModele} from '../../models/user/user-modele';
 
 @Component({
@@ -10,7 +10,7 @@ import {UserModele} from '../../models/user/user-modele';
   styleUrl: './table.css'
 })
 export class Table {
-  @Input() data: (Quizzes & { questionCount?: number })[] | UserModele[] | number[] | null = null;
+  @Input() data: (Quiz & { questionCount?: number })[] | UserModele[] | number[] | null = null;
   @Input() columns: TableColumn[] = [];
   @Input() actions: TableAction[] = [];
 

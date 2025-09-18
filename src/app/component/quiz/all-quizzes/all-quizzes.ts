@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {QuizzesService} from '../../../service/quizzes/quizzes-service';
+import {QuizService} from '../../../service/quiz/quiz-service';
 import {PaginationService} from '../../../service/pagination/pagination-service';
 import {Pagination} from '../../pagination/pagination';
 import {TableAction, TableColumn} from '../../../models/tables/tables-interface';
@@ -8,7 +8,7 @@ import {Table} from '../../table/table';
 import {PaginationType} from '../../pagination/constent';
 
 @Component({
-  selector: 'app-all-quizzes',
+  selector: 'app-all-quiz',
   imports: [
     Pagination,
     Table
@@ -18,7 +18,7 @@ import {PaginationType} from '../../pagination/constent';
 })
 export class AllQuizzes implements OnInit{
   constructor(
-    private readonly allQuizzesService: QuizzesService,
+    private readonly allQuizzesService: QuizService,
     private readonly router: Router,
     private readonly paginationService: PaginationService,
   ) {}

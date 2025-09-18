@@ -1,4 +1,4 @@
-import {Quizzes} from '../quizzes/quizzes';
+import {Quiz} from '../quizzes/quizzes';
 
 export interface  UserModele {
   adress?: string | null
@@ -20,6 +20,6 @@ export enum RoleEnum {
 
 
 export interface UserCompletedQuiz {
-  quizzes: Quizzes[];
+  quizzes: Quiz[];
 }
 

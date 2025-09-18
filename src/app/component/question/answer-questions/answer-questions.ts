@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {QuestionService} from '../../../service/question/question-service';
-import {QuizzesService} from '../../../service/quizzes/quizzes-service';
+import {QuizService} from '../../../service/quiz/quiz-service';
 import {Timer} from '../../timer/timer';
-import {Category, QuestionCreate, Quizzes} from '../../../models/quizzes/quizzes';
+import {Category, QuestionCreate, Quiz} from '../../../models/quizzes/quizzes';
 import {NgClass} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Answers} from '../../../models/answer/answer';
@@ -33,11 +33,11 @@ export class AnswerQuestions implements OnInit{
 
   constructor(
     public questionService: QuestionService,
-    public quizzesService: QuizzesService,
+    public quizzesService: QuizService,
     public attemptsAnswersService: AttemptsAnswersService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly allQuizzesService: QuizzesService,
+    private readonly allQuizzesService: QuizService,
     private readonly dialog: MatDialog,
   ) {}
 
@@ -64,7 +64,7 @@ export class AnswerQuestions implements OnInit{
     this.questionService.question$.next([question]);
   }
 
-  public get quizz(): Quizzes | null {
+  public get quizz(): Quiz | null {
     if (this.quizzesService.quiz$.value) {
       return this.quizzesService.quiz$.value;
     } else {
@@ -72,7 +72,7 @@ export class AnswerQuestions implements OnInit{
     }
   }
 
-  public set quizz(quizz: Quizzes) {
+  public set quizz(quizz: Quiz) {
     this.quizzesService.quiz$.next(quizz);
     this.questionService.fetchQuestionsWithAnswersByQuizId(quizz?.id);
   }
@@ -147,7 +147,7 @@ export class AnswerQuestions implements OnInit{
         }
       });
 
-      this.router.navigate(['all-quizzes']);
+      this.router.navigate(['all-quiz']);
 
     } catch (error) {
       console.error("Erreur lors du quiz", error);

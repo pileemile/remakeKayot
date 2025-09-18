@@ -30,9 +30,9 @@ export const routes: Routes = [
     ]
   },
   {
-    path:'all-quizzes',
+    path:'all-quiz',
     component:Quizz,
-    // canActivate: [AuthGuard]
+    // can0Activate: [AuthGuard]
   },
   // TODO ajuster la convention de nommage
   {

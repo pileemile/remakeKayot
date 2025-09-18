@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
-import {QuestionCreate, Quizzes} from '../../models/quizzes/quizzes';
+import {QuestionCreate, Quiz} from '../../models/quizzes/quizzes';
 import {supabase} from '../../../environments/environment';
 import {ButtonEnum} from '../../component/tabs/constants';
 import {QuizComment} from '../../models/quiz-comment/quiz-comment';
@@ -10,18 +10,18 @@ import {HttpClient} from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class QuizzesService {
-  public  quiz$ = new BehaviorSubject<Quizzes | null>(null)
-  public allQuizs$ = new BehaviorSubject<Quizzes[] |null>(null);
+export class QuizService {
+  public  quiz$ = new BehaviorSubject<Quiz | null>(null)
+  public allQuizs$ = new BehaviorSubject<Quiz[] |null>(null);
   public quizId: string | null = null;
-  public quizzesFromUserComments = new BehaviorSubject<Quizzes[] | null>(null);
+  public quizzesFromUserComments = new BehaviorSubject<Quiz[] | null>(null);
   public activeTab: 'search' | 'all' | 'create' | 'filter' |  null = null;
   public pageActive?: ButtonEnum;
 
   private http = inject(HttpClient);
 
-  public async insertFullQuiz(quiz: Quizzes, questions: QuestionCreate[]) {
-    const quizInsert: Partial<Quizzes> = {
+  public async insertFullQuiz(quiz: Quiz, questions: QuestionCreate[]) {
+    const quizInsert: Partial<Quiz> = {
       title: quiz.title,
       description: quiz.description,
       category: quiz.category,
@@ -78,7 +78,7 @@ export class QuizzesService {
   public async getAllQuizzes() {
 
     let { data: quizzes, error } = await supabase
-      .from('quizzes, questions(*)')
+      .from('quiz, questions(*)')
       .select('*')
     this.allQuizs$.next(quizzes);
 

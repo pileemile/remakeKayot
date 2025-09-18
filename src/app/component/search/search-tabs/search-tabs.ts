@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {NgClass} from '@angular/common';
-import {QuizzesService} from '../../../service/quizzes/quizzes-service';
+import {QuizService} from '../../../service/quiz/quiz-service';
 
 @Component({
   selector: 'app-search-tabs',
@@ -14,7 +14,7 @@ import {QuizzesService} from '../../../service/quizzes/quizzes-service';
 export class SearchTabs {
 
   constructor(
-    private quizzesService: QuizzesService,
+    private quizzesService: QuizService,
   ){}
 
   public toggleSearch() {

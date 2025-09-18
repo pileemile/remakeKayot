@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {QuizzesService} from '../../../service/quizzes/quizzes-service';
+import {QuizService} from '../../../service/quiz/quiz-service';
 import {NgClass} from '@angular/common';
 
 @Component({
@@ -12,7 +12,7 @@ import {NgClass} from '@angular/common';
 })
 export class ButtonAllUsers {
   constructor(
-    private quizzesService: QuizzesService,
+    private quizzesService: QuizService,
   ){}
 
   public toggleCreateQuiz() {

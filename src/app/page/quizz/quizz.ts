@@ -5,7 +5,7 @@ import {SearchComponent} from '../../component/search/search-component/search-co
 import {Tabs} from '../../component/tabs/tabs/tabs';
 import {ButtonEnum, ITabsMode} from '../../component/tabs/constants';
 import {QuizFilter} from '../../component/quiz/quiz-filter/quiz-filter';
-import {QuizzesService} from '../../service/quizzes/quizzes-service';
+import {QuizService} from '../../service/quiz/quiz-service';
 
 @Component({
   selector: 'app-quizz',
@@ -24,7 +24,7 @@ export class Quizz {
   public ButtonEnum = ButtonEnum;
 
   constructor(
-    public quizzesService: QuizzesService
+    public quizzesService: QuizService
   ) {}
 
   public get tabsConfiguration(): ITabsMode {

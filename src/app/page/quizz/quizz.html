@@ -5,7 +5,7 @@
   <ng-content>
     @switch (this.activePage) {
       @case (ButtonEnum.ALL){
-        <app-all-quizzes></app-all-quizzes>
+        <app-all-quiz></app-all-quiz>
       }
       @case (ButtonEnum.SEARCH){
         <app-search-component (activateFilter)="onSearchActivated($event)"></app-search-component>

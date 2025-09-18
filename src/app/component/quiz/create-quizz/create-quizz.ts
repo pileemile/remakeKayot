@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {AbstractControl, FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators} from '@angular/forms';
-import {Category, Difficulty, Quizzes, QuestionCreate} from '../../../models/quizzes/quizzes';
-import {QuizzesService} from '../../../service/quizzes/quizzes-service';
+import {Category, Difficulty, Quiz, QuestionCreate} from '../../../models/quizzes/quizzes';
+import {QuizService} from '../../../service/quiz/quiz-service';
 import {MatButtonModule} from '@angular/material/button';
 import {Answers} from '../../../models/answer/answer';
 import {CommonModule} from '@angular/common';
@@ -30,7 +30,7 @@ export class CreateQuizz implements OnInit {
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly dialog: MatDialog,
-    public quizzesService: QuizzesService,
+    public quizzesService: QuizService,
   ) {
     this.form = this.formBuilder.group({
       title: ['', Validators.required],
@@ -117,7 +117,7 @@ export class CreateQuizz implements OnInit {
     answersArray.push(this.createAnswersFormGroup());
   }
 
-  public addQuizz(quiz: Quizzes) {
+  public addQuizz(quiz: Quiz) {
     this.quizzesService.quiz$.next(quiz);
   }
 
@@ -185,9 +185,9 @@ export class CreateQuizz implements OnInit {
     }
 
     try {
-      const quizValue = this.form.value as Quizzes;
+      const quizValue = this.form.value as Quiz;
       const questionsValue = this.questions.value as QuestionCreate[];
-      const result = await this.quizzesService.insertFullQuiz(quizValue, questionsValue);
+      await this.quizzesService.insertFullQuiz(quizValue, questionsValue);
 
       this.dialog.open(DialogSuccessError, {
         width: '400px',

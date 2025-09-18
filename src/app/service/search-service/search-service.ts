@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import {SearchUsersInterface} from '../../models/search/search';
 import {supabase} from '../../../environments/environment';
 import {BehaviorSubject} from 'rxjs';
-import {Quizzes} from '../../models/quizzes/quizzes';
+import {Quiz} from '../../models/quizzes/quizzes';
 import {IFilters} from '../../component/filter/constent';
 
 @Injectable({
@@ -10,7 +9,7 @@ import {IFilters} from '../../component/filter/constent';
 })
 
 export class SearchService {
-  public quizsSearch = new BehaviorSubject<Quizzes[] | null>(null)
+  public quizsSearch = new BehaviorSubject<Quiz[] | null>(null)
 
   public async searchQuizzes(search: IFilters | null) {
     let query = supabase

@@ -3,7 +3,7 @@ import {CanvasJSAngularChartsModule} from '@canvasjs/angular-charts';
 import {LoginService} from '../../../service/login/login-service';
 import {DashboardService} from '../../../service/dashboard/dashboard-service';
 import {AttemptsService} from '../../../service/attempts/attempts-service';
-import {QuizzesService} from '../../../service/quizzes/quizzes-service';
+import {QuizService} from '../../../service/quiz/quiz-service';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {CommonModule} from '@angular/common';
 
@@ -22,7 +22,7 @@ export class DashboardComponent implements OnInit{
     public loginService: LoginService,
     public dashboardService: DashboardService,
     public attemptsService: AttemptsService,
-    public quizzesService: QuizzesService,
+    public quizzesService: QuizService,
     private http : HttpClient
   ) {}
 

@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ButtonEnum} from '../../tabs/constants';
-import {QuizzesService} from '../../../service/quizzes/quizzes-service';
+import {QuizService} from '../../../service/quiz/quiz-service';
 import {ButtonFilterType} from './constent';
 
 @Component({
@@ -15,7 +15,7 @@ export class ButtonFilter {
   @Output() onButtonClick: EventEmitter<ButtonEnum> = new EventEmitter();
 
   constructor(
-    public quizzesService: QuizzesService,
+    public quizzesService: QuizService,
   ) {}
 
   public onDeleteClick(){

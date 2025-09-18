@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {TableAction, TableColumn} from '../../../models/tables/tables-interface';
-import {QuizzesService} from '../../../service/quizzes/quizzes-service';
+import {QuizService} from '../../../service/quiz/quiz-service';
 import {Router} from '@angular/router';
 import {PaginationService} from '../../../service/pagination/pagination-service';
 import {Pagination} from '../../pagination/pagination';

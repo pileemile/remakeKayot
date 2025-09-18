@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Accordion} from '../../accordion/accordion';
 import {QuizCommentService} from '../../../service/quiz-comment/quiz-comment-service';
-import {QuizzesService} from '../../../service/quizzes/quizzes-service';
+import {QuizService} from '../../../service/quiz/quiz-service';
 import {initAccordions} from 'flowbite';
 
 @Component({
@@ -16,7 +16,7 @@ export class UserComments implements OnInit {
 
   constructor(
     private quizCommentService: QuizCommentService,
-    private quizzesService: QuizzesService,
+    private quizzesService: QuizService,
   ) {
   }
 

@@ -3,7 +3,7 @@ import {Tabs} from "../../component/tabs/tabs/tabs";
 import {ButtonEnum, ITabsMode} from '../../component/tabs/constants';
 import {AllUsers} from '../../component/user/all-users/all-users';
 import {FindUser} from '../../component/user/find-user/find-user';
-import {QuizzesService} from '../../service/quizzes/quizzes-service';
+import {QuizService} from '../../service/quiz/quiz-service';
 import {UserFilter} from '../../component/user/user-filter/user-filter';
 
 @Component({
@@ -21,7 +21,7 @@ export class Users {
   public ButtonEnum = ButtonEnum;
 
   constructor(
-    private readonly quizService: QuizzesService
+    private readonly quizService: QuizService
   ) {}
 
   public get activePage(): ButtonEnum | undefined {
