@@ -3,7 +3,7 @@ import {supabase} from '../../../environments/environment';
 import {UserModele} from '../../models/user/user-modele';
 import {BehaviorSubject} from 'rxjs';
 import {TablesUpdate} from '../../../environments/supabase';
-import {Quiz} from '../../models/quizzes/quizzes';
+import {Quiz} from '../../models/quiz/quiz';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class UserService {
   public editUser = new BehaviorSubject<UserModele | null>(null);
   public allUser = new BehaviorSubject<UserModele[] | null>(null);
 
-  public async getQuizzes(user_id: string) {
+  public async getQuiz(user_id: string) {
     const {data, error} = await supabase
       .from('quizzes')
       .select(`id,title,attempts_answers!inner(id,score,completed_at)`)

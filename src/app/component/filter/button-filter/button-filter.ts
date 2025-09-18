@@ -12,24 +12,24 @@ import {ButtonFilterType} from './constent';
 export class ButtonFilter {
   @Input() buttonType: ButtonFilterType = ButtonFilterType.ALL;
 
-  @Output() onButtonClick: EventEmitter<ButtonEnum> = new EventEmitter();
+  @Output() ButtonClick: EventEmitter<ButtonEnum> = new EventEmitter();
 
   constructor(
-    public quizzesService: QuizService,
+    private readonly quizService: QuizService,
   ) {}
 
   public onDeleteClick(){
-    this.onButtonClick.emit(ButtonEnum.CLEAR)
+    this.ButtonClick.emit(ButtonEnum.CLEAR)
   }
 
   private set activePage(value: ButtonEnum | undefined) {
-    this.quizzesService.pageActive = value;
+    this.quizService.pageActive = value;
   }
 
   public onFilterClick(event: MouseEvent) {
     event.preventDefault();
     this.activePage = ButtonEnum.FILTER;
-    this.onButtonClick.emit(ButtonEnum.FILTER)
+    this.ButtonClick.emit(ButtonEnum.FILTER)
 
   }
 

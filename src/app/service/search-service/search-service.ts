@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {supabase} from '../../../environments/environment';
 import {BehaviorSubject} from 'rxjs';
-import {Quiz} from '../../models/quizzes/quizzes';
+import {Quiz} from '../../models/quiz/quiz';
 import {IFilters} from '../../component/filter/constent';
 
 @Injectable({

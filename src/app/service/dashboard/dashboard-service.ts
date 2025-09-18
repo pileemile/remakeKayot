@@ -8,11 +8,11 @@ import {QuizService} from '../quiz/quiz-service';
 export class DashboardService {
   constructor(
     public attemptsService: AttemptsService,
-    public quizzesService: QuizService,
+    private readonly quizService: QuizService,
   ) {}
 
   private average_quiz: number = 0;
-  private stay_all_quizzes: number = 0;
+  private stay_all_quiz: number = 0;
   private percentage_correcte: {
     animationEnabled: boolean;
     title: { text: string; };
@@ -61,7 +61,7 @@ export class DashboardService {
   } | undefined
 
   private get lenght_quizzes() {
-    return this.quizzesService.allQuizs$.value?.length ?? 0;
+    return this.quizService.allQuizs$.value?.length ?? 0;
   }
 
   private get lenght_attempts() {
@@ -72,7 +72,7 @@ export class DashboardService {
     const lenght_quizzes = this.lenght_quizzes;
     const lenght_attempts = this.lenght_attempts;
     this.average_quiz= (lenght_attempts / lenght_quizzes) * 100;
-    this.stay_all_quizzes = 100 - this.average_quiz;
+    this.stay_all_quiz = 100 - this.average_quiz;
     this.average_completed_quiz = {
       animationEnabled: true,
       title: {
@@ -85,11 +85,11 @@ export class DashboardService {
         yValueFormatString: "#,###.##'%'",
         dataPoints: [
           { y: this.average_quiz, name: " Completed Quizzes" },
-          { y: this.stay_all_quizzes, name: "stay of quiz" },
+          { y: this.stay_all_quiz, name: "stay of quiz" },
         ]
       }]
     }
-    return this.average_quiz && this.stay_all_quizzes && this.average_completed_quiz;
+    return this.average_quiz && this.stay_all_quiz && this.average_completed_quiz;
   }
 
   public stay_quiz_user() {
@@ -159,7 +159,7 @@ export class DashboardService {
         ]
       }]
     }
-    return this.average_quiz && this.stay_all_quizzes && this.percentage_correcte;
+    return this.average_quiz && this.stay_all_quiz && this.percentage_correcte;
   }
 
 }

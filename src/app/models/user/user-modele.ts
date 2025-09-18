@@ -1,4 +1,4 @@
-import {Quiz} from '../quizzes/quizzes';
+import {Quiz} from '../quiz/quiz';
 
 export interface  UserModele {
   adress?: string | null

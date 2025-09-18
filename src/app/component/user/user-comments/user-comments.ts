@@ -15,8 +15,8 @@ import {initAccordions} from 'flowbite';
 export class UserComments implements OnInit {
 
   constructor(
-    private quizCommentService: QuizCommentService,
-    private quizzesService: QuizService,
+    private readonly quizCommentService: QuizCommentService,
+    private readonly quizService: QuizService,
   ) {
   }
 
@@ -24,7 +24,7 @@ export class UserComments implements OnInit {
     initAccordions();
 
     await this.quizCommentService.loadCommentByUser();
-    await this.quizzesService.fetchQuizzesFromUserComments(this.commentUserByQuizId);
+    await this.quizService.fetchQuizzesFromUserComments(this.commentUserByQuizId);
     await this.quizCommentService.getAllCommentsByQuiz(this.quizId);
   }
 
@@ -33,7 +33,7 @@ export class UserComments implements OnInit {
   }
 
   public get quizId() {
-    return this.quizzesService.quizzesFromUserComments.value;
+    return this.quizService.quizzesFromUserComments.value;
   }
 
 }

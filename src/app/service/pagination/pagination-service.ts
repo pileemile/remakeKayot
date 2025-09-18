@@ -11,7 +11,7 @@ import {UserService} from '../user/user';
 export class PaginationService {
 
   constructor(
-    private readonly quizzesService: QuizService,
+    private readonly quizService: QuizService,
     private readonly userService: UserService,
   ) {}
 
@@ -26,7 +26,7 @@ export class PaginationService {
           .from('quizzes')
           .select('*, questions(*)')
           .range(page, limit)
-      this.quizzesService.allQuizs$.next(quizzes);
+      this.quizService.allQuizs$.next(quizzes);
       console.log("all quiz", quizzes)
     }
     else {

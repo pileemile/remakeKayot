@@ -12,14 +12,14 @@ import {NgClass} from '@angular/common';
 })
 export class ButtonAllUsers {
   constructor(
-    private quizzesService: QuizService,
+    private readonly quizService: QuizService,
   ){}
 
   public toggleCreateQuiz() {
-    this.quizzesService.activeTab = this.quizzesService.activeTab === 'create' ? null : 'create';
+    this.quizService.activeTab = this.quizService.activeTab === 'create' ? null : 'create';
   }
 
   public get create() {
-    return this.quizzesService.activeTab === 'create';
+    return this.quizService.activeTab === 'create';
   }
 }

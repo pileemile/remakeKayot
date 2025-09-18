@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
-import {QuestionCreate, Quiz} from '../../models/quizzes/quizzes';
+import {QuestionCreate, Quiz} from '../../models/quiz/quiz';
 import {supabase} from '../../../environments/environment';
 import {ButtonEnum} from '../../component/tabs/constants';
 import {QuizComment} from '../../models/quiz-comment/quiz-comment';

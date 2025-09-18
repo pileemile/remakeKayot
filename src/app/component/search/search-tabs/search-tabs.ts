@@ -14,15 +14,15 @@ import {QuizService} from '../../../service/quiz/quiz-service';
 export class SearchTabs {
 
   constructor(
-    private quizzesService: QuizService,
+    private readonly quizService: QuizService,
   ){}
 
   public toggleSearch() {
-    this.quizzesService.activeTab = this.quizzesService.activeTab === 'search' ? null : 'search';
+    this.quizService.activeTab = this.quizService.activeTab === 'search' ? null : 'search';
   }
 
   public get search() {
-    return this.quizzesService.activeTab === 'search';
+    return this.quizService.activeTab === 'search';
   }
 
 }

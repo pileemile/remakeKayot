@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Output, Input} from '@angular/core';
 import {TableAction, TableColumn} from '../../models/tables/tables-interface';
-import {Quiz} from '../../models/quizzes/quizzes';
+import {Quiz} from '../../models/quiz/quiz';
 import {UserModele} from '../../models/user/user-modele';
 
 @Component({

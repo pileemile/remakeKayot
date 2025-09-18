@@ -14,10 +14,10 @@ export class AnswerQuiz implements OnInit{
   public quizId: string | null = null;
 
   constructor(
-    private readonly quizzesService: QuizService,
+    private readonly quizService: QuizService,
   ) {}
 
   ngOnInit() {
-    this.quizId = this.quizzesService.quizId;
+    this.quizId = this.quizService.quizId;
   }
 }

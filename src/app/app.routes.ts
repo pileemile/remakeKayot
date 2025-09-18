@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { Login } from './page/login/login';
-import { Quizz } from './page/quizz/quizz';
+import { Quiz } from './page/quiz/quiz';
 import {AuthGuard} from './auth.guard';
 import {AnswerQuiz} from './page/answer-quiz/answer-quiz';
 import {Dashboard} from './page/dashboard/dashboard';
@@ -31,7 +31,7 @@ export const routes: Routes = [
   },
   {
     path:'all-quiz',
-    component:Quizz,
+    component:Quiz,
     // can0Activate: [AuthGuard]
   },
   // TODO ajuster la convention de nommage
