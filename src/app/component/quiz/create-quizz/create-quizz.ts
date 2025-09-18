@@ -5,8 +5,8 @@ import {QuizzesService} from '../../../service/quizzes/quizzes-service';
 import {MatButtonModule} from '@angular/material/button';
 import {Answers} from '../../../models/answer/answer';
 import {CommonModule} from '@angular/common';
-import {CreateQuizDialog} from '../create-quiz-dialog/create-quiz-dialog';
 import {MatDialog} from '@angular/material/dialog';
+import {DialogSuccessError} from '../../dialog/dialog-success-error/dialog-success-error';
 
 @Component({
   selector: 'app-create-quizz',
@@ -29,7 +29,7 @@ export class CreateQuizz implements OnInit {
 
   constructor(
     private readonly formBuilder: FormBuilder,
-    private dialog: MatDialog,
+    private readonly dialog: MatDialog,
     public quizzesService: QuizzesService,
   ) {
     this.form = this.formBuilder.group({
@@ -176,7 +176,7 @@ export class CreateQuizz implements OnInit {
   public async onSubmit() {
     if (!this.form.valid) {
       this.markFormGroupTouched(this.form);
-      this.dialog.open(CreateQuizDialog, {
+      this.dialog.open(DialogSuccessError, {
         width: '400px',
         height: '170px',
         data: { message: 'Le formulaire est invalide. Veuillez vérifier vos champs.', type: 'error' }
@@ -189,7 +189,7 @@ export class CreateQuizz implements OnInit {
       const questionsValue = this.questions.value as QuestionCreate[];
       const result = await this.quizzesService.insertFullQuiz(quizValue, questionsValue);
 
-      this.dialog.open(CreateQuizDialog, {
+      this.dialog.open(DialogSuccessError, {
         width: '400px',
         height: '170px',
         data: { message: 'Le quiz a été enregistré avec succès !', type: 'success' }
@@ -198,7 +198,7 @@ export class CreateQuizz implements OnInit {
 
     } catch (error) {
       console.error('Erreur lors de l\'insertion du quiz complet', error);
-      this.dialog.open(CreateQuizDialog, {
+      this.dialog.open(DialogSuccessError, {
         width: '400px',
         height: '170px',
         data: { message: 'Une erreur est survenue lors de l\'enregistrement du quiz.', type: 'error' }
