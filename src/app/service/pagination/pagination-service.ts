@@ -17,23 +17,23 @@ export class PaginationService {
 
   public pagination$ = new BehaviorSubject<Pagination | null>(null);
 
-  public async paginationQuizzes(page: number, limit: number): Promise<void> {
+  public async paginationQuiz(page: number, limit: number): Promise<void> {
     try {
       const { count: totalCount } = await supabase
         .from('quizzes')
         .select('*', { count: 'exact', head: true });
 
-      const { data: quizzes, error } = await supabase
+      const { data: quiz, error } = await supabase
         .from('quizzes')
         .select('*, questions(*)')
         .range(page, page + limit - 1);
 
       if (error) {
-        console.error('Erreur lors de la récupération des quizzes:', error);
+        console.error('Erreur lors de la récupération des quiz:', error);
         return;
       }
 
-      this.quizService.allQuizs$.next(quizzes);
+      this.quizService.allQuizs$.next(quiz);
 
       this.pagination$.next({
         page,
@@ -41,10 +41,10 @@ export class PaginationService {
         total: totalCount || 0
       });
 
-      console.log("Quizzes paginés:", quizzes);
-      console.log("Total quizzes:", totalCount);
+      console.log("Quiz paginés:", quiz);
+      console.log("Total quiz:", totalCount);
     } catch (error) {
-      console.error('Erreur lors de la pagination des quizzes:', error);
+      console.error('Erreur lors de la pagination des quiz:', error);
     }
   }
 

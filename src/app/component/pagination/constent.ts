@@ -1,7 +1,6 @@
 export enum PaginationType {
-  ALLQUIZZES = 'allquizzes',
+  ALLQUIZ = 'allquiz',
   ALLUSERS = 'allusers',
   QUIZFILTER = 'quizfilter',
   USERFILTER = 'userfilter',
-  ALL = "all"
 }

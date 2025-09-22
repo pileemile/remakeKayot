@@ -10,7 +10,7 @@ import {Quiz} from '../../models/quiz/quiz';
 })
 export class UserService {
 
-  public userByQuizzes = new BehaviorSubject<Quiz[] | null>(null)
+  public userByQuiz = new BehaviorSubject<Quiz[] | null>(null)
   public getUser: UserModele | null = null;
   public editUser = new BehaviorSubject<UserModele | null>(null);
   public allUser = new BehaviorSubject<UserModele[] | null>(null);
@@ -64,7 +64,7 @@ export class UserService {
     }
   }
 
-  public async getQuizzesByUserId(user_id: string) {
+  public async getQuizByUserId(user_id: string) {
     const {data, error} = await supabase
       .from('attempt_answers')
       .select(`quizzes!inner(*)`)
@@ -84,8 +84,8 @@ export class UserService {
         }
       });
 
-      this.userByQuizzes.next(dataTable);
-      console.log("user by quiz", this.userByQuizzes.value)
+      this.userByQuiz.next(dataTable);
+      console.log("user by quiz", this.userByQuiz.value)
     }
   }
 

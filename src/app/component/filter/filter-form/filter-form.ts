@@ -58,18 +58,16 @@ export class FilterForm {
     }
   }
 
-  private get filterQuizzes() {
-    return this.filterService.filterQuizzes.value;
+  private get filterQuiz() {
+    return this.filterService.filterQuiz.value;
   }
 
   public async onSubmit() {
     if(FilterType.QUIZ === this.filterType) {
-      await this.searchService.searchQuizzes(this.filterQuizzes);
-      console.log("ici");
+      await this.searchService.searchQuiz(this.filterQuiz);
     }
     if(FilterType.USER === this.filterType) {
-      await this.searchService.searchUser(this.filterQuizzes);
-      console.log("la");
+      await this.searchService.searchUser(this.filterQuiz);
     }
   }
 }

@@ -14,15 +14,14 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 })
 export class UserDetails implements OnInit{
 
-  private id_user:string = '22ce5a89-1db2-46e7-a265-c929697ff1d0';
+  private readonly id_user:string = '22ce5a89-1db2-46e7-a265-c929697ff1d0';
 
   public form: FormGroup;
   public isEditing: boolean = false;
 
-
   constructor(
-    private formBuilder: FormBuilder,
-    private userService: UserService
+    private readonly formBuilder: FormBuilder,
+    private readonly userService: UserService
   ) {
     this.form = this.formBuilder.group(
       {
@@ -37,7 +36,7 @@ export class UserDetails implements OnInit{
 
   async ngOnInit() {
     await this.userService.getUserById(this.id_user);
-    await this.userService.getQuizzesByUserId(this.id_user);
+    await this.userService.getQuizByUserId(this.id_user);
     this.updateFormValues();
   }
 
@@ -74,7 +73,6 @@ export class UserDetails implements OnInit{
       this.form.get('cp')?.disable();
     }
   }
-
 
    public async onSubmit() {
     this.userService.editUser.next(this.form.value);

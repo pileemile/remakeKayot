@@ -20,6 +20,6 @@ export enum RoleEnum {
 
 
 export interface UserCompletedQuiz {
-  quizzes: Quiz[];
+  quiz: Quiz[];
 }
 

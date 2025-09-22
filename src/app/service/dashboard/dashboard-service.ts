@@ -60,7 +60,7 @@ export class DashboardService {
     })[];
   } | undefined
 
-  private get lenght_quizzes() {
+  private get lenght_quiz() {
     return this.quizService.allQuizs$.value?.length ?? 0;
   }
 
@@ -69,9 +69,9 @@ export class DashboardService {
   }
 
   public average_completed_quiz_by_user () {
-    const lenght_quizzes = this.lenght_quizzes;
+    const lenght_quiz = this.lenght_quiz;
     const lenght_attempts = this.lenght_attempts;
-    this.average_quiz= (lenght_attempts / lenght_quizzes) * 100;
+    this.average_quiz= (lenght_attempts / lenght_quiz) * 100;
     this.stay_all_quiz = 100 - this.average_quiz;
     this.average_completed_quiz = {
       animationEnabled: true,
@@ -84,7 +84,7 @@ export class DashboardService {
         indexLabel: "{name}: {y}",
         yValueFormatString: "#,###.##'%'",
         dataPoints: [
-          { y: this.average_quiz, name: " Completed Quizzes" },
+          { y: this.average_quiz, name: " Completed Quiz" },
           { y: this.stay_all_quiz, name: "stay of quiz" },
         ]
       }]
@@ -93,7 +93,7 @@ export class DashboardService {
   }
 
   public stay_quiz_user() {
-    const lenght_quizzes = this.lenght_quizzes;
+    const lenght_quiz = this.lenght_quiz;
     const lenght_attempts = this.lenght_attempts;
     this.stay_quiz = {
       animationEnabled: true,
@@ -130,7 +130,7 @@ export class DashboardService {
         legendText: "quiz",
         showInLegend: true,
         dataPoints:[
-          {label: "number of quiz", y: lenght_quizzes},
+          {label: "number of quiz", y: lenght_quiz},
           {label: "completed quiz", y: lenght_attempts},
         ]
       }]

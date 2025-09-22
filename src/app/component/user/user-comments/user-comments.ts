@@ -24,7 +24,7 @@ export class UserComments implements OnInit {
     initAccordions();
 
     await this.quizCommentService.loadCommentByUser();
-    await this.quizService.fetchQuizzesFromUserComments(this.commentUserByQuizId);
+    await this.quizService.fetchQuizFromUserComments(this.commentUserByQuizId);
     await this.quizCommentService.getAllCommentsByQuiz(this.quizId);
   }
 
@@ -33,7 +33,7 @@ export class UserComments implements OnInit {
   }
 
   public get quizId() {
-    return this.quizService.quizzesFromUserComments.value;
+    return this.quizService.quizFromUserComments.value;
   }
 
 }

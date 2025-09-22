@@ -11,7 +11,7 @@ import {IFilters} from '../../component/filter/constent';
 export class SearchService {
   public quizsSearch = new BehaviorSubject<Quiz[] | null>(null)
 
-  public async searchQuizzes(search: IFilters | null) {
+  public async searchQuiz(search: IFilters | null) {
     let query = supabase
       .from('quizzes')
       .select('*');
