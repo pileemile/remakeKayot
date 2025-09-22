@@ -90,7 +90,10 @@ export class Pagination implements OnInit, OnDestroy {
           await this.paginationService.paginationUser(page, limit);
           break;
         case PaginationType.ALLQUIZ:
-          await this.paginationService.paginationQuiz(page, limit);
+          await this.paginationService.paginationQuizzes(page, limit);
+          break;
+        case PaginationType.QUIZFILTER:
+          await this.paginationService.paginationQuizFilter(page, limit);
           break;
         default:
           console.warn('pagination non supporté:', this.type);
