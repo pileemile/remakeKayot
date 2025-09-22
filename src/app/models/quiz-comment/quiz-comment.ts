@@ -1,9 +1,9 @@
-export interface QuizComment {
+export interface Comment {
   id: string;
-  quiz_id: string;
-  user_id: string;
   text: string;
-  created_at: string;
+  quiz_id: string;
+  userId?: string;
+  createdAt: Date;
 }
 
 export interface QuizCommentCreate {

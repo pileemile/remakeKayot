@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormsModule} from '@angular/forms';
-import {QuizComment} from '../../models/quiz-comment/quiz-comment';
+import {Comment} from '../../models/quiz-comment/quiz-comment';
 import {QuizCommentService} from '../../service/quiz-comment/quiz-comment-service';
 import {CommonModule} from '@angular/common';
 
@@ -15,8 +15,8 @@ import {CommonModule} from '@angular/common';
   styleUrl: './comments.css'
 })
 export class Comments {
-  @Input() comments: QuizComment[] = [];
-  @Output() loadComment = new EventEmitter<QuizComment>();
+  @Input() comments: Comment[] = [];
+  @Output() loadComment = new EventEmitter<Comment>();
 
   public commentForm: FormGroup;
   public editingCommentId: string | null = null;
@@ -31,7 +31,7 @@ export class Comments {
     });
   }
 
-  public startEdit(comment: QuizComment) {
+  public startEdit(comment: Comment) {
     this.editingCommentId = comment.id;
     this.editText = comment.text;
   }
