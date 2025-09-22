@@ -1,7 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {Router} from '@angular/router';
 import {QuizService} from '../../../service/quiz/quiz-service';
-import {PaginationService} from '../../../service/pagination/pagination-service';
 import {Pagination} from '../../pagination/pagination';
 import {TableAction, TableColumn} from '../../../models/tables/tables-interface';
 import {Table} from '../../table/table';
@@ -17,19 +16,14 @@ import {PaginationType} from '../../pagination/constent';
   templateUrl: './all-quiz.html',
   styleUrl: './all-quiz.css'
 })
-export class AllQuiz implements OnInit{
+export class AllQuiz {
   protected readonly PaginationType = PaginationType;
 
   constructor(
     private readonly allQuizService: QuizService,
     private readonly router: Router,
-    private readonly paginationService: PaginationService,
   ) {}
 
- async ngOnInit() {
-   await this.paginationService.paginationQuizzes(this.paginationService.pagination$.value?.page, this.paginationService.pagination$.value?.limit);
-
- }
   public tableColumns: TableColumn[] = [
     { key: 'title', label: 'Titre', type: 'text' },
     { key: 'description', label: 'Description', type: 'text' },

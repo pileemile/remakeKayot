@@ -2,8 +2,8 @@ import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import {PaginationType} from './constent';
-import {PaginationService} from '../../service/pagination/pagination-service';
+import { PaginationType } from './constent';
+import { PaginationService } from '../../service/pagination/pagination-service';
 
 @Component({
   selector: 'app-pagination',
@@ -13,20 +13,21 @@ import {PaginationService} from '../../service/pagination/pagination-service';
   styleUrls: ['./pagination.css']
 })
 export class Pagination implements OnInit, OnDestroy {
-  @Input() type: PaginationType = PaginationType.ALL;
+  @Input() type!: PaginationType;
 
   private readonly destroy$ = new Subject<void>();
 
-  // Propriétés pour le template
-  currentPage = 1;
-  totalPages = 1;
-  totalItems = 0;
-  itemsPerPage = 10;
-  isLoading = false;
+  public currentPage = 1;
+  public totalPages = 1;
+  public totalItems = 0;
+  public itemsPerPage = 10;
+  public isLoading = false;
 
-  constructor(private readonly paginationService: PaginationService) {}
+  constructor(
+    private readonly paginationService: PaginationService
+  ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.subscribeToPageChanges();
     this.initializePagination();
   }
@@ -44,6 +45,7 @@ export class Pagination implements OnInit, OnDestroy {
           this.currentPage = Math.floor(pagination.page / this.itemsPerPage) + 1;
           this.totalPages = Math.ceil(pagination.total / this.itemsPerPage);
           this.totalItems = pagination.total;
+          console.log("totalItems updated:", this.totalItems);
         }
       });
   }
@@ -91,7 +93,7 @@ export class Pagination implements OnInit, OnDestroy {
           await this.paginationService.paginationQuizzes(page, limit);
           break;
         default:
-          console.warn('Type de pagination non supporté:', this.type);
+          console.warn('pagination non supporté:', this.type);
       }
     } catch (error) {
       console.error('Erreur lors du chargement des données:', error);
@@ -100,7 +102,6 @@ export class Pagination implements OnInit, OnDestroy {
     }
   }
 
-  @Input() Type!: PaginationType.ALLQUIZZES;
   get canGoPrevious(): boolean {
     return this.currentPage > 1 && !this.isLoading;
   }
