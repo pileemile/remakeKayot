@@ -1,30 +1,30 @@
 import {Component} from '@angular/core';
-import {CreateQuizz} from '../../component/quiz/create-quizz/create-quizz';
-import {AllQuizzes} from '../../component/quiz/all-quizzes/all-quizzes';
+import {CreateQuiz} from '../../component/quiz/create-quiz/create-quiz';
+import {AllQuiz} from '../../component/quiz/all-quiz/all-quiz';
 import {SearchComponent} from '../../component/search/search-component/search-component';
 import {Tabs} from '../../component/tabs/tabs/tabs';
 import {ButtonEnum, ITabsMode} from '../../component/tabs/constants';
 import {QuizFilter} from '../../component/quiz/quiz-filter/quiz-filter';
-import {QuizzesService} from '../../service/quizzes/quizzes-service';
+import {QuizService} from '../../service/quiz/quiz-service';
 
 @Component({
-  selector: 'app-quizz',
+  selector: 'app-quiz',
   imports: [
-    CreateQuizz,
-    AllQuizzes,
+    CreateQuiz,
+    AllQuiz,
     SearchComponent,
     Tabs,
     QuizFilter,
   ],
-  templateUrl: './quizz.html',
-  styleUrl: './quizz.css'
+  templateUrl: './quiz.html',
+  styleUrl: './quiz.css'
 })
-export class Quizz {
+export class Quiz {
 
   public ButtonEnum = ButtonEnum;
 
   constructor(
-    public quizzesService: QuizzesService
+    private readonly quizService: QuizService
   ) {}
 
   public get tabsConfiguration(): ITabsMode {
@@ -32,11 +32,11 @@ export class Quizz {
   }
 
   public get activePage(): ButtonEnum | undefined {
-    return this.quizzesService.pageActive;
+    return this.quizService.pageActive;
   }
 
   public set activePage(value: ButtonEnum | undefined) {
-    this.quizzesService.pageActive = value;
+    this.quizService.pageActive = value;
   }
 
   public activationPage(event: ButtonEnum) {

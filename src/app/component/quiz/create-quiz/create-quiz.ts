@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {AbstractControl, FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators} from '@angular/forms';
-import {Category, Difficulty, Quizzes, QuestionCreate} from '../../../models/quizzes/quizzes';
-import {QuizzesService} from '../../../service/quizzes/quizzes-service';
+import {Category, Difficulty, Quiz, QuestionCreate} from '../../../models/quiz/quiz';
+import {QuizService} from '../../../service/quiz/quiz-service';
 import {MatButtonModule} from '@angular/material/button';
 import {Answers} from '../../../models/answer/answer';
 import {CommonModule} from '@angular/common';
@@ -17,11 +17,11 @@ import {DialogSuccessError} from '../../dialog/dialog-success-error/dialog-succe
     ReactiveFormsModule,
     FormsModule,
   ],
-  templateUrl: './create-quizz.html',
-  styleUrl: './create-quizz.css',
+  templateUrl: './create-quiz.html',
+  styleUrl: './create-quiz.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CreateQuizz implements OnInit {
+export class CreateQuiz implements OnInit {
 
   public form: FormGroup;
   public categories = Object.values(Category);
@@ -30,7 +30,7 @@ export class CreateQuizz implements OnInit {
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly dialog: MatDialog,
-    public quizzesService: QuizzesService,
+    private readonly quizService: QuizService,
   ) {
     this.form = this.formBuilder.group({
       title: ['', Validators.required],
@@ -117,8 +117,8 @@ export class CreateQuizz implements OnInit {
     answersArray.push(this.createAnswersFormGroup());
   }
 
-  public addQuizz(quiz: Quizzes) {
-    this.quizzesService.quiz$.next(quiz);
+  public addQuizz(quiz: Quiz) {
+    this.quizService.quiz$.next(quiz);
   }
 
   public removeQuestion(index: number): void {
@@ -185,9 +185,9 @@ export class CreateQuizz implements OnInit {
     }
 
     try {
-      const quizValue = this.form.value as Quizzes;
+      const quizValue = this.form.value as Quiz;
       const questionsValue = this.questions.value as QuestionCreate[];
-      const result = await this.quizzesService.insertFullQuiz(quizValue, questionsValue);
+      await this.quizService.insertFullQuiz(quizValue, questionsValue);
 
       this.dialog.open(DialogSuccessError, {
         width: '400px',

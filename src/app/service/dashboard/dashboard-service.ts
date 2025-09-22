@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {AttemptsService} from '../attempts/attempts-service';
-import {QuizzesService} from '../quizzes/quizzes-service';
+import {QuizService} from '../quiz/quiz-service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,11 +8,11 @@ import {QuizzesService} from '../quizzes/quizzes-service';
 export class DashboardService {
   constructor(
     public attemptsService: AttemptsService,
-    public quizzesService: QuizzesService,
+    private readonly quizService: QuizService,
   ) {}
 
   private average_quiz: number = 0;
-  private stay_all_quizzes: number = 0;
+  private stay_all_quiz: number = 0;
   private percentage_correcte: {
     animationEnabled: boolean;
     title: { text: string; };
@@ -60,8 +60,8 @@ export class DashboardService {
     })[];
   } | undefined
 
-  private get lenght_quizzes() {
-    return this.quizzesService.allQuizs$.value?.length ?? 0;
+  private get lenght_quiz() {
+    return this.quizService.allQuizs$.value?.length ?? 0;
   }
 
   private get lenght_attempts() {
@@ -69,10 +69,10 @@ export class DashboardService {
   }
 
   public average_completed_quiz_by_user () {
-    const lenght_quizzes = this.lenght_quizzes;
+    const lenght_quiz = this.lenght_quiz;
     const lenght_attempts = this.lenght_attempts;
-    this.average_quiz= (lenght_attempts / lenght_quizzes) * 100;
-    this.stay_all_quizzes = 100 - this.average_quiz;
+    this.average_quiz= (lenght_attempts / lenght_quiz) * 100;
+    this.stay_all_quiz = 100 - this.average_quiz;
     this.average_completed_quiz = {
       animationEnabled: true,
       title: {
@@ -84,27 +84,27 @@ export class DashboardService {
         indexLabel: "{name}: {y}",
         yValueFormatString: "#,###.##'%'",
         dataPoints: [
-          { y: this.average_quiz, name: " Completed Quizzes" },
-          { y: this.stay_all_quizzes, name: "stay of quizzes" },
+          { y: this.average_quiz, name: " Completed Quiz" },
+          { y: this.stay_all_quiz, name: "stay of quiz" },
         ]
       }]
     }
-    return this.average_quiz && this.stay_all_quizzes && this.average_completed_quiz;
+    return this.average_quiz && this.stay_all_quiz && this.average_completed_quiz;
   }
 
   public stay_quiz_user() {
-    const lenght_quizzes = this.lenght_quizzes;
+    const lenght_quiz = this.lenght_quiz;
     const lenght_attempts = this.lenght_attempts;
     this.stay_quiz = {
       animationEnabled: true,
       title: {
-        text: "total of quizzes vs completed quizzes"
+        text: "total of quiz vs completed quiz"
       },
       axisX: {
         labelAngle: -90
       },
       axisY: {
-        title: "number of quizzes"
+        title: "number of quiz"
       },
       axisY2: {
         title: "million barrels/day"
@@ -115,12 +115,7 @@ export class DashboardService {
       legend:{
         cursor:"pointer",
         itemclick: function(e: any){
-          if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-            e.dataSeries.visible = false;
-          }
-          else {
-            e.dataSeries.visible = true;
-          }
+          e.dataSeries.visible = !(typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible);
           e.chart.render();
         }
       },
@@ -130,8 +125,8 @@ export class DashboardService {
         legendText: "quiz",
         showInLegend: true,
         dataPoints:[
-          {label: "number of quizzes", y: lenght_quizzes},
-          {label: "completed quizzes", y: lenght_attempts},
+          {label: "number of quiz", y: lenght_quiz},
+          {label: "completed quiz", y: lenght_attempts},
         ]
       }]
     }
@@ -159,7 +154,7 @@ export class DashboardService {
         ]
       }]
     }
-    return this.average_quiz && this.stay_all_quizzes && this.percentage_correcte;
+    return this.average_quiz && this.stay_all_quiz && this.percentage_correcte;
   }
 
 }

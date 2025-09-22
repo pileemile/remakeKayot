@@ -1,32 +1,29 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {Router} from '@angular/router';
-import {QuizzesService} from '../../../service/quizzes/quizzes-service';
-import {PaginationService} from '../../../service/pagination/pagination-service';
+import {QuizService} from '../../../service/quiz/quiz-service';
 import {Pagination} from '../../pagination/pagination';
 import {TableAction, TableColumn} from '../../../models/tables/tables-interface';
 import {Table} from '../../table/table';
 import {PaginationType} from '../../pagination/constent';
 
 @Component({
-  selector: 'app-all-quizzes',
+  selector: 'app-all-quiz',
   imports: [
     Pagination,
-    Table
+    Table,
+    Pagination
   ],
-  templateUrl: './all-quizzes.html',
-  styleUrl: './all-quizzes.css'
+  templateUrl: './all-quiz.html',
+  styleUrl: './all-quiz.css'
 })
-export class AllQuizzes implements OnInit{
+export class AllQuiz {
+  protected readonly PaginationType = PaginationType;
+
   constructor(
-    private readonly allQuizzesService: QuizzesService,
+    private readonly allQuizService: QuizService,
     private readonly router: Router,
-    private readonly paginationService: PaginationService,
   ) {}
 
- async ngOnInit() {
-   await this.paginationService.paginationQuizzes(this.paginationService.pagination$.value?.page, this.paginationService.pagination$.value?.limit);
-
- }
   public tableColumns: TableColumn[] = [
     { key: 'title', label: 'Titre', type: 'text' },
     { key: 'description', label: 'Description', type: 'text' },
@@ -48,13 +45,13 @@ export class AllQuizzes implements OnInit{
     // }
   ];
 
-  public get all_quizzes() {
-    const allQuizzes = this.allQuizzesService.allQuizs$.value;
+  public get all_quiz() {
+    const all_quiz = this.allQuizService.allQuizs$.value;
 
-    if (!allQuizzes) {
+    if (!all_quiz) {
       return null;
     }
-    return allQuizzes.map(quiz => ({
+    return all_quiz.map(quiz => ({
       ...quiz,
       questionCount: quiz.questions?.length || 0
     }));
@@ -64,18 +61,8 @@ export class AllQuizzes implements OnInit{
    this.router.navigate(['/answer-quiz/' + id]).then();
   }
 
-  public async viewComments(id: string) {
-    await this.allQuizzesService.getQuizById(id);
-    await this.router.navigate(['/answer-quiz/' + id]);
-  }
-
-  private viewQuiz(quiz: any) {
-    console.log('Voir quiz:', quiz);
-  }
-
   private editQuiz(quiz: any) {
     console.log('Modifier quiz:', quiz);
   }
 
-  protected readonly PaginationType = PaginationType;
 }

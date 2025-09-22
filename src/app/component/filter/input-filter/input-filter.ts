@@ -33,7 +33,7 @@ export class InputFilter {
 
   onValueChange(newValue: string) {
     this.filterService.updateFilter(this.state, newValue);
-    console.log("newValue", this.filterService.filterQuizzes.value)
+    console.log("newValue", this.filterService.filterQuiz.value)
   }
 
 }

@@ -1,28 +1,21 @@
-import {inject, Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
 import {supabase} from '../../../environments/environment';
-import {UserCompletedQuiz, UserModele} from '../../models/user/user-modele';
+import {UserModele} from '../../models/user/user-modele';
 import {BehaviorSubject} from 'rxjs';
 import {TablesUpdate} from '../../../environments/supabase';
-import {Quizzes} from '../../models/quizzes/quizzes';
+import {Quiz} from '../../models/quiz/quiz';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private readonly _adress_url: string = "https://api-adresse.data.gouv.fr/search/";
-  private http = inject(HttpClient);
 
-  public userByQuizzes = new BehaviorSubject<Quizzes[] | null>(null)
+  public userByQuiz = new BehaviorSubject<Quiz[] | null>(null)
   public getUser: UserModele | null = null;
   public editUser = new BehaviorSubject<UserModele | null>(null);
   public allUser = new BehaviorSubject<UserModele[] | null>(null);
 
-  public async getAdress(address: string) {
-    return this.http.get(this._adress_url + address)
-  }
-
-  public async getQuizzes(user_id: string) {
+  public async getQuiz(user_id: string) {
     const {data, error} = await supabase
       .from('quizzes')
       .select(`id,title,attempts_answers!inner(id,score,completed_at)`)
@@ -71,7 +64,7 @@ export class UserService {
     }
   }
 
-  public async getQuizzesByUserId(user_id: string) {
+  public async getQuizByUserId(user_id: string) {
     const {data, error} = await supabase
       .from('attempt_answers')
       .select(`quizzes!inner(*)`)
@@ -82,7 +75,7 @@ export class UserService {
     } else {
       console.log('data', data)
 
-      const dataTable: Quizzes[] = [];
+      const dataTable: Quiz[] = [];
       data?.forEach(item => {
         if (Array.isArray(item.quizzes)) {
           item.quizzes.forEach(quiz => dataTable.push(quiz));
@@ -91,8 +84,8 @@ export class UserService {
         }
       });
 
-      this.userByQuizzes.next(dataTable);
-      console.log("user by quizzes", this.userByQuizzes.value)
+      this.userByQuiz.next(dataTable);
+      console.log("user by quiz", this.userByQuiz.value)
     }
   }
 

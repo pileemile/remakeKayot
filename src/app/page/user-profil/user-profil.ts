@@ -25,11 +25,11 @@ export class UserProfil {
   ];
 
   constructor(
-    private userService: UserService
+    private readonly userService: UserService
   ) {}
 
-  public get userQuizzes() {
-    return this.userService.userByQuizzes.value;
+  public get userQuiz() {
+    return this.userService.userByQuiz.value;
   }
 
 

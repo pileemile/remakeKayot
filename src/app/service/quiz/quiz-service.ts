@@ -1,27 +1,24 @@
-import {inject, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
-import {QuestionCreate, Quizzes} from '../../models/quizzes/quizzes';
+import {QuestionCreate, Quiz} from '../../models/quiz/quiz';
 import {supabase} from '../../../environments/environment';
 import {ButtonEnum} from '../../component/tabs/constants';
 import {QuizComment} from '../../models/quiz-comment/quiz-comment';
-import {HttpClient} from '@angular/common/http';
-
 
 @Injectable({
   providedIn: 'root'
 })
-export class QuizzesService {
-  public  quiz$ = new BehaviorSubject<Quizzes | null>(null)
-  public allQuizs$ = new BehaviorSubject<Quizzes[] |null>(null);
+export class QuizService {
+  public  quiz$ = new BehaviorSubject<Quiz | null>(null)
+  public allQuizs$ = new BehaviorSubject<Quiz[] |null>(null);
   public quizId: string | null = null;
-  public quizzesFromUserComments = new BehaviorSubject<Quizzes[] | null>(null);
+  public quizFromUserComments = new BehaviorSubject<Quiz[] | null>(null);
   public activeTab: 'search' | 'all' | 'create' | 'filter' |  null = null;
   public pageActive?: ButtonEnum;
 
-  private http = inject(HttpClient);
 
-  public async insertFullQuiz(quiz: Quizzes, questions: QuestionCreate[]) {
-    const quizInsert: Partial<Quizzes> = {
+  public async insertFullQuiz(quiz: Quiz, questions: QuestionCreate[]) {
+    const quizInsert: Partial<Quiz> = {
       title: quiz.title,
       description: quiz.description,
       category: quiz.category,
@@ -75,12 +72,12 @@ export class QuizzesService {
 
 
 
-  public async getAllQuizzes() {
+  public async getAllQuiz() {
 
-    let { data: quizzes, error } = await supabase
-      .from('quizzes, questions(*)')
+    let { data: quiz, error } = await supabase
+      .from('quiz, questions(*)')
       .select('*')
-    this.allQuizs$.next(quizzes);
+    this.allQuizs$.next(quiz);
 
     if (error) {
       console.log("error", error)
@@ -88,22 +85,22 @@ export class QuizzesService {
   }
 
   public async getQuizById(id: string ) {
-    let { data: quizzes, error } = await supabase
+    let { data: quiz, error } = await supabase
       .from('quizzes')
       .select('*, questions(*)')
       .eq('id', id)
       .single();
-    this.quiz$.next(quizzes);
+    this.quiz$.next(quiz);
 
     if (error) {
       console.log("error", error)
     }
   }
 
-  public async fetchQuizzesFromUserComments(userComments: QuizComment[] ) {
+  public async fetchQuizFromUserComments(userComments: QuizComment[] ) {
     const quizIds  = userComments.map(comment => comment.quiz_id)
 
-    let { data: quizzes, error } = await supabase
+    let { data: quiz, error } = await supabase
     .from('quizzes')
     .select('*')
     .in('id', quizIds)
@@ -111,6 +108,6 @@ export class QuizzesService {
     if (error) {
       console.log("error", error)
     }
-    this.quizzesFromUserComments.next(quizzes);
+    this.quizFromUserComments.next(quiz);
   }
 }

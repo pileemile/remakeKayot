@@ -1,6 +1,6 @@
 import {Answers} from '../answer/answer';
 
-export interface Quizzes {
+export interface Quiz {
   [key: string]: string | number | boolean | undefined | null | QuestionCreate[];
   id: string;
   user_id: string;

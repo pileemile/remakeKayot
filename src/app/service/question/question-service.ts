@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
-import {QuestionCreate} from '../../models/quizzes/quizzes';
+import {QuestionCreate} from '../../models/quiz/quiz';
 import {supabase} from '../../../environments/environment';
-import {Answers} from '../../models/answer/answer';
 
 @Injectable({
   providedIn: 'root'

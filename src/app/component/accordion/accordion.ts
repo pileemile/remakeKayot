@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Quizzes} from '../../models/quizzes/quizzes';
+import {Component, Input} from '@angular/core';
+import {Quiz} from '../../models/quiz/quiz';
 import {QuizCommentService} from '../../service/quiz-comment/quiz-comment-service';
 
 
@@ -10,13 +10,11 @@ import {QuizCommentService} from '../../service/quiz-comment/quiz-comment-servic
   templateUrl: './accordion.html',
   styleUrl: './accordion.css'
 })
-export class Accordion implements OnInit{
-  @Input() headAccordion: Quizzes[] | null = null;
+export class Accordion {
+  @Input() headAccordion: Quiz[] | null = null;
   openIndex: number | null = null;
 
-  constructor(private quizCommentService: QuizCommentService) {}
-
-  ngOnInit() {}
+  constructor(private readonly quizCommentService: QuizCommentService) {}
 
   toggle(index: number, quiz_id: string) {
     this.openIndex = this.openIndex === index ? null : index;

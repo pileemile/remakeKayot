@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {QuestionService} from '../../../service/question/question-service';
-import {QuizzesService} from '../../../service/quizzes/quizzes-service';
+import {QuizService} from '../../../service/quiz/quiz-service';
 import {Timer} from '../../timer/timer';
-import {Category, QuestionCreate, Quizzes} from '../../../models/quizzes/quizzes';
+import {Category, QuestionCreate, Quiz} from '../../../models/quiz/quiz';
 import {NgClass} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Answers} from '../../../models/answer/answer';
@@ -33,11 +33,11 @@ export class AnswerQuestions implements OnInit{
 
   constructor(
     public questionService: QuestionService,
-    public quizzesService: QuizzesService,
     public attemptsAnswersService: AttemptsAnswersService,
+    private readonly quizService: QuizService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly allQuizzesService: QuizzesService,
+    private readonly allQuizService: QuizService,
     private readonly dialog: MatDialog,
   ) {}
 
@@ -45,10 +45,10 @@ export class AnswerQuestions implements OnInit{
     const id = this.route.snapshot.paramMap.get('id');
     this.quizId = id;
     if (id) {
-      await this.allQuizzesService.getQuizById(id);
-    }    console.log("ngOnInit answer question", this.quizzesService.quiz$.value)
-    if (this.quizzesService.quiz$.value) {
-      await this.questionService.fetchQuestionsWithAnswersByQuizId(this.quizzesService.quiz$.value?.id)
+      await this.allQuizService.getQuizById(id);
+    }    console.log("ngOnInit answer question", this.quizService.quiz$.value)
+    if (this.quizService.quiz$.value) {
+      await this.questionService.fetchQuestionsWithAnswersByQuizId(this.quizService.quiz$.value?.id)
     }
   }
 
@@ -64,16 +64,16 @@ export class AnswerQuestions implements OnInit{
     this.questionService.question$.next([question]);
   }
 
-  public get quizz(): Quizzes | null {
-    if (this.quizzesService.quiz$.value) {
-      return this.quizzesService.quiz$.value;
+  public get quizz(): Quiz | null {
+    if (this.quizService.quiz$.value) {
+      return this.quizService.quiz$.value;
     } else {
       return null;
     }
   }
 
-  public set quizz(quizz: Quizzes) {
-    this.quizzesService.quiz$.next(quizz);
+  public set quizz(quizz: Quiz) {
+    this.quizService.quiz$.next(quizz);
     this.questionService.fetchQuestionsWithAnswersByQuizId(quizz?.id);
   }
 
@@ -147,7 +147,7 @@ export class AnswerQuestions implements OnInit{
         }
       });
 
-      this.router.navigate(['all-quizzes']);
+      this.router.navigate(['all-quiz']);
 
     } catch (error) {
       console.error("Erreur lors du quiz", error);

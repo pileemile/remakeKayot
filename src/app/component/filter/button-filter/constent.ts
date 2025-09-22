@@ -1,5 +1,5 @@
 export enum ButtonFilterType {
-  QUIZZES = 'quizzes',
+  QUIZ = 'quiz',
   USERS = 'users',
   ALL = "all"
 }

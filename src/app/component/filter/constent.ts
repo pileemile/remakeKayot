@@ -1,4 +1,4 @@
-import { Category, Difficulty } from '../../models/quizzes/quizzes';
+import { Category, Difficulty } from '../../models/quiz/quiz';
 
 export enum FilterEnum {
   CATEGORY = 'category',

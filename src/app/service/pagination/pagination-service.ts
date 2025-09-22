@@ -1,53 +1,81 @@
-import {inject, Injectable} from '@angular/core';
-import {Pagination} from '../../models/pagination/pagination';
-import {environment, supabase} from '../../../environments/environment';
-import {QuizzesService} from '../quizzes/quizzes-service';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {UserService} from '../user/user';
-import {HttpClient} from '@angular/common/http';
-import {Quizzes} from '../../models/quizzes/quizzes';
+import { Injectable } from '@angular/core';
+import { Pagination } from '../../models/pagination/pagination';
+import { supabase } from '../../../environments/environment';
+import { QuizService } from '../quiz/quiz-service';
+import { BehaviorSubject } from 'rxjs';
+import { UserService } from '../user/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PaginationService {
-  private http = inject(HttpClient);
 
   constructor(
-    private quizzesService: QuizzesService,
-    private userService: UserService,
+    private readonly quizService: QuizService,
+    private readonly userService: UserService,
   ) {}
 
-  public pagination$ = new BehaviorSubject<Pagination>({
-    page: 0,
-    limit: 10,
-  })
+  public pagination$ = new BehaviorSubject<Pagination | null>(null);
 
-  public async paginationQuizzes(page: number | undefined, limit: number | undefined) {
-    if (page != null && limit != null) {
-        let {data: quizzes, error} = await supabase
-          .from('quizzes')
-          .select('*, questions(*)')
-          .range(page, limit)
-      this.quizzesService.allQuizs$.next(quizzes);
-      console.log("all quizzes", quizzes)
-    }
-    else {
-      console.log("erreur sur la pagination")
+  public async paginationQuiz(page: number, limit: number): Promise<void> {
+    try {
+      const { count: totalCount } = await supabase
+        .from('quizzes')
+        .select('*', { count: 'exact', head: true });
+
+      const { data: quiz, error } = await supabase
+        .from('quizzes')
+        .select('*, questions(*)')
+        .range(page, page + limit - 1);
+
+      if (error) {
+        console.error('Erreur lors de la récupération des quiz:', error);
+        return;
+      }
+
+      this.quizService.allQuizs$.next(quiz);
+
+      this.pagination$.next({
+        page,
+        limit,
+        total: totalCount || 0
+      });
+
+      console.log("Quiz paginés:", quiz);
+      console.log("Total quiz:", totalCount);
+    } catch (error) {
+      console.error('Erreur lors de la pagination des quiz:', error);
     }
   }
 
-  public async paginationUser(page: number | undefined, limit: number | undefined) {
-    if (page != null && limit != null) {
-      let {data: user, error} = await supabase
+  public async paginationUser(page: number, limit: number): Promise<void> {
+    try {
+      const { count: totalCount } = await supabase
+        .from('user_roles')
+        .select('*', { count: 'exact', head: true });
+
+      const { data: users, error } = await supabase
         .from('user_roles')
         .select('*')
-        .range(page, limit)
-      this.userService.allUser.next(user);
-      console.log("all quizzes", user)
-    }
-    else {
-      console.log("erreur sur la pagination")
+        .range(page, page + limit - 1);
+
+      if (error) {
+        console.error('Erreur lors de la récupération des utilisateurs:', error);
+        return;
+      }
+
+      this.userService.allUser.next(users);
+
+      this.pagination$.next({
+        page,
+        limit,
+        total: totalCount || 0
+      });
+
+      console.log("Utilisateurs paginés:", users);
+      console.log("Total utilisateurs:", totalCount);
+    } catch (error) {
+      console.error('Erreur lors de la pagination des utilisateurs:', error);
     }
   }
 }

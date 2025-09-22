@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AnswerQuestions} from '../../component/question/answer-questions/answer-questions';
-import {QuizzesService} from '../../service/quizzes/quizzes-service';
+import {QuizService} from '../../service/quiz/quiz-service';
 
 @Component({
   selector: 'app-answer-quiz',
@@ -14,10 +14,10 @@ export class AnswerQuiz implements OnInit{
   public quizId: string | null = null;
 
   constructor(
-    private readonly quizzesService: QuizzesService,
+    private readonly quizService: QuizService,
   ) {}
 
   ngOnInit() {
-    this.quizId = this.quizzesService.quizId;
+    this.quizId = this.quizService.quizId;
   }
 }
