@@ -4,7 +4,6 @@ import {LoginService} from '../../../service/login/login-service';
 import {MatDialog} from '@angular/material/dialog';
 import {DialogForgotPassword} from '../dialog-forgot-password/dialog-forgot-password';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Login} from '../../../models/login/login';
 
 @Component({
   selector: 'app-component-login',

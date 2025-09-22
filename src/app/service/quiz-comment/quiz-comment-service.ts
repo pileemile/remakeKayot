@@ -43,7 +43,7 @@ export class QuizCommentService {
 
 
   public async addComment(quizId: string, text: string) {
-    const { data, error } = await supabase
+    const {  } = await supabase
       .from('quiz_comments')
       .insert({
         quiz_id: quizId,

@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { Login } from './page/login/login';
 import { Quiz } from './page/quiz/quiz';
-import {AuthGuard} from './auth.guard';
 import {AnswerQuiz} from './page/answer-quiz/answer-quiz';
 import {Dashboard} from './page/dashboard/dashboard';
 import {QuizFilter} from './component/quiz/quiz-filter/quiz-filter';
