@@ -9,6 +9,7 @@ import { UserService } from '../user/user';
   providedIn: 'root'
 })
 export class PaginationService {
+  private currentQuizFilters: any = {};
 
   constructor(
     private readonly quizService: QuizService,
@@ -17,23 +18,23 @@ export class PaginationService {
 
   public pagination$ = new BehaviorSubject<Pagination | null>(null);
 
-  public async paginationQuiz(page: number, limit: number): Promise<void> {
+  public async paginationQuizzes(page: number, limit: number): Promise<void> {
     try {
       const { count: totalCount } = await supabase
         .from('quizzes')
         .select('*', { count: 'exact', head: true });
 
-      const { data: quiz, error } = await supabase
+      const { data: quizzes, error } = await supabase
         .from('quizzes')
         .select('*, questions(*)')
         .range(page, page + limit - 1);
 
       if (error) {
-        console.error('Erreur lors de la récupération des quiz:', error);
+        console.error('Erreur lors de la récupération des quizzes:', error);
         return;
       }
 
-      this.quizService.allQuizs$.next(quiz);
+      this.quizService.allQuizs$.next(quizzes);
 
       this.pagination$.next({
         page,
@@ -41,10 +42,10 @@ export class PaginationService {
         total: totalCount || 0
       });
 
-      console.log("Quiz paginés:", quiz);
-      console.log("Total quiz:", totalCount);
+      console.log("Quizzes paginés:", quizzes);
+      console.log("Total quizzes:", totalCount);
     } catch (error) {
-      console.error('Erreur lors de la pagination des quiz:', error);
+      console.error('Erreur lors de la pagination des quizzes:', error);
     }
   }
 
@@ -76,6 +77,61 @@ export class PaginationService {
       console.log("Total utilisateurs:", totalCount);
     } catch (error) {
       console.error('Erreur lors de la pagination des utilisateurs:', error);
+    }
+  }
+
+  public setQuizFilters(filters: any): void {
+    this.currentQuizFilters = filters;
+  }
+
+  public getCurrentQuizFilters(): any {
+    return this.currentQuizFilters;
+  }
+
+  public async paginationQuizFilter(page: number, limit: number): Promise<void> {
+    try {
+      let query = supabase
+        .from('quizzes')
+        .select('*, questions(*)', { count: 'exact' });
+
+      if (this.currentQuizFilters) {
+        if (this.currentQuizFilters.title) {
+          query = query.ilike('title', `%${this.currentQuizFilters.title}%`);
+        }
+        if (this.currentQuizFilters.category) {
+          query = query.eq('category', this.currentQuizFilters.category);
+        }
+        if (this.currentQuizFilters.difficulty) {
+          query = query.eq('difficulty', this.currentQuizFilters.difficulty);
+        }
+        if (this.currentQuizFilters.isActive !== undefined) {
+          query = query.eq('is_active', this.currentQuizFilters.isActive);
+        }
+      }
+
+      const { count: totalCount } = await query;
+
+      const { data: quizzes, error } = await query
+        .range(page, page + limit - 1);
+
+      if (error) {
+        console.error('Erreur lors de la récupération des quizzes filtrés:', error);
+        return;
+      }
+
+      this.quizService.allQuizs$.next(quizzes);
+
+      this.pagination$.next({
+        page,
+        limit,
+        total: totalCount || 0
+      });
+
+      console.log("Quizzes filtrés paginés:", quizzes);
+      console.log("Total quizzes filtrés:", totalCount);
+      console.log("Filtres appliqués:", this.currentQuizFilters);
+    } catch (error) {
+      console.error('Erreur lors de la pagination des quizzes filtrés:', error);
     }
   }
 }
