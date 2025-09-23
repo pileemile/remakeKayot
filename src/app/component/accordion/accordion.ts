@@ -5,6 +5,7 @@ import { QuizCommentService } from '../../service/quiz-comment/quiz-comment-serv
 import { Subject } from 'rxjs';
 import { Comment} from '../../models/quiz-comment/quiz-comment';
 import { takeUntil } from 'rxjs/operators';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-accordion',
@@ -16,10 +17,12 @@ import { takeUntil } from 'rxjs/operators';
 export class Accordion implements OnDestroy {
   @Input() headAccordion: Quiz[] | null = null;
 
-  openIndex: number | null = null;
-  isLoading = false;
+  public openIndex: number | null = null;
+  public isLoading = false;
+
   private readonly destroy$ = new Subject<void>();
   private readonly quizCommentService = inject(QuizCommentService);
+  private readonly router = inject(Router);
 
   constructor() {
     this.quizCommentService.commentByQuiz
@@ -61,5 +64,11 @@ export class Accordion implements OnDestroy {
 
   getCommentsForQuiz(quizId: string): Comment[] {
     return this.quizCommentService.getCommentsForQuiz(quizId);
+  }
+
+  goToQuiz(quizId: string, commentId?: string) {
+    this.router.navigate(['/answer-quiz', quizId], {
+      queryParams: { comment: commentId }
+    });
   }
 }

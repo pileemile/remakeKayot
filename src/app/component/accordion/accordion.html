@@ -28,7 +28,7 @@
               @for (comment of getCommentsForQuiz(header.id); track comment.id) {
                 <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-blue-500 flex items-center justify-between">
                   <p class="text-gray-700 leading-relaxed">{{ comment.text }}</p>
-                    <img src="arrow-right-svgrepo.svg" alt="" class="w-4 h-4 mr-2">
+                    <img src="arrow-right-svgrepo.svg" alt="" class="w-4 h-4 mr-2 cursor-pointer"   (click)="goToQuiz(header.id, comment.id)">
                 </div>
               }
             </div>
