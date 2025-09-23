@@ -3,4 +3,5 @@ export interface QuizRating {
   user_id: string;
   rating: number;
   created_at: Date;
+  comment_id: string
 }

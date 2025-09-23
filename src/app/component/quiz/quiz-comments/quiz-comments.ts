@@ -39,12 +39,9 @@ export class QuizComments implements OnInit{
 
   async ngOnInit() {
     this.quizCommentsService.quizIdForComment = this.route.snapshot.paramMap.get('id');
-    console.log("quizIdForComments", this.quizCommentsService.quizIdForComment);
-    await this.quizRatingService.getQuizRating(this.quizCommentsService.quizIdForComment)
-    await console.log("quizRatingService.quizRatingAll$.value", this.quizRatingService.quizRatingAll$.value);
+    await this.quizRatingService.getQuizRating(this.quizCommentsService.quizIdForComment);
+    console.log("rating", this.quizRatingService.quizRatingAll$.value);
     await this.loadCommentsByQuiz();
-
-    console.log("quizCommentsService.comments.value", this.quizCommentsService.comments.value);
   }
 
 
@@ -54,11 +51,8 @@ export class QuizComments implements OnInit{
       try {
         this.isSubmitting = true;
         const { comment, rating } = this.commentForm.value;
-
-        await this.quizCommentsService.addComment(this.quizId, comment);
-
-        await this.quizCommentsService.addRating(this.quizId, rating);
-
+        const newComment = await this.quizCommentsService.addComment(this.quizId, comment, rating);
+        console.log("comment", newComment);
         await this.quizCommentsService.loadCommentsByQuiz();
         this.commentForm.reset({ rating: 0 });
       } catch (error) {
@@ -68,7 +62,6 @@ export class QuizComments implements OnInit{
       }
     }
   }
-
 
   public async loadCommentsByQuiz() {
     try {

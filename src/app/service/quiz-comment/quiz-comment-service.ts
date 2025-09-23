@@ -41,17 +41,23 @@ export class QuizCommentService {
     }
   }
 
-  public async addComment(quizId: string, text: string) {
-     await supabase
+  public async addComment(quizId: string, text: string, ranking: number) {
+    const { data, error } = await supabase
       .from('quiz_comments')
       .insert({
         quiz_id: quizId,
         user_id: this.currentUserId,
         text: text,
-        created_at: new Date().toISOString()
+        created_at: new Date().toISOString(),
+        ranking: ranking,
       })
       .select()
+      .single();
+
+    if (error) throw error;
+    return data;
   }
+
 
   public async deleteComment(commentId: string) {
     const { error } = await supabase
@@ -165,13 +171,14 @@ export class QuizCommentService {
     return this.isLoading.value;
   }
 
-  public async addRating(quizId: string, rating: number) {
+  public async addRating(quizId: string, rating: number, commentId: string) {
     const { data, error } = await supabase
       .from('quiz_ratings')
       .upsert({
         quiz_id: quizId,
         user_id: this.currentUserId,
         rating: rating,
+        comment_id: commentId,
       });
 
     if (error) throw error;
