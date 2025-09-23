@@ -24,7 +24,7 @@ export class UserComments implements OnInit {
     initAccordions();
 
     await this.quizCommentService.loadCommentByUser();
-    await this.quizService.fetchQuizFromUserComments(this.commentUserByQuizId);
+    await this.quizService.getAllQuizFromQuizIdFromComment(this.commentUserByQuizId);
     await this.quizCommentService.getAllCommentsByQuiz(this.quizId);
   }
 

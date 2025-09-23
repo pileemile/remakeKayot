@@ -97,13 +97,13 @@ export class QuizService {
     }
   }
 
-  public async fetchQuizFromUserComments(userComments: Comment[] ) {
-    const quizIds  = userComments.map(comment => comment.quiz_id)
-    console.log("quizIds", quizIds)
+  public async getAllQuizFromQuizIdFromComment(userComments: Comment[] ) {
+    const quizId  = userComments.map(comment => comment.quiz_id)
+    console.log("quizIds", quizId)
     let { data: quiz, error } = await supabase
     .from('quizzes')
     .select('*')
-    .in('id', quizIds)
+    .in('id', quizId)
 
     if (error) {
       console.log("error", error)

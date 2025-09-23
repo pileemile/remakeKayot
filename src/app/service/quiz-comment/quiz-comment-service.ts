@@ -43,7 +43,7 @@ export class QuizCommentService {
   }
 
   public async addComment(quizId: string, text: string) {
-    const {  } = await supabase
+     await supabase
       .from('quiz_comments')
       .insert({
         quiz_id: quizId,
@@ -158,6 +158,7 @@ export class QuizCommentService {
 
 
   getCommentsForQuiz(quizId: string): Comment[] {
+    console.log("commentByQuiz", this.commentByQuiz.value)
     return this.commentByQuiz.value[quizId] || [];
   }
 
