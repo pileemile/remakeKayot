@@ -16,6 +16,7 @@ import {CommonModule} from '@angular/common';
 })
 export class Comments {
   @Input() comments: Comment[] = [];
+  @Input()
   @Output() loadComment = new EventEmitter<Comment>();
 
   public commentForm: FormGroup;

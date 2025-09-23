@@ -6,6 +6,38 @@
   <form [formGroup]="commentForm" (ngSubmit)="onSubmitComment()" class="mb-6">
     <div class="space-y-4">
       <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">
+          Notez ce quiz
+        </label>
+        <div class="flex space-x-1">
+          <ng-container *ngFor="let star of [1,2,3,4,5]">
+            <svg
+              (click)="setRating(star)"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              class="w-8 h-8 cursor-pointer transition-colors"
+              [ngClass]="{
+          'text-yellow-400': star <= commentForm.get('rating')?.value,
+          'text-gray-300': star > commentForm.get('rating')?.value
+        }"
+            >
+              <path
+                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.945a1
+           1 0 00.95.69h4.15c.969 0 1.371 1.24.588
+           1.81l-3.36 2.44a1 1 0 00-.364
+           1.118l1.287 3.945c.3.921-.755
+           1.688-1.54 1.118l-3.36-2.44a1
+           1 0 00-1.175 0l-3.36 2.44c-.784.57-1.838-.197-1.539-1.118l1.287-3.945a1
+           1 0 00-.364-1.118l-3.36-2.44c-.783-.57-.38-1.81.588-1.81h4.15a1
+           1 0 00.95-.69l1.286-3.945z"
+              />
+            </svg>
+          </ng-container>
+        </div>
+      </div>
+
+      <div>
         <label for="comment" class="block text-sm font-semibold text-gray-700 mb-2">
           Ajouter un commentaire
         </label>

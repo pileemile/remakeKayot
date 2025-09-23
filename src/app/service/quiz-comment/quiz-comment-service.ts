@@ -9,7 +9,6 @@ import {BehaviorSubject} from 'rxjs';
 })
 export class QuizCommentService {
 
-
   public comments = new BehaviorSubject<Comment[]>([])
   public commentUser = new BehaviorSubject<Comment[]>([])
   public commentByQuiz = new BehaviorSubject<{ [quizId: string]: Comment[] }>({});
@@ -157,12 +156,26 @@ export class QuizCommentService {
   }
 
 
-  getCommentsForQuiz(quizId: string): Comment[] {
+ public getCommentsForQuiz(quizId: string): Comment[] {
     console.log("commentByQuiz", this.commentByQuiz.value)
     return this.commentByQuiz.value[quizId] || [];
   }
 
-  get loading(): boolean {
+ public get loading(): boolean {
     return this.isLoading.value;
   }
+
+  public async addRating(quizId: string, rating: number) {
+    const { data, error } = await supabase
+      .from('quiz_ratings')
+      .upsert({
+        quiz_id: quizId,
+        user_id: this.currentUserId,
+        rating: rating,
+      });
+
+    if (error) throw error;
+    return data;
+  }
+
 }
