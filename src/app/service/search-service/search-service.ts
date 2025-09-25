@@ -25,7 +25,6 @@ export class SearchService {
       if (search.created_at && search.finish_at) {
         const startDate = new Date(search.created_at + 'T23:59:59.999Z').toISOString();
         const endDate = new Date(search.finish_at + 'T23:59:59.999Z').toISOString();
-        console.log(startDate, endDate);
         query = query
           .gte('created_at', startDate)
           .lte('created_at', endDate);
@@ -33,7 +32,6 @@ export class SearchService {
 
     }
     const { data, error } = await query;
-    console.log("data", data)
 
     if (error) {
       console.error(error);
@@ -71,7 +69,6 @@ export class SearchService {
     }
 
     const { data, error } = await query;
-    console.log("data", data);
 
     if (error) {
       console.error(error);

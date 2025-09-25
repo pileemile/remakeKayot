@@ -32,7 +32,6 @@ export class QuizCommentService {
         throw error;
       }
 
-      console.log('Succès', data);
       this.comments.next(data);
       return data || [];
     } catch (error) {
@@ -111,7 +110,7 @@ export class QuizCommentService {
     .in('quiz_id', filterQuizId);
 
     if (error){
-      console.log("erreur sur la récupération des commentaires", error);
+      console.error("erreur sur la récupération des commentaires", error);
     }
     return data || [];
   }
@@ -119,8 +118,6 @@ export class QuizCommentService {
   public async loadCommentsByQuiz() {
     try {
          this.comments.next(await this.getCommentsByQuizId(this.quizIdForComment));
-        console.log("commentaires", this.comments.value);
-
     } catch (error) {
       console.error('Erreur chargement des commentaires:', error);
     }
@@ -162,7 +159,6 @@ export class QuizCommentService {
   }
 
  public getCommentsForQuiz(quizId: string): Comment[] {
-    console.log("commentByQuiz", this.commentByQuiz.value)
     return this.commentByQuiz.value[quizId] || [];
   }
 

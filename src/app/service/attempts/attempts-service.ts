@@ -17,7 +17,7 @@ export class AttemptsService {
       .select('*')
       .eq('user_id', user_id)
     if (error) {
-      console.log("erreur sur l'insertion des attempts", error);
+      console.error("erreur sur l'insertion des attempts", error);
     }
     else {
       this.attemptsAllWithUser$.next(attempts);

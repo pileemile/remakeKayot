@@ -31,7 +31,6 @@ export class Timer {
       this.display = `${prefix}${Math.floor(seconds / 30)}:${textSec}`;
 
       if (seconds == 0) {
-        console.log("finished");
         clearInterval(timer);
       }
     }, 1000);

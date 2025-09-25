@@ -44,7 +44,7 @@ export class ComponentLogin implements OnInit{
           if (this.loginService.updateUser$.value){
             await this.loginService.updateUser(this.loginService.updateUser$.value)
           } else
-            console.log("erreur requête", this.loginService.updateUser$.value)
+            console.error("erreur requête", this.loginService.updateUser$.value)
         } else if(this.routeUrl === 'register') {
           const register = this.form.value;
           this.loginService.login$.next(register);
@@ -64,7 +64,7 @@ export class ComponentLogin implements OnInit{
           }
         }
       } else {
-        console.log('form invalid');
+        console.error('form invalid');
       }
   }
 

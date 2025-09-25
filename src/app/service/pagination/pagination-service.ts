@@ -98,11 +98,6 @@
           total: allFilteredQuizs.length,
         });
 
-        console.log("pagination", this.pagination$.value);
-        console.log("allQuizs", this.quizService.allQuizs$.value);
-        console.log("quiz filtrés paginés:", paginatedQuizs);
-        console.log("Total quiz filtrés:", allFilteredQuizs.length);
-
       } catch (error) {
         console.error('Erreur lors de la pagination des quiz filtrés:', error);
       }

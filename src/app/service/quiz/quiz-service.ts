@@ -80,7 +80,7 @@ export class QuizService {
     this.allQuizs$.next(quiz);
 
     if (error) {
-      console.log("error", error)
+      console.error("error", error)
     }
   }
 
@@ -93,20 +93,19 @@ export class QuizService {
     this.quiz$.next(quiz);
 
     if (error) {
-      console.log("error", error)
+      console.error("error", error)
     }
   }
 
   public async getAllQuizFromQuizIdFromComment(userComments: Comment[] ) {
     const quizId  = userComments.map(comment => comment.quiz_id)
-    console.log("quizIds", quizId)
     let { data: quiz, error } = await supabase
     .from('quizzes')
     .select('*')
     .in('id', quizId)
 
     if (error) {
-      console.log("error", error)
+      console.error("error", error)
     }
     this.quizFromUserComments.next(quiz);
   }

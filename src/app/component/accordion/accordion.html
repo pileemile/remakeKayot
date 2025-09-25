@@ -27,7 +27,10 @@
             <div class="space-y-4">
               @for (comment of getCommentsForQuiz(header.id); track comment.id) {
                 <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-blue-500 flex items-center justify-between">
-                  <p class="text-gray-700 leading-relaxed">{{ comment.text }}</p>
+                  <div class="flex gap-2">
+                    <p class="text-yellow-500">{{comment.ranking}} ★</p>
+                    <p class="text-gray-700 leading-relaxed">{{ comment.text }}</p>
+                  </div>
                     <img src="arrow-right-svgrepo.svg" alt="" class="w-4 h-4 mr-2 cursor-pointer"   (click)="goToQuiz(header.id, comment.id)">
                 </div>
               }

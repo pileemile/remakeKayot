@@ -15,7 +15,6 @@ export class QuizRatingService {
     .select('*')
     .eq('quiz_id', quiz_id)
     if (error) {
-      console.log("erreur des quiz rating", error);
     }
     else {
       this.quizRatingAll$.next(data);
@@ -23,18 +22,16 @@ export class QuizRatingService {
   }
 
   public async getQuizRatingByComment(comment_id: string) {
-    console.log("comment id", comment_id);
     const {data, error} = await supabase
       .from('quiz_ratings')
       .select('*')
       .eq('comment_id', comment_id)
 
     if (error) {
-      console.log("erreur des quiz rating", error);
+      console.error("erreur des quiz rating", error);
     }
     else {
       this.quizRatingByComment = data || [];
-      console.log("quiz rating", this.quizRatingByComment);
     }
   }
 

@@ -46,9 +46,9 @@ export class AnswerQuestions implements OnInit{
     this.quizId = id;
     if (id) {
       await this.allQuizService.getQuizById(id);
-    }    console.log("ngOnInit answer question", this.quizService.quiz$.value)
+    }
     if (this.quizService.quiz$.value) {
-      await this.questionService.fetchQuestionsWithAnswersByQuizId(this.quizService.quiz$.value?.id)
+      await this.questionService.fetchQuestionsWithAnswersByQuizId(this.quizService.quiz$.value?.id);
     }
   }
 
@@ -92,12 +92,8 @@ export class AnswerQuestions implements OnInit{
         this.index = this.questionService.question$.value?.length - 1;
       }
       if (this.index + 1 === (this.quizz?.questions?.length ?? 0)) {
-        console.log("ici")
       }
     }
-    console.log("question_next", this.quizz?.questions?.length, this.index)
-    console.log("Quiz value:", this.quizz);
-    console.log("Questions:", this.quizz?.questions);
   }
 
   public question_back () {
@@ -128,7 +124,6 @@ export class AnswerQuestions implements OnInit{
 
     try {
       const total_answers: number = Object.values(this.answers_user).length;
-      console.log("current", this.answers_user);
 
       await this.attemptsAnswersService.insertAttemptAnswers(this.answers_user);
       await this.attemptsAnswersService.getAttemptsAnswers(this.quizz?.id);
