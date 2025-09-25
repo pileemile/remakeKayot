@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {supabase} from '../../../environments/environment';
-import {QuizComment} from '../../models/quiz-comment/quiz-comment';
+import {Comment} from '../../models/quiz-comment/quiz-comment';
 import {Quiz} from '../../models/quiz/quiz';
 import {BehaviorSubject} from 'rxjs';
 
@@ -9,12 +9,12 @@ import {BehaviorSubject} from 'rxjs';
 })
 export class QuizCommentService {
 
-
-  public comments = new BehaviorSubject<QuizComment[]>([])
-  public commentUser = new BehaviorSubject<QuizComment[]>([])
-  public commentByQuiz: QuizComment[] = [];
-
+  public comments = new BehaviorSubject<Comment[]>([])
+  public commentUser = new BehaviorSubject<Comment[]>([])
+  public commentByQuiz = new BehaviorSubject<{ [quizId: string]: Comment[] }>({});
   public quizIdForComment: string | null = null;
+
+  private readonly isLoading = new BehaviorSubject<boolean>(false);
 
   //todo: l'enlever après
   private readonly currentUserId = '22ce5a89-1db2-46e7-a265-c929697ff1d0';
@@ -41,18 +41,23 @@ export class QuizCommentService {
     }
   }
 
-
-  public async addComment(quizId: string, text: string) {
-    const {  } = await supabase
+  public async addComment(quizId: string, text: string, ranking: number) {
+    const { data, error } = await supabase
       .from('quiz_comments')
       .insert({
         quiz_id: quizId,
         user_id: this.currentUserId,
         text: text,
-        created_at: new Date().toISOString()
+        created_at: new Date().toISOString(),
+        ranking: ranking,
       })
       .select()
+      .single();
+
+    if (error) throw error;
+    return data;
   }
+
 
   public async deleteComment(commentId: string) {
     const { error } = await supabase
@@ -95,7 +100,7 @@ export class QuizCommentService {
     return data || [];
   }
 
-  public async getAllCommentsByQuiz(quizId: Quiz[] | null) {
+  public async getAllCommentsByQuizId(quizId: Quiz[] | null) {
     if(quizId === null) return [];
 
     const filterQuizId = quizId.map(quiz => quiz.id);
@@ -131,16 +136,39 @@ export class QuizCommentService {
     }
   }
 
-  public async getCommentByQuizId(quizId: string){
-    const { data, error } = await supabase
-      .from('quiz_comments')
-      .select('*')
-      .eq('quiz_id', quizId);
+  public async getCommentByQuizId(quizId: string): Promise<Comment[]> {
+    this.isLoading.next(true);
+    try {
+      const { data, error } = await supabase
+        .from('quiz_comments')
+        .select('*')
+        .eq('quiz_id', quizId);
 
-    if (error){
-      console.log("erreur de la récupération des commentaires", error);
+      if (error) {
+        console.error("Erreur lors de la récupération des commentaires :", error);
+        return [];
+      }
+      const currentComments = this.commentByQuiz.value;
+
+      this.commentByQuiz.next({
+        ...currentComments,
+        [quizId]: data || []
+      });
+
+      return data || [];
+    } finally {
+      this.isLoading.next(false);
     }
-    this.commentByQuiz = data || [];
-    return data || [];
   }
+
+ public getCommentsForQuiz(quizId: string): Comment[] {
+    console.log("commentByQuiz", this.commentByQuiz.value)
+    return this.commentByQuiz.value[quizId] || [];
+  }
+
+ public get loading(): boolean {
+    return this.isLoading.value;
+  }
+
+
 }

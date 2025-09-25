@@ -4,6 +4,7 @@
   </div>
   <div class="p-4 rounded-lg shadow-md mb-4">
     <app-table [data]="userQuiz" [columns]="tableColumns"></app-table>
+    <app-pagination [type]="PaginationType.ALLQUIZ"></app-pagination>
   </div>
   <div class="p-4 rounded-lg shadow-md">
     <app-user-comments></app-user-comments>

@@ -42,6 +42,7 @@ export class SearchService {
 
     this.quizsSearch.next(data);
 
+
     return data;
   }
 

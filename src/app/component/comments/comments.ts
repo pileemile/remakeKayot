@@ -1,8 +1,11 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormsModule} from '@angular/forms';
-import {QuizComment} from '../../models/quiz-comment/quiz-comment';
+import {Comment} from '../../models/quiz-comment/quiz-comment';
 import {QuizCommentService} from '../../service/quiz-comment/quiz-comment-service';
 import {CommonModule} from '@angular/common';
+import {QuizRating} from '../../models/quiz-rating/quiz-rating';
+import {QuizRatingService} from '../../service/quiz-rating/quiz-rating-service';
+import {comment} from 'postcss';
 
 @Component({
   selector: 'app-comments',
@@ -14,24 +17,34 @@ import {CommonModule} from '@angular/common';
   templateUrl: './comments.html',
   styleUrl: './comments.css'
 })
-export class Comments {
-  @Input() comments: QuizComment[] = [];
-  @Output() loadComment = new EventEmitter<QuizComment>();
+export class Comments implements OnInit{
+  @Input() comments: Comment[] = [];
+  @Input() ratingComment: QuizRating[] | null = [];
+  @Output() loadComment = new EventEmitter<Comment>();
 
   public commentForm: FormGroup;
   public editingCommentId: string | null = null;
   public editText: string = '';
+  public commentRanting:[] = [];
 
   constructor(
     private readonly formBuilder: FormBuilder,
-    private readonly quizCommentsService: QuizCommentService
+    private readonly quizCommentsService: QuizCommentService,
+    public quizRatingService: QuizRatingService,
   ) {
     this.commentForm = this.formBuilder.group({
       comment_updated: ['', [Validators.minLength(3), Validators.maxLength(500)]],
     });
   }
 
-  public startEdit(comment: QuizComment) {
+  async ngOnInit(){
+    await this.quizCommentsService.getCommentsByQuizId(this.quizCommentsService.quizIdForComment);
+    await this.quizRatingService.quizRatingByComment;
+    console.log("commentaires de ranting", this.commentRanting);
+    console.log("rating", this.quizRatingService.quizRatingByComment);
+  }
+
+  public startEdit(comment: Comment) {
     this.editingCommentId = comment.id;
     this.editText = comment.text;
   }
@@ -57,10 +70,9 @@ export class Comments {
     }
   }
 
-  public formatDate(dateString: string) {
-    const date = new Date(
-      dateString.endsWith("Z") ? dateString : dateString + "Z"
-    );
+  public formatDate(dateString: Date) {
+    const date = new Date(dateString);
+    date.setHours(date.getHours() + 2);
     const now = new Date();
 
     const diffMs = now.getTime() - date.getTime();
@@ -79,8 +91,6 @@ export class Comments {
     }
   }
 
-
-
   public async deleteComment(commentId: string) {
     try {
       await this.quizCommentsService.deleteComment(commentId);
@@ -89,4 +99,5 @@ export class Comments {
       console.error('Erreur lors de la suppression du commentaire:', error);
     }
   }
+
 }

@@ -1,24 +1,56 @@
-<div>
-  @for (header of headAccordion; track $index) {
-    <h2>
-      <button
-        type="button"
-        (click)="toggle($index, header.id)"
-        class="flex items-center justify-between w-full py-5 font-medium text-gray-500 border-b border-gray-200 gap-3"
-      >
-        <span>{{header.title}}</span>
-        <svg [class.rotate-180]="isOpen($index)" class="w-3 h-3 shrink-0 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
-        </svg>
-      </button>
-    </h2>
-    @if (isOpen($index)) {
-      <div class="py-5 border-b border-gray-200">
-        @for (comment of comments; track comment.id) {
-          <p class="mb-2 text-gray-500">{{comment.text}}</p>
-        }
-      </div>
-    }
+<div class="w-full max-w-4xl mx-auto">
+  @for (header of headAccordion; track header.id) {
+    <div class="border border-gray-200 rounded-lg mb-2 overflow-hidden">
+      <h2>
+        <button
+          type="button"
+          (click)="toggle($index, header.id)"
+          class="flex items-center justify-between w-full py-4 px-6 font-medium text-left text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset transition-all duration-200"
+          [attr.aria-expanded]="isOpen($index)"
+        >
+          <span class="text-lg">{{ header.title }}</span>
+          <svg
+            [class.rotate-180]="isOpen($index)"
+            class="w-5 h-5 text-gray-500 shrink-0 transition-transform duration-200"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 10 6"
+          >
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+          </svg>
+        </button>
+      </h2>
 
+      @if (isOpen($index)) {
+        <div class="py-6 px-6 bg-white border-t border-gray-200 animate-in slide-in-from-top-2 duration-300">
+          @if (getCommentsForQuiz(header.id).length > 0) {
+            <div class="space-y-4">
+              @for (comment of getCommentsForQuiz(header.id); track comment.id) {
+                <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-blue-500 flex items-center justify-between">
+                  <p class="text-gray-700 leading-relaxed">{{ comment.text }}</p>
+                    <img src="arrow-right-svgrepo.svg" alt="" class="w-4 h-4 mr-2 cursor-pointer"   (click)="goToQuiz(header.id, comment.id)">
+                </div>
+              }
+            </div>
+          } @else {
+            <div class="text-center py-8 text-gray-500">
+              <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-3.582 8-8 8a8.955 8.955 0 01-3.774-.829L3 20l1.829-6.226A8.955 8.955 0 013 12a8 8 0 018-8c4.418 0 8 3.582 8 8z" />
+              </svg>
+              <p>Aucun commentaire pour ce quiz</p>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+
+  @if (!headAccordion || headAccordion.length === 0) {
+    <div class="text-center py-12 text-gray-500">
+      <svg class="mx-auto h-16 w-16 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+      </svg>
+      <p class="text-xl font-medium">Aucun quiz disponible</p>
+    </div>
   }
 </div>

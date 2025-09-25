@@ -6,6 +6,25 @@
   <form [formGroup]="commentForm" (ngSubmit)="onSubmitComment()" class="mb-6">
     <div class="space-y-4">
       <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">
+          Notez ce quiz
+        </label>
+        <div class="flex space-x-1">
+          @for (star of [1,2,3,4,5]; track star) {
+            <img
+              (click)="setRating(star)"
+              class="w-8 h-8 cursor-pointer transition-transform"
+              [src]="star <= commentForm.get('rating')?.value
+             ? 'star-filled.svg'
+             : 'star-outline.svg'"
+              alt="star"
+            />
+          }
+
+        </div>
+      </div>
+
+      <div>
         <label for="comment" class="block text-sm font-semibold text-gray-700 mb-2">
           Ajouter un commentaire
         </label>
@@ -28,5 +47,5 @@
       </div>
     </div>
   </form>
-  <app-comments [comments]="this.quizCommentsService.comments.value"></app-comments>
+  <app-comments [comments]="this.quizCommentsService.comments.value" [ratingComment]="quizRating"></app-comments>
 </div>

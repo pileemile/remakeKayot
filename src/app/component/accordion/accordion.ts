@@ -1,36 +1,74 @@
-import {Component, Input} from '@angular/core';
-import {Quiz} from '../../models/quiz/quiz';
-import {QuizCommentService} from '../../service/quiz-comment/quiz-comment-service';
-
+import { Component, Input, OnDestroy, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Quiz } from '../../models/quiz/quiz';
+import { QuizCommentService } from '../../service/quiz-comment/quiz-comment-service';
+import { Subject } from 'rxjs';
+import { Comment} from '../../models/quiz-comment/quiz-comment';
+import { takeUntil } from 'rxjs/operators';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-accordion',
-  imports: [
-  ],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './accordion.html',
   styleUrl: './accordion.css'
 })
-export class Accordion {
+export class Accordion implements OnDestroy {
   @Input() headAccordion: Quiz[] | null = null;
-  openIndex: number | null = null;
 
-  constructor(private readonly quizCommentService: QuizCommentService) {}
+  public openIndex: number | null = null;
+  public isLoading = false;
 
-  toggle(index: number, quiz_id: string) {
-    this.openIndex = this.openIndex === index ? null : index;
-    this.clickQuizComment(quiz_id).then;
+  private readonly destroy$ = new Subject<void>();
+  private readonly quizCommentService = inject(QuizCommentService);
+  private readonly router = inject(Router);
+
+  constructor() {
+    this.quizCommentService.commentByQuiz
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.isLoading = this.quizCommentService.loading;
+      });
   }
 
-  isOpen(index: number) {
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  async toggle(index: number, quizId: string) {
+    if (this.openIndex === index) {
+      this.openIndex = null;
+      return;
+    }
+    this.openIndex = index;
+
+    const existingComments = this.getCommentsForQuiz(quizId);
+    if (existingComments.length === 0) {
+      try {
+        await this.loadQuizComments(quizId);
+      } catch (error) {
+        console.error('Erreur lors du chargement des commentaires:', error);
+      }
+    }
+  }
+
+  isOpen(index: number): boolean {
     return this.openIndex === index;
   }
 
-  public async clickQuizComment(quiz_id: string) {
-    await this.quizCommentService.getCommentByQuizId(quiz_id);
+  private async loadQuizComments(quizId: string): Promise<void> {
+    await this.quizCommentService.getCommentByQuizId(quizId);
   }
 
-  public get comments() {
-    return this.quizCommentService.commentByQuiz;
+  getCommentsForQuiz(quizId: string): Comment[] {
+    return this.quizCommentService.getCommentsForQuiz(quizId);
   }
 
+  goToQuiz(quizId: string, commentId?: string) {
+    this.router.navigate(['/answer-quiz', quizId], {
+      queryParams: { comment: commentId }
+    });
+  }
 }

@@ -3,7 +3,7 @@ import {BehaviorSubject} from 'rxjs';
 import {QuestionCreate, Quiz} from '../../models/quiz/quiz';
 import {supabase} from '../../../environments/environment';
 import {ButtonEnum} from '../../component/tabs/constants';
-import {QuizComment} from '../../models/quiz-comment/quiz-comment';
+import {Comment} from '../../models/quiz-comment/quiz-comment';
 
 @Injectable({
   providedIn: 'root'
@@ -75,8 +75,8 @@ export class QuizService {
   public async getAllQuiz() {
 
     let { data: quiz, error } = await supabase
-      .from('quiz, questions(*)')
-      .select('*')
+      .from('quizzes')
+      .select('*, questions(*)')
     this.allQuizs$.next(quiz);
 
     if (error) {
@@ -97,13 +97,13 @@ export class QuizService {
     }
   }
 
-  public async fetchQuizFromUserComments(userComments: QuizComment[] ) {
-    const quizIds  = userComments.map(comment => comment.quiz_id)
-
+  public async getAllQuizFromQuizIdFromComment(userComments: Comment[] ) {
+    const quizId  = userComments.map(comment => comment.quiz_id)
+    console.log("quizIds", quizId)
     let { data: quiz, error } = await supabase
     .from('quizzes')
     .select('*')
-    .in('id', quizIds)
+    .in('id', quizId)
 
     if (error) {
       console.log("error", error)

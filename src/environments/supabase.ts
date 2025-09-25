@@ -218,6 +218,7 @@ export type Database = {
           created_at: string | null
           id: string
           quiz_id: string
+          ranking: number | null
           text: string
           user_id: string
         }
@@ -225,6 +226,7 @@ export type Database = {
           created_at?: string | null
           id?: string
           quiz_id: string
+          ranking?: number | null
           text: string
           user_id: string
         }
@@ -232,6 +234,7 @@ export type Database = {
           created_at?: string | null
           id?: string
           quiz_id?: string
+          ranking?: number | null
           text?: string
           user_id?: string
         }
@@ -247,24 +250,34 @@ export type Database = {
       }
       quiz_ratings: {
         Row: {
+          comment_id: string | null
           created_at: string | null
           quiz_id: string
           rating: number | null
           user_id: string
         }
         Insert: {
+          comment_id?: string | null
           created_at?: string | null
           quiz_id: string
           rating?: number | null
           user_id: string
         }
         Update: {
+          comment_id?: string | null
           created_at?: string | null
           quiz_id?: string
           rating?: number | null
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "quiz_ratings_comment_id_fkey"
+            columns: ["comment_id"]
+            isOneToOne: false
+            referencedRelation: "quiz_comments"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "quiz_ratings_quiz_id_fkey"
             columns: ["quiz_id"]

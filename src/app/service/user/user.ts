@@ -15,19 +15,6 @@ export class UserService {
   public editUser = new BehaviorSubject<UserModele | null>(null);
   public allUser = new BehaviorSubject<UserModele[] | null>(null);
 
-  public async getQuiz(user_id: string) {
-    const {data, error} = await supabase
-      .from('quizzes')
-      .select(`id,title,attempts_answers!inner(id,score,completed_at)`)
-      .eq('user_id', user_id)
-
-    if (error) {
-      console.log("erreur sur l'insertion des attempts", error);
-    } else {
-      console.log('data', data)
-    }
-  }
-
   public async getUserById(user_id: string) {
     const {data, error} = await supabase
       .from('user_roles')
@@ -86,19 +73,6 @@ export class UserService {
 
       this.userByQuiz.next(dataTable);
       console.log("user by quiz", this.userByQuiz.value)
-    }
-  }
-
-  public async getUserRoleALl() {
-    const {data: user, error} = await supabase
-      .from('user_roles')
-      .select(`*`)
-
-    if (error) {
-      console.log("erreur sur le user", error);
-    } else {
-      this.allUser.next(user);
-      console.log('data', user)
     }
   }
 
