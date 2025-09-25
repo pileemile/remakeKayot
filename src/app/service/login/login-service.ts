@@ -27,7 +27,7 @@ export class LoginService {
       password: this.login$.value?.password ?? '',
     })
     if (error) {
-      console.log("erreur sur l'inscription", error);
+      console.error("erreur sur l'inscription", error);
     }
   }
 
@@ -37,18 +37,16 @@ export class LoginService {
       password: this.login$.value?.password ?? '',
     })
     if (error) {
-      console.log("erreur sur la connexion", error);
+      console.error("erreur sur la connexion", error);
     } else {
       await this.sessionService.getSession(data.session?.access_token ?? '', data.session?.refresh_token ?? '')
       this.isAuthentificated = true;
       if (data.user)
       this.user_create_at = data.user.created_at;
-      console.log("user", data.user)
     }
   }
 
   public async loginSigInRest(login: Login) {
-    console.log(":loginSigInRest: ", { email: login.email, password: "Oui" });
 
     const requestBody = {
       email: login.email,
@@ -70,7 +68,6 @@ export class LoginService {
       );
       await this.storeSession(data);
 
-      console.log('Login success:', data);
       return data;
     } catch (error) {
       console.error('Login error details:', error);
@@ -86,36 +83,33 @@ export class LoginService {
     if (error) {
       console.error('Erreur lors du stockage de session:', error);
     } else {
-      console.log('Session stockée avec succès');
     }
   }
 
   public async forgotPassword(login: Login) {
     const email = this.login$.value?.email ?? '';
-    let { data, error } = await supabase.auth.resetPasswordForEmail(
-        email
+    let {data, error} = await supabase.auth.resetPasswordForEmail(
+      email
     )
-    if (error){
-      console.log("erreur sur le reset de mot de passe", error);
-    } else
-      console.log('mot de passe reset');
+    if (error) {
+      console.error("erreur sur le reset de mot de passe", error);
+    }
   }
 
-
-  public async updateUser(login: Login) {
-    const { data, error } = await supabase.auth.updateUser({
-      email: this.updateUser$.value?.email,
-      password: this.updateUser$.value?.password,
-    })
-    if (error){
-      console.log('erreur sur le nouveau mot de passe', data);
-    } else
-      console.log('nouveau mot de passe');
+  public async updateUser(login: Login){
+      const {data, error} = await supabase.auth.updateUser({
+        email: this.updateUser$.value?.email,
+        password: this.updateUser$.value?.password,
+      })
+      if (error) {
+        console.error('erreur sur le nouveau mot de passe', data);
+      }
   }
 
  public isAuthenticated(): boolean {
     return this.isAuthentificated;
   }
+
 }
 
 

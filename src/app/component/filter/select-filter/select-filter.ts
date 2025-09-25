@@ -45,6 +45,5 @@ export class SelectFilter {
 
   onValueChange(newValue: string) {
     this.filterService.updateFilter(this.state, newValue);
-    console.log("newValue", this.filterService.filterQuiz.value);
   }
 }

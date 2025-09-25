@@ -45,7 +45,6 @@ export class Pagination implements OnInit, OnDestroy {
           this.currentPage = Math.floor(pagination.page / this.itemsPerPage) + 1;
           this.totalPages = Math.ceil(pagination.total / this.itemsPerPage);
           this.totalItems = pagination.total;
-          console.log("totalItems updated:", this.totalItems);
         }
       });
   }

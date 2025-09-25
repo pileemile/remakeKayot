@@ -62,7 +62,6 @@ export class AllQuiz {
   }
 
   private editQuiz(quiz: any) {
-    console.log('Modifier quiz:', quiz);
   }
 
 }

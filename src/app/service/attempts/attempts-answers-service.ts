@@ -37,18 +37,14 @@ export class AttemptsAnswersService {
       .select('*')
       .eq('quiz_id', quiz_id)
     if (error) {
-      console.log("erreur sur l'insertion des answers", error);
+      console.error("erreur sur l'insertion des answers", error);
     }
     else {
       this.getAllAnswersQuiz = data ;
-      console.log("all answers", this.getAllAnswersQuiz)
     }
   }
 
   public async matchAnswersUser(answers_user: AttemtpsAnswers[] | undefined, answers_correct: { [p: number]: Answers }) {
-
-    console.log("user" , answers_user);
-    console.log("correct" , answers_correct);
     const answers_quiz = Object.values(answers_correct);
     const answers_user_length = answers_user?.length ?? 0;
     for (let i = 0; i < answers_user_length; i++) {
@@ -59,13 +55,11 @@ export class AttemptsAnswersService {
           // .eq('is_correct', answers_quiz[i].is_correct)
           .eq('id', answers_user[i].selected_answer_id)
         if (error) {
-          console.log("erreur sur le match is correct", error);
+          console.error("erreur sur le match is correct", error);
         }
         else {
-          console.log('data',data)
           if (data && data[0]?.id) {
             this.recoverAnswersUser.push(data[0]?.id)
-            console.log(this.recoverAnswersUser)
           }
         }
       }
@@ -88,12 +82,7 @@ export class AttemptsAnswersService {
       )
       .select()
     if (error) {
-      console.log("erreur sur l'insertion des attempts", error);
+      console.error("erreur sur l'insertion des attempts", error);
     }
-    else {
-      console.log('data',data)
-    }
-
-
   }
 }

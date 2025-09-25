@@ -22,7 +22,7 @@ export class UserService {
       .eq('user_id', user_id)
       .maybeSingle<UserModele>();
     if (error) {
-      console.log("erreur sur le user", error);
+      console.error("erreur sur le user", error);
     } else {
       this.getUser = data;
     }
@@ -45,9 +45,7 @@ export class UserService {
       .select()
 
     if (error) {
-      console.log("erreur sur l'insertion des attempts", error);
-    } else {
-      console.log('data', data)
+      console.error("erreur sur l'insertion des attempts", error);
     }
   }
 
@@ -58,10 +56,8 @@ export class UserService {
       .eq('user_id', user_id)
 
     if (error) {
-      console.log("erreur sur ", error);
+      console.error("erreur sur ", error);
     } else {
-      console.log('data', data)
-
       const dataTable: Quiz[] = [];
       data?.forEach(item => {
         if (Array.isArray(item.quizzes)) {
@@ -72,7 +68,6 @@ export class UserService {
       });
 
       this.userByQuiz.next(dataTable);
-      console.log("user by quiz", this.userByQuiz.value)
     }
   }
 

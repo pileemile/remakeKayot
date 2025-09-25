@@ -5,7 +5,6 @@ import {QuizCommentService} from '../../service/quiz-comment/quiz-comment-servic
 import {CommonModule} from '@angular/common';
 import {QuizRating} from '../../models/quiz-rating/quiz-rating';
 import {QuizRatingService} from '../../service/quiz-rating/quiz-rating-service';
-import {comment} from 'postcss';
 
 @Component({
   selector: 'app-comments',
@@ -40,8 +39,6 @@ export class Comments implements OnInit{
   async ngOnInit(){
     await this.quizCommentsService.getCommentsByQuizId(this.quizCommentsService.quizIdForComment);
     await this.quizRatingService.quizRatingByComment;
-    console.log("commentaires de ranting", this.commentRanting);
-    console.log("rating", this.quizRatingService.quizRatingByComment);
   }
 
   public startEdit(comment: Comment) {
@@ -58,9 +55,7 @@ export class Comments implements OnInit{
     if (!this.editText.trim()) {
       return;
     }
-    console.log(this.editText);
     try {
-      console.log(commentId, this.editText);
       await this.quizCommentsService.updateComment(commentId, this.editText);
       this.editingCommentId = null;
       this.editText = '';

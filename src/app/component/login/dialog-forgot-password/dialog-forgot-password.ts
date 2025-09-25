@@ -44,7 +44,7 @@ export class DialogForgotPassword implements OnInit{
 
       }
     } else {
-      console.log('form invalid');
+      console.error('form invalid');
     }
   }
 
