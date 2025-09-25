@@ -1,0 +1,77 @@
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import {supabase} from '../../../environments/environment';
+import {Notification} from '../../models/notification/notification';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class NotificationService {
+  public notifications$ = new BehaviorSubject<Notification[]>([]);
+  public notification$ = new BehaviorSubject<Notification | null>(null)
+
+  public unreadCount$ = new BehaviorSubject<number>(0);
+
+//TODO Dégeulasse de faire ça
+  user_id = "22ce5a89-1db2-46e7-a265-c929697ff1d0";
+
+  public async getNotifications(user_id: string | undefined) {
+    const { data, error } = await supabase
+      .from('notifications')
+      .select('*')
+      .eq('user_id', user_id)
+      .order('created_at', { ascending: false });
+
+    if (error){
+      console.error("erreur sur les notifications", error);
+    } else {
+      this.notifications$.next(data);
+    }
+  }
+
+  public async addNotification() {
+    const { data, error } = await supabase
+      .from('notifications')
+      .insert({
+        user_id: this.user_id,
+        type: this.notification$.value?.type,
+        title: this.notification$.value?.title,
+        message: this.notification$.value?.message,
+        isRead: false,
+        metadata: this.notification$.value?.metadata,
+        created_at: new Date().toISOString()
+      })
+      .select()
+      .single();
+    if (error){
+      console.error("erreur lors de l'ajout de la notification", error);
+    }
+    return data;
+  }
+
+  public async deleteNotification(id: string) {
+    const {data, error} = await supabase
+      .from('notifications')
+      .delete()
+      .eq('id', id);
+    if (error) {
+      console.error("erreur lors de la suppression de la notification", error);
+    }
+    return data;
+  }
+
+  public async updateNotification(id: string) {
+    const {data, error} = await supabase
+      .from('notifications')
+      .update({ is_read: true })
+      .eq('id', id)
+      .select()
+      .single();
+    if (error) {
+      console.error("erreur lors de la mise à jour de la notification", error);
+    } else {
+     await this.getNotifications(this.user_id);
+     return data;
+    }
+  }
+}

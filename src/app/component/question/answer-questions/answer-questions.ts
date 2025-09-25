@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {QuestionService} from '../../../service/question/question-service';
 import {QuizService} from '../../../service/quiz/quiz-service';
-import {Timer} from '../../timer/timer';
 import {Category, QuestionCreate, Quiz} from '../../../models/quiz/quiz';
 import {NgClass} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -15,7 +14,6 @@ import {DialogSuccessError} from '../../dialog/dialog-success-error/dialog-succe
 @Component({
   selector: 'app-answer-questions',
   imports: [
-    Timer,
     NgClass,
     ReactiveFormsModule,
     FormsModule,

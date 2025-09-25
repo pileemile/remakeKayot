@@ -1,5 +1,4 @@
-import {Component, OnInit} from '@angular/core';
-import {UserService} from '../../../service/user/user';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-user-parameter',
@@ -8,10 +7,4 @@ import {UserService} from '../../../service/user/user';
   styleUrl: './user-parameter.css'
 })
 export class UserParameter{
-
-  constructor(
-    private userService: UserService,
-  ){}
-
-
 }
