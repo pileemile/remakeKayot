@@ -70,10 +70,9 @@ export class Comments implements OnInit{
     }
   }
 
-  public formatDate(dateString: string) {
-    const date = new Date(
-      dateString.endsWith("Z") ? dateString : dateString + "Z"
-    );
+  public formatDate(dateString: Date) {
+    const date = new Date(dateString);
+    date.setHours(date.getHours() + 2);
     const now = new Date();
 
     const diffMs = now.getTime() - date.getTime();

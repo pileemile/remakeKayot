@@ -6,6 +6,7 @@ import { InputFilter } from '../input-filter/input-filter';
 import { SelectFilter } from '../select-filter/select-filter';
 import {FilterService} from '../../../service/filter/filter-service';
 import {SearchService} from '../../../service/search-service/search-service';
+import {PaginationService} from '../../../service/pagination/pagination-service';
 
 @Component({
   selector: 'app-filter-form',
@@ -34,6 +35,7 @@ export class FilterForm {
   constructor(
     private readonly filterService: FilterService,
     private readonly searchService: SearchService,
+    private readonly paginationService: PaginationService
   ) {
   }
 
@@ -65,6 +67,7 @@ export class FilterForm {
   public async onSubmit() {
     if(FilterType.QUIZ === this.filterType) {
       await this.searchService.searchQuiz(this.filterQuiz);
+      await this.paginationService.paginationQuizFilter(0, 10);
     }
     if(FilterType.USER === this.filterType) {
       await this.searchService.searchUser(this.filterQuiz);

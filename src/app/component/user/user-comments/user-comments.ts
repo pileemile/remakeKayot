@@ -25,7 +25,7 @@ export class UserComments implements OnInit {
 
     await this.quizCommentService.loadCommentByUser();
     await this.quizService.getAllQuizFromQuizIdFromComment(this.commentUserByQuizId);
-    await this.quizCommentService.getAllCommentsByQuiz(this.quizId);
+    await this.quizCommentService.getAllCommentsByQuizId(this.quizId);
   }
 
   private get commentUserByQuizId() {

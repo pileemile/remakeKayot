@@ -3,6 +3,6 @@ export interface Comment {
   text: string;
   quiz_id: string;
   userId?: string;
-  createdAt: Date;
+  created_at: Date;
   ranking: number;
 }

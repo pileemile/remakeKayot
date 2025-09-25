@@ -100,7 +100,7 @@ export class QuizCommentService {
     return data || [];
   }
 
-  public async getAllCommentsByQuiz(quizId: Quiz[] | null) {
+  public async getAllCommentsByQuizId(quizId: Quiz[] | null) {
     if(quizId === null) return [];
 
     const filterQuizId = quizId.map(quiz => quiz.id);
@@ -161,7 +161,6 @@ export class QuizCommentService {
     }
   }
 
-
  public getCommentsForQuiz(quizId: string): Comment[] {
     console.log("commentByQuiz", this.commentByQuiz.value)
     return this.commentByQuiz.value[quizId] || [];
@@ -171,18 +170,5 @@ export class QuizCommentService {
     return this.isLoading.value;
   }
 
-  public async addRating(quizId: string, rating: number, commentId: string) {
-    const { data, error } = await supabase
-      .from('quiz_ratings')
-      .upsert({
-        quiz_id: quizId,
-        user_id: this.currentUserId,
-        rating: rating,
-        comment_id: commentId,
-      });
-
-    if (error) throw error;
-    return data;
-  }
 
 }

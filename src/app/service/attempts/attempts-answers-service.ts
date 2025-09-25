@@ -9,7 +9,6 @@ import {AttemtpsAnswers} from '../../models/attempts-answers/attempts-answers';
   providedIn: 'root'
 })
 export class AttemptsAnswersService {
-  public attemptsAnswers: AttemtpsAnswers | null = null
   public getAllAnswersQuiz: AttemtpsAnswers[]  = []
   public  recoverAnswersUser: Attempts[] = []
 
@@ -23,7 +22,7 @@ export class AttemptsAnswersService {
       quiz_id: answers.quiz_id,
     }))
 
-    const { data, error } = await supabase
+    const {  } = await supabase
       .from('attempt_answers')
       .insert(
         insertAttemptAnswers
@@ -82,7 +81,6 @@ export class AttemptsAnswersService {
       user_id: '22ce5a89-1db2-46e7-a265-c929697ff1d0',
       created_at: new Date().toISOString(),
     };
-    console.log('newAttempts', newAttempts)
     const { data, error } = await supabase
       .from('attempts')
       .insert(

@@ -23,7 +23,7 @@
               <div class="flex items-center space-x-2 mb-1">
                 <p class="text-sm font-semibold text-gray-900">Utilisateur</p>
                 <p class="text-xs text-gray-500">
-                  {{ comment.createdAt }}
+                  {{ formatDate(comment.created_at) }}
                 </p>
                 <p class="text-xs text-yellow-500 font-medium">
                   ★ {{comment.ranking}}
