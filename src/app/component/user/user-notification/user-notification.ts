@@ -11,28 +11,21 @@ import {Notification} from '../../../models/notification/notification';
   styleUrl: './user-notification.css'
 })
 export class UserNotification implements OnInit, OnDestroy {
-  public notifications: Notification[] = [];
   public unreadCount = 0;
   public isOpen = false;
 
   private readonly subscriptions: Subscription[] = [];
 
+//TODO Dégeulasse de faire ça
+  user_id = "22ce5a89-1db2-46e7-a265-c929697ff1d0";
+
   constructor(
     private readonly notificationService: NotificationService
   ) {}
 
-  ngOnInit() {
-    this.subscriptions.push(
-      this.notificationService.notifications$.subscribe(notifications => {
-        this.notifications = notifications;
-      })
-    );
-
-    this.subscriptions.push(
-      this.notificationService.unreadCount$.subscribe(count => {
-        this.unreadCount = count;
-      })
-    );
+  async ngOnInit() {
+    await this.notificationService.getNotifications(this.user_id);
+    console.log(this.notificationLoad);
   }
 
   ngOnDestroy() {
@@ -48,16 +41,10 @@ export class UserNotification implements OnInit, OnDestroy {
     await this.notificationService.deleteNotification(notification.id);
   }
 
- public trackByNotificationId(index: number, notification: Notification): string {
-    if (!notification.id) {
-      return "";
-    }
-    return notification.id;
-  }
-
-  public getTimeAgo(date: Date): string {
+  public getTimeAgo(date: Date | string | number): string {
+    const parsedDate = new Date(date);
     const now = new Date();
-    const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
+    const diffInMinutes = Math.floor((now.getTime() - parsedDate.getTime()) / (1000 * 60));
 
     if (diffInMinutes < 1) return 'À l\'instant';
     if (diffInMinutes < 60) return `${diffInMinutes} min`;
@@ -72,6 +59,7 @@ export class UserNotification implements OnInit, OnDestroy {
     return `${diffInWeeks}sem`;
   }
 
+
   public getNotificationIcon(type: string): string {
     switch (type) {
       case 'quiz_completed': return 'bien jouer';
@@ -80,5 +68,18 @@ export class UserNotification implements OnInit, OnDestroy {
       case 'achievement': return 'Achivement';
       default: return 'par défaul';
     }
+  }
+
+  public get notificationLoad(){
+    return this.notificationService.notifications$.value;
+  }
+
+  public get notificationNotRead(){
+    const notifications = this.notificationLoad
+    return notifications?.filter(n => !n.is_read);
+  }
+
+  public async isRead(id: string) {
+    await this.notificationService.updateNotification(id);
   }
 }
