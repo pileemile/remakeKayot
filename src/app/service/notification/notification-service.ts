@@ -10,8 +10,6 @@ export class NotificationService {
   public notifications$ = new BehaviorSubject<Notification[]>([]);
   public notification$ = new BehaviorSubject<Notification | null>(null)
 
-  public unreadCount$ = new BehaviorSubject<number>(0);
-
 //TODO Dégeulasse de faire ça
   user_id = "22ce5a89-1db2-46e7-a265-c929697ff1d0";
 
@@ -50,14 +48,14 @@ export class NotificationService {
   }
 
   public async deleteNotification(id: string) {
-    const {data, error} = await supabase
+    const {error} = await supabase
       .from('notifications')
       .delete()
       .eq('id', id);
     if (error) {
       console.error("erreur lors de la suppression de la notification", error);
     }
-    return data;
+      await this.getNotifications(this.user_id);
   }
 
   public async updateNotification(id: string) {
@@ -74,4 +72,19 @@ export class NotificationService {
      return data;
     }
   }
+
+  public async getNotificationIsNotRead(user_id: string | undefined) {
+    const {data, error} = await supabase
+      .from('notifications')
+      .select('*')
+      .eq('user_id', user_id)
+      .eq('is_read', false);
+
+    if (error) {
+      console.error("erreur sur les notifications", error);
+    } else {
+      this.notifications$.next(data)
+    }
+  }
+
 }
