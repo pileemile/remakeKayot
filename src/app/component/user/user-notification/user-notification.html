@@ -36,9 +36,7 @@
         <p class="text-sm text-gray-300 mt-1">Vos notifications apparaîtront ici</p>
       </div>
       }
-      @for(notification of notificationNotRead; track $index)  {
-
-
+      @for(notification of (showAll ? notificationLoad : notificationNotRead); track $index) {
       <div
         (click)="isRead(notification.id)"
         class="group p-4 hover:bg-gray-50 border-b border-gray-50 last:border-b-0 cursor-pointer transition-all duration-200 relative"
@@ -125,14 +123,16 @@
       </div>
       }
     </div>
-    <div class="p-3 border-t border-gray-100 bg-gray-50 rounded-b-xl">
-      <button class="w-full text-sm text-gray-600 hover:text-gray-800 font-medium py-2 px-4 rounded-lg hover:bg-white transition-all duration-200 flex items-center justify-center">
-        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"></path>
-        </svg>
-        Voir toutes les notifications
-      </button>
-    </div>
+    @if (!showAll) {
+      <div class="p-3 border-t border-gray-100 bg-gray-50 rounded-b-xl">
+        <button (click)="notificationAllLoad()" class="w-full text-sm text-gray-600 hover:text-gray-800 font-medium py-2 px-4 rounded-lg hover:bg-white transition-all duration-200 flex items-center justify-center">
+          <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"></path>
+          </svg>
+          Voir toutes les notifications
+        </button>
+      </div>
+    }
   </div>
   }
 </div>

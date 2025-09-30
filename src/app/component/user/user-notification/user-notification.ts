@@ -13,6 +13,7 @@ import {Notification} from '../../../models/notification/notification';
 export class UserNotification implements OnInit, OnDestroy {
   public unreadCount = 0;
   public isOpen = false;
+  public showAll = false;
 
   private readonly subscriptions: Subscription[] = [];
 
@@ -24,7 +25,7 @@ export class UserNotification implements OnInit, OnDestroy {
   ) {}
 
   async ngOnInit() {
-    await this.notificationService.getNotifications(this.user_id);
+    await this.notificationService.getNotificationIsNotRead(this.user_id);
     console.log(this.notificationLoad);
   }
 
@@ -46,7 +47,7 @@ export class UserNotification implements OnInit, OnDestroy {
     const now = new Date();
     const diffInMinutes = Math.floor((now.getTime() - parsedDate.getTime()) / (1000 * 60));
 
-    if (diffInMinutes < 1) return 'À l\'instant';
+    if (diffInMinutes < 1) return 'il y a moins d\'une minute';
     if (diffInMinutes < 60) return `${diffInMinutes} min`;
 
     const diffInHours = Math.floor(diffInMinutes / 60);
@@ -75,11 +76,15 @@ export class UserNotification implements OnInit, OnDestroy {
   }
 
   public get notificationNotRead(){
-    const notifications = this.notificationLoad
-    return notifications?.filter(n => !n.is_read);
+    return this.notificationLoad;
   }
 
   public async isRead(id: string) {
     await this.notificationService.updateNotification(id);
+  }
+
+  public async notificationAllLoad() {
+    this.showAll = true;
+    await this.notificationService.getNotifications(this.user_id);
   }
 }

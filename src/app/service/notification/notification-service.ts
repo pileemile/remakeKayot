@@ -9,7 +9,8 @@ import {Notification} from '../../models/notification/notification';
 export class NotificationService {
   public notifications$ = new BehaviorSubject<Notification[]>([]);
   public notification$ = new BehaviorSubject<Notification | null>(null)
-
+  public notificationsIsNotRead = new BehaviorSubject<Notification[]>([]);
+  public notificationsIsRead = new BehaviorSubject<Notification[]>([]);
   public unreadCount$ = new BehaviorSubject<number>(0);
 
 //TODO Dégeulasse de faire ça
@@ -72,6 +73,35 @@ export class NotificationService {
     } else {
      await this.getNotifications(this.user_id);
      return data;
+    }
+  }
+
+  public async getNotificationIsNotRead(user_id: string | undefined) {
+    const {data, error} = await supabase
+      .from('notifications')
+      .select('*')
+      .eq('user_id', user_id)
+      .eq('is_read', false);
+
+    if (error) {
+      console.error("erreur sur les notifications", error);
+    } else {
+      this.notifications$.next(data)
+    }
+  }
+
+  public async getNotificationIsRead(user_id: string |undefined) {
+    const {data, error} = await supabase
+      .from('notifications')
+      .select('*')
+      .eq('user_id', user_id)
+      .eq('is_read', true);
+
+    if (error) {
+      console.error("erreur sur les notifications", error);
+    } else {
+      this.notificationsIsRead.next(data)
+      console.log('notificationsIsRead', this.notificationsIsRead.value)
     }
   }
 }
