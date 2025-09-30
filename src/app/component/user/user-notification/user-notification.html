@@ -5,10 +5,10 @@
     [class.bg-gray-100]="isOpen">
     <img src="notification.svg" alt="Notifications" class="w-5 h-5 opacity-50 hover:opacity-100 transition-opacity">
 
-    @if(unreadCount > 0) {
+    @if(notificationNotRead.length > 0) {
       <span
-        class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium animate-pulse min-w-[20px]">
-      {{ unreadCount > 99 ? '99+' : unreadCount }}
+        class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium min-w-[20px]">
+      {{ notificationNotRead.length > 99 ? '99+' : notificationNotRead.length }}
     </span>
     }
   </button>
@@ -20,12 +20,6 @@
         <span class="mr-2">🔔</span>
         Notifications
       </h3>
-      @if(unreadCount > 0) {
-      <button
-        class="text-sm text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200 px-2 py-1 rounded-md hover:bg-blue-50">
-        Tout marquer comme lu
-      </button>
-      }
     </div>
 
     <div class="max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">

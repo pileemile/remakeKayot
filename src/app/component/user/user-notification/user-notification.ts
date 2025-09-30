@@ -1,6 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {Component, ElementRef, HostListener, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Subscription } from 'rxjs';
 import {NotificationService} from '../../../service/notification/notification-service';
 import {Notification} from '../../../models/notification/notification';
 
@@ -10,27 +9,32 @@ import {Notification} from '../../../models/notification/notification';
   templateUrl: './user-notification.html',
   styleUrl: './user-notification.css'
 })
-export class UserNotification implements OnInit, OnDestroy {
-  public unreadCount = 0;
+export class UserNotification implements OnInit {
   public isOpen = false;
   public showAll = false;
-
-  private readonly subscriptions: Subscription[] = [];
 
 //TODO Dégeulasse de faire ça
   user_id = "22ce5a89-1db2-46e7-a265-c929697ff1d0";
 
   constructor(
-    private readonly notificationService: NotificationService
+    private readonly notificationService: NotificationService,
+    private eRef: ElementRef
   ) {}
+
+  @HostListener('document:click', ['$event'])
+  clickOutside(event: Event) {
+    if (!this.eRef) {
+      console.log("ici");
+      return;
+  }
+    if (this.isOpen && !this.eRef.nativeElement.contains(event.target)) {
+      this.isOpen = false;
+    }
+  }
 
   async ngOnInit() {
     await this.notificationService.getNotificationIsNotRead(this.user_id);
     console.log(this.notificationLoad);
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   public toggleDropdown() {
@@ -88,4 +92,6 @@ export class UserNotification implements OnInit, OnDestroy {
     this.showAll = true;
     await this.notificationService.getNotifications(this.user_id);
   }
+
+
 }

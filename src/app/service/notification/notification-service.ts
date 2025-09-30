@@ -9,9 +9,6 @@ import {Notification} from '../../models/notification/notification';
 export class NotificationService {
   public notifications$ = new BehaviorSubject<Notification[]>([]);
   public notification$ = new BehaviorSubject<Notification | null>(null)
-  public notificationsIsNotRead = new BehaviorSubject<Notification[]>([]);
-  public notificationsIsRead = new BehaviorSubject<Notification[]>([]);
-  public unreadCount$ = new BehaviorSubject<number>(0);
 
 //TODO Dégeulasse de faire ça
   user_id = "22ce5a89-1db2-46e7-a265-c929697ff1d0";
@@ -90,18 +87,4 @@ export class NotificationService {
     }
   }
 
-  public async getNotificationIsRead(user_id: string |undefined) {
-    const {data, error} = await supabase
-      .from('notifications')
-      .select('*')
-      .eq('user_id', user_id)
-      .eq('is_read', true);
-
-    if (error) {
-      console.error("erreur sur les notifications", error);
-    } else {
-      this.notificationsIsRead.next(data)
-      console.log('notificationsIsRead', this.notificationsIsRead.value)
-    }
-  }
 }
