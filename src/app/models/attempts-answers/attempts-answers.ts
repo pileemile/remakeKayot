@@ -1,7 +1,7 @@
 export interface AttemtpsAnswers {
-  id: string
+  id?: string
   question_id: string
-  quiz_id: string | null
+  quiz_id: string | null | undefined
   selected_answer_id: string | null
   user_id: string | null
 }

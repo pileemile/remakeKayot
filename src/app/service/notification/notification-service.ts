@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import {supabase} from '../../../environments/environment';
-import {Notification} from '../../models/notification/notification';
+import {Notification, NotificationMetadata, NotificationType} from '../../models/notification/notification';
 
 @Injectable({
   providedIn: 'root'
@@ -27,15 +27,15 @@ export class NotificationService {
     }
   }
 
-  public async addNotification() {
+  public async addNotification(type: NotificationType, title: string, message: string, metadata: NotificationMetadata = {}) {
     const { data, error } = await supabase
       .from('notifications')
       .insert({
         user_id: this.user_id,
-        type: this.notification$.value?.type,
-        title: this.notification$.value?.title,
-        message: this.notification$.value?.message,
-        isRead: false,
+        type: type,
+        title: title,
+        message: message,
+        is_read: false,
         metadata: this.notification$.value?.metadata,
         created_at: new Date().toISOString()
       })

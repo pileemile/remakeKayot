@@ -10,6 +10,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {QuizComments} from '../../quiz/quiz-comments/quiz-comments';
 import {MatDialog} from '@angular/material/dialog';
 import {DialogSuccessError} from '../../dialog/dialog-success-error/dialog-success-error';
+import {NotificationService} from '../../../service/notification/notification-service';
 
 @Component({
   selector: 'app-answer-questions',
@@ -37,6 +38,7 @@ export class AnswerQuestions implements OnInit{
     private readonly router: Router,
     private readonly allQuizService: QuizService,
     private readonly dialog: MatDialog,
+    private readonly notificationService: NotificationService,
   ) {}
 
   async ngOnInit() {
@@ -103,7 +105,22 @@ export class AnswerQuestions implements OnInit{
 
   public answers_user_true(is_correct: boolean, text: string, index: number, id: string | undefined ) {
     if (this.questionService.question$.value && this.question && this.quizz) {
-      this.answers_user[index] = {question_id: this.question.id, is_correct, text, id, quiz_id: this.quizz.id};
+      this.answers_user[index] = {
+        question_id: this.question.id,
+        is_correct,
+        text,
+        id,
+        quiz_id: this.quizz.id
+      };
+      this.attemptsAnswersService.recoverAnswersUser.next([
+        ...this.attemptsAnswersService.recoverAnswersUser.value,
+        {
+          question_id: this.question.id,
+          selected_answer_id: id ?? '',
+          quiz_id: this.quizz.id,
+          user_id: '22ce5a89-1db2-46e7-a265-c929697ff1d0'
+        }
+      ]);
     }
   }
 
@@ -122,15 +139,8 @@ export class AnswerQuestions implements OnInit{
 
     try {
       const total_answers: number = Object.values(this.answers_user).length;
-
-      await this.attemptsAnswersService.insertAttemptAnswers(this.answers_user);
-      await this.attemptsAnswersService.getAttemptsAnswers(this.quizz?.id);
-      await this.attemptsAnswersService.matchAnswersUser(
-        this.attemptsAnswersService.getAllAnswersQuiz,
-        this.answers_user
-      );
       await this.attemptsAnswersService.insertAttempts(total_answers, this.quizz?.id);
-
+      console.log("recovery Answers", this.attemptsAnswersService.recoverAnswersUser.value);
       this.dialog.open(DialogSuccessError, {
         width: '400px',
         height: '170px',
