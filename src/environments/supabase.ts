@@ -184,6 +184,42 @@ export type Database = {
           },
         ]
       }
+      notifications: {
+        Row: {
+          created_at: string
+          id: string
+          is_read: boolean
+          message: string
+          metadata: Json | null
+          title: string
+          type: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_read?: boolean
+          message: string
+          metadata?: Json | null
+          title: string
+          type: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_read?: boolean
+          message?: string
+          metadata?: Json | null
+          title?: string
+          type?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       questions: {
         Row: {
           created_at: string | null
@@ -370,10 +406,70 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      recent_notifications: {
+        Row: {
+          created_at: string | null
+          id: string | null
+          is_read: boolean | null
+          message: string | null
+          metadata: Json | null
+          title: string | null
+          type: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string | null
+          is_read?: boolean | null
+          message?: string | null
+          metadata?: Json | null
+          title?: string | null
+          type?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string | null
+          is_read?: boolean | null
+          message?: string | null
+          metadata?: Json | null
+          title?: string | null
+          type?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      user_notification_stats: {
+        Row: {
+          achievement_count: number | null
+          last_notification_date: string | null
+          quiz_completed_count: number | null
+          quiz_failed_count: number | null
+          quiz_passed_count: number | null
+          read_count: number | null
+          total_notifications: number | null
+          unread_count: number | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      [_ in never]: never
+      cleanup_old_notifications: {
+        Args: { days_to_keep?: number }
+        Returns: number
+      }
+      get_unread_notifications_count: {
+        Args: { user_uuid?: string }
+        Returns: number
+      }
+      mark_all_notifications_as_read: {
+        Args: { user_uuid?: string }
+        Returns: number
+      }
     }
     Enums: {
       app_permission: "channels.delete" | "messages.delete"
