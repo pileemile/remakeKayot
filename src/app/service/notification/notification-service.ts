@@ -51,14 +51,14 @@ export class NotificationService {
   }
 
   public async deleteNotification(id: string) {
-    const {data, error} = await supabase
+    const {error} = await supabase
       .from('notifications')
       .delete()
       .eq('id', id);
     if (error) {
       console.error("erreur lors de la suppression de la notification", error);
     }
-    return data;
+      await this.getNotifications(this.user_id);
   }
 
   public async updateNotification(id: string) {

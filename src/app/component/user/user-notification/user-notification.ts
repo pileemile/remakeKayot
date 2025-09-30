@@ -40,6 +40,7 @@ export class UserNotification implements OnInit, OnDestroy {
   public async deleteNotification(notification: Notification, event: Event) {
     event.stopPropagation();
     await this.notificationService.deleteNotification(notification.id);
+    this.notificationLoad;
   }
 
   public getTimeAgo(date: Date | string | number): string {
