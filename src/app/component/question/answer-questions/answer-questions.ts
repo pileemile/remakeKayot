@@ -41,14 +41,19 @@ export class AnswerQuestions implements OnInit{
     private readonly notificationService: NotificationService,
   ) {}
 
-  async ngOnInit() {
+  ngOnInit() {
+    this.loadQuestionAndAnswers();
+  }
+
+  private async loadQuestionAndAnswers(): Promise<void> {
     const id = this.route.snapshot.paramMap.get('id');
     this.quizId = id;
+
     if (id) {
-      await this.allQuizService.getQuizById(id);
-    }
-    if (this.quizService.quiz$.value) {
-      await this.questionService.fetchQuestionsWithAnswersByQuizId(this.quizService.quiz$.value?.id);
+      const quiz = await this.allQuizService.getQuizById(id);
+      if (quiz) {
+        await this.questionService.fetchQuestionsWithAnswersByQuizId(quiz.id);
+      }
     }
   }
 
@@ -72,11 +77,6 @@ export class AnswerQuestions implements OnInit{
     }
   }
 
-  public set quizz(quizz: Quiz) {
-    this.quizService.quiz$.next(quizz);
-    this.questionService.fetchQuestionsWithAnswersByQuizId(quizz?.id);
-  }
-
   public get isCurrentQuestionAnswered(): boolean {
     return this.answers_user[this.index] !== undefined;
   }
@@ -90,8 +90,6 @@ export class AnswerQuestions implements OnInit{
     if (this.questionService.question$.value?.length)  {
       if (this.index === this.questionService.question$.value?.length - 1) {
         this.index = this.questionService.question$.value?.length - 1;
-      }
-      if (this.index + 1 === (this.quizz?.questions?.length ?? 0)) {
       }
     }
   }
@@ -139,18 +137,42 @@ export class AnswerQuestions implements OnInit{
 
     try {
       const total_answers: number = Object.values(this.answers_user).length;
-      await this.attemptsAnswersService.insertAttempts(total_answers, this.quizz?.id);
-      console.log("recovery Answers", this.attemptsAnswersService.recoverAnswersUser.value);
-      this.dialog.open(DialogSuccessError, {
-        width: '400px',
-        height: '170px',
-        data: {
-          message: 'Le quiz a été rempli avec succès !',
-          type: 'success'
-        }
-      });
 
-      this.router.navigate(['all-quiz']);
+      const result = await this.attemptsAnswersService.insertAttempts(
+        total_answers,
+        this.quizz?.id,
+        this.quizz?.title
+      );
+
+      if (!result) {
+        throw new Error('Erreur lors de la soumission du quiz');
+      }
+
+      const { percentage, isPassed } = result;
+
+      if (isPassed) {
+        this.dialog.open(DialogSuccessError, {
+          width: '400px',
+          height: '200px',
+          data: {
+            message: `Félicitations ! Vous avez réussi le quiz avec ${Math.round(percentage)}%.`,
+            type: 'success'
+          }
+        });
+
+        this.answers_user = {};
+
+        this.router.navigate(['all-quiz']);
+      } else {
+        this.dialog.open(DialogSuccessError, {
+          width: '400px',
+          height: '200px',
+          data: {
+            message: `Vous avez obtenu ${Math.round(percentage)}%. Il faut au moins 75% pour réussir. Veuillez recommencer le quiz.`,
+            type: 'error'
+          }
+        });
+      }
 
     } catch (error) {
       console.error("Erreur lors du quiz", error);
@@ -164,5 +186,4 @@ export class AnswerQuestions implements OnInit{
       });
     }
   }
-
 }

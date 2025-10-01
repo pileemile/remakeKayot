@@ -1,8 +1,10 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {supabase} from '../../../environments/environment';
 import {Attempts} from '../../models/attempts/attempts';
 import {AttemtpsAnswers} from '../../models/attempts-answers/attempts-answers';
 import {BehaviorSubject} from 'rxjs';
+import {NotificationService} from '../notification/notification-service';
+import {NotificationType} from '../../models/notification/notification';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +12,11 @@ import {BehaviorSubject} from 'rxjs';
 export class AttemptsAnswersService {
   public recoverAnswersUser = new BehaviorSubject<AttemtpsAnswers[]>([]);
   public correctCount: number = 0;
+  private readonly PASSING_THRESHOLD = 75;
 
-  public async insertAttempts(total: number, quiz_id: string | null | undefined) {
+  constructor(private readonly notificationService: NotificationService) {}
+
+  public async insertAttempts(total: number, quiz_id: string | null | undefined, quiz_name?: string) {
     const uniqueAnswers = new Map(
       this.recoverAnswersUser.value.map(a => [a.question_id, a])
     );
@@ -30,6 +35,8 @@ export class AttemptsAnswersService {
     }
 
     this.correctCount = correctAnswers.filter(a => a.is_correct).length;
+    const percentage = answersArray.length > 0 ? (this.correctCount / answersArray.length) * 100 : 0;
+    const isPassed = percentage >= this.PASSING_THRESHOLD;
 
     const newAttempts: Attempts = {
       quiz_id: quiz_id ?? null,
@@ -68,9 +75,39 @@ export class AttemptsAnswersService {
       console.error("Erreur sur l'insertion des attempt_answers", answersError);
     } else {
       console.log("Réponses insérées :", attemptAnswers);
+      await this.createNotification(isPassed, percentage, quiz_id, quiz_name);
       this.recoverAnswersUser.next([]);
     }
+
+    return { percentage, isPassed };
   }
 
+  private async createNotification(
+    isPassed: boolean,
+    percentage: number,
+    quiz_id: string | null | undefined,
+    quiz_name?: string
+  ) {
+    const metadata = {
+      quiz_id: quiz_id ?? undefined,
+      quiz_name: quiz_name,
+      percentage: Math.round(percentage)
+    };
 
+    if (isPassed) {
+      await this.notificationService.addNotification(
+        NotificationType.QuizPassed,
+        'Quiz réussi !',
+        `Félicitations ! Vous avez réussi le quiz${quiz_name ? ` "${quiz_name}"` : ''} avec ${Math.round(percentage)}%.`,
+        metadata
+      );
+    } else {
+      await this.notificationService.addNotification(
+        NotificationType.QuizFailed,
+        'Quiz échoué',
+        `Vous n'avez pas atteint le score minimum de ${this.PASSING_THRESHOLD}%. Votre score : ${Math.round(percentage)}%. Réessayez !`,
+        metadata
+      );
+    }
+  }
 }

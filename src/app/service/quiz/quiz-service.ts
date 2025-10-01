@@ -90,11 +90,14 @@ export class QuizService {
       .select('*, questions(*)')
       .eq('id', id)
       .single();
-    this.quiz$.next(quiz);
 
     if (error) {
-      console.error("error", error)
+      console.error("error", error);
+      throw error;
     }
+    this.quiz$.next(quiz);
+    return quiz;
+
   }
 
   public async getAllQuizFromQuizIdFromComment(userComments: Comment[] ) {
