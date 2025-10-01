@@ -13,7 +13,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          persist-credentials: false  # Important pour éviter les conflits
+          ref: master  # Force le checkout sur master
 
       - name: Configure Git
         run: |
@@ -31,7 +31,5 @@ jobs:
       - name: Commit and push
         run: |
           git add logs/activity.log
-          git commit -m "[Auto] Mise à jour des logs d'activité" || echo "Aucun changement à commiter"
-          git push origin main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Utilise le token intégré de GitHub
+          git commit -m "[Auto] Mise à jour des logs" || echo "Aucun changement"
+          git push origin master  # Push vers master, pas main
