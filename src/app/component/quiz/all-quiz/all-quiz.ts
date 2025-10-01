@@ -61,7 +61,4 @@ export class AllQuiz {
    this.router.navigate(['/answer-quiz/' + id]).then();
   }
 
-  private editQuiz(quiz: any) {
-  }
-
 }

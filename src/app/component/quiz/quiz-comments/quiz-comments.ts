@@ -5,7 +5,6 @@ import {CommonModule} from '@angular/common';
 import {Comments} from '../../comments/comments';
 import {ActivatedRoute} from '@angular/router';
 import {QuizRatingService} from '../../../service/quiz-rating/quiz-rating-service';
-import {log10} from 'chart.js/helpers';
 
 @Component({
   selector: 'app-quiz-comments',
@@ -37,20 +36,22 @@ export class QuizComments implements OnInit{
     });
   }
 
-  async ngOnInit() {
+  ngOnInit() {
+    this.loadData().then();
+  }
+
+  private async loadData(){
     this.quizCommentsService.quizIdForComment = this.route.snapshot.paramMap.get('id');
     await this.quizRatingService.getQuizRating(this.quizCommentsService.quizIdForComment);
     await this.loadCommentsByQuiz();
   }
-
-
 
   public async onSubmitComment() {
     if (this.commentForm.valid && !this.isSubmitting) {
       try {
         this.isSubmitting = true;
         const { comment, rating } = this.commentForm.value;
-        const newComment = await this.quizCommentsService.addComment(this.quizId, comment, rating);
+        await this.quizCommentsService.addComment(this.quizId, comment, rating);
         await this.quizCommentsService.loadCommentsByQuiz();
         this.commentForm.reset({ rating: 0 });
       } catch (error) {

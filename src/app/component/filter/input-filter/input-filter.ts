@@ -30,7 +30,6 @@ export class InputFilter {
     return filterConfig[this.state].type ?? '';
   }
 
-
   onValueChange(newValue: string) {
     this.filterService.updateFilter(this.state, newValue);
   }

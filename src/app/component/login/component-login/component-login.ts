@@ -37,35 +37,12 @@ export class ComponentLogin implements OnInit{
   }
 
   public async onSubmit() {
-      if (this.form.valid) {
-        if (this.routeUrl === 'reset-password')  {
-          const update = this.form.value;
-          this.loginService.updateUser$.next(update);
-          if (this.loginService.updateUser$.value){
-            await this.loginService.updateUser(this.loginService.updateUser$.value)
-          } else
-            console.error("erreur requête", this.loginService.updateUser$.value)
-        } else if(this.routeUrl === 'register') {
-          const register = this.form.value;
-          this.loginService.login$.next(register);
-          if (this.loginService.login$.value) {
-            await this.loginService.loginSigUp(register);
-            await this.navigateRoute.navigate(['/login']);
-          }
-        }
-        /* TODO l'update se fait habituellement sur une nouvelle page*/
-        else {
-          const login = this.form.value;
-          this.loginService.login$.next(login);
-          if (this.loginService.login$.value) {
-            await this.loginService.loginSigInRest(login);
-            await this.navigateRoute.navigate(['/all-quiz']);
-
-          }
-        }
-      } else {
-        console.error('form invalid');
-      }
+    if(!this.form.valid){
+      this.handleInvalidForm();
+      return;
+    }
+    const formValue = this.form.value;
+    await this.routeAction(formValue);
   }
 
   public openForgetPassword(){
@@ -77,4 +54,49 @@ export class ComponentLogin implements OnInit{
     });
   }
 
+  private handleInvalidForm(): void {
+    console.error('Form is invalid');
+  }
+
+  private async routeAction(formValue: any) {
+    switch (this.routeUrl) {
+      case 'reset-password':
+        await this.handleResetPassword(formValue);
+        break;
+      case 'register':
+        await this.handleRegister(formValue);
+        break;
+      default:
+        await this.handleLogin(formValue);
+    }
+  }
+
+  private async handleResetPassword(data: any) {
+    this.loginService.updateUser$.next(data);
+    try {
+      await this.loginService.updateUser(data)
+    } catch (error) {
+      console.error("erreur sur le reset de mot de passe", error);
+    }
+  }
+
+  private async handleRegister(data: any) {
+    this.loginService.login$.next(data);
+    try {
+      await this.loginService.loginSigUp(data);
+      await this.navigateRoute.navigate(['/login']);
+    } catch (error) {
+      console.error("erreur sur le register", error);
+    }
+  }
+
+  private async handleLogin(data: any) {
+    this.loginService.login$.next(data);
+    try {
+      await this.loginService.loginSigInRest(data);
+      await this.navigateRoute.navigate(['/all-quiz']);
+    } catch (error) {
+      console.error("erreur sur le login", error);
+    }
+  }
 }

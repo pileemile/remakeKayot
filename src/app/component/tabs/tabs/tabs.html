@@ -1,7 +1,7 @@
 <div class="flex gap-5 grid grid-cols-3">
   @if (modes) {
     @for (mode of modes; track mode) {
-      <app-button-tabs [state]="mode" [buttonActivate]="buttonActivate" (onClick)="setActivate($event)"></app-button-tabs>
+      <app-button-tabs [state]="mode" [buttonActivate]="buttonActivate" (clickEvent)="setActivate($event)"></app-button-tabs>
     }
   } @else {
     <p>aucune donnée</p>

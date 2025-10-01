@@ -33,9 +33,11 @@ export class QuizFilter {
   public tableActions: TableAction[] = [
     {
       icon: 'arrow-right',
-      handler: (quiz) => this.getQuizByIdLoad(quiz.id)
+      handler: (quiz) => {
+        void this.getQuizByIdLoad(quiz.id);
+      }
     }
-  ];
+];
 
   public async getQuizByIdLoad(id: string) {
     this.router.navigate(['/answer-quiz/' + id]).then();

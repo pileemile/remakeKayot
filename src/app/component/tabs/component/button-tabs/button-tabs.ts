@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output, output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ButtonEnum, labels} from '../../constants';
 import {NgClass} from '@angular/common';
 
@@ -13,7 +13,7 @@ import {NgClass} from '@angular/common';
 export class ButtonTabs {
   @Input() state: ButtonEnum = ButtonEnum.ALL;
   @Input() buttonActivate?: ButtonEnum;
-  @Output() onClick: EventEmitter<ButtonEnum | undefined> = new EventEmitter();
+  @Output() clickEvent: EventEmitter<ButtonEnum | undefined> = new EventEmitter();
 
   public get isActive(): boolean {
     return this.state === this.buttonActivate;
@@ -24,6 +24,11 @@ export class ButtonTabs {
   }
 
   public click($event: MouseEvent) {
-    this.onClick.emit(!this.isActive ? this.state : undefined);
+    if (this.isActive) {
+      this.clickEvent.emit(undefined);
+    } else {
+      this.clickEvent.emit(this.state);
+    }
   }
+
 }
