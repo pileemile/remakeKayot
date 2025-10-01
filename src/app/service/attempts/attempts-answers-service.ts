@@ -12,7 +12,7 @@ import {NotificationType} from '../../models/notification/notification';
 export class AttemptsAnswersService {
   public recoverAnswersUser = new BehaviorSubject<AttemtpsAnswers[]>([]);
   public correctCount: number = 0;
-  private readonly PASSING_THRESHOLD = 75;
+  private readonly PASSING_THRESHOLD: number = 75;
 
   constructor(private readonly notificationService: NotificationService) {}
 
@@ -64,7 +64,6 @@ export class AttemptsAnswersService {
       quiz_id: a.quiz_id,
       selected_answer_id: a.selected_answer_id,
       user_id: a.user_id,
-      attempt_id: insertedAttempt.id,
     }));
 
     const { error: answersError } = await supabase

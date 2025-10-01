@@ -19,7 +19,7 @@ jobs:
       - name: Configure Git
         run: |
           git config --global user.name "pileemile"
-          git config --global user.email "votre-email@github.com"  # Remplacez par votre email GitHub
+          git config --global user.email "votre-email@github.com"
 
       - name: Create logs directory
         run: mkdir -p logs
