@@ -6,24 +6,24 @@
   <form [formGroup]="commentForm" (ngSubmit)="onSubmitComment()" class="mb-6">
     <div class="space-y-4">
       <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-2">
+        <p class="block text-sm font-semibold text-gray-700 mb-2">
           Notez ce quiz
-        </label>
+        </p>
         <div class="flex space-x-1">
           @for (star of [1,2,3,4,5]; track star) {
-            <img
-              (click)="setRating(star)"
-              class="w-8 h-8 cursor-pointer transition-transform"
-              [src]="star <= commentForm.get('rating')?.value
+            <a (click)="setRating(star)">
+              <img
+                class="w-8 h-8 cursor-pointer transition-transform"
+                [src]="star <= commentForm.get('rating')?.value
              ? 'star-filled.svg'
              : 'star-outline.svg'"
-              alt="star"
-            />
-          }
+                alt="star"
+              />
+            </a>
 
+          }
         </div>
       </div>
-
       <div>
         <label for="comment" class="block text-sm font-semibold text-gray-700 mb-2">
           Ajouter un commentaire

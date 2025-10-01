@@ -95,13 +95,16 @@ export class AttemptsAnswersService {
     };
 
     if (isPassed) {
+      const quizNameSuffix = quiz_name ? ` "${quiz_name}"` : '';
+      const message = `Félicitations ! Vous avez réussi le quiz${quizNameSuffix} avec ${Math.round(percentage)}%.`;
+
       await this.notificationService.addNotification(
         NotificationType.QuizPassed,
         'Quiz réussi !',
-        `Félicitations ! Vous avez réussi le quiz${quiz_name ? ` "${quiz_name}"` : ''} avec ${Math.round(percentage)}%.`,
+        message,
         metadata
       );
-    } else {
+     } else {
       await this.notificationService.addNotification(
         NotificationType.QuizFailed,
         'Quiz échoué',

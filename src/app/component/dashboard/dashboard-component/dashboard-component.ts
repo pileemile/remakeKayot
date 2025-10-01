@@ -17,6 +17,13 @@ import {CommonModule} from '@angular/common';
 })
 export class DashboardComponent implements OnInit{
 
+  public dataPoints:any[] = [];
+  public timeout:any = null;
+  public xValue:number = 1;
+  public yValue:number = 10;
+  public newDataCount:number = 10;
+  public chart: any;
+
   constructor(
     public dashboardService: DashboardService,
     public attemptsService: AttemptsService,
@@ -24,40 +31,41 @@ export class DashboardComponent implements OnInit{
     private readonly http : HttpClient
   ) {}
 
- async ngOnInit() {
-   await this.attemptsService.getAttempts("22ce5a89-1db2-46e7-a265-c929697ff1d0");
-   await this.quizService.getAllQuiz();
-
-
+  ngOnInit() {
+   this.loadData().then();
   }
 
-  dataPoints:any[] = [];
-  timeout:any = null;
-  xValue:number = 1;
-  yValue:number = 10;
-  newDataCount:number = 10;
-  chart: any;
+  private async loadData(){
+    await this.attemptsService.getAttempts("22ce5a89-1db2-46e7-a265-c929697ff1d0");
+    await this.quizService.getAllQuiz();
+  }
 
-
-  updateData = () => {
+  public updateData = () => {
     this.http.get("https://canvasjs.com/services/data/datapoints.php?xstart="+this.xValue+"&ystart="+this.yValue+"&length="+this.newDataCount+"type=json", { responseType: 'json' }).subscribe(this.addData);
   }
 
-  addData = (data:any) => {
-    if(this.newDataCount != 1) {
-      data.forEach( (val:any[]) => {
-        this.dataPoints.push({x: val[0], y: parseInt(val[1])});
-        this.xValue++;
-        this.yValue = parseInt(val[1]);
-      })
-    } else {
-      this.dataPoints.push({x: data[0][0], y: parseInt(data[0][1])});
+  public addData = (data: any) => {
+    if (this.newDataCount === 1) {
+      this.dataPoints.push({
+        x: data[0][0],
+        y: Number.parseInt(data[0][1])
+      });
       this.xValue++;
-      this.yValue = parseInt(data[0][1]);
+      this.yValue = Number.parseInt(data[0][1]);
+    } else {
+      for (const val of data as any[]) {
+        this.dataPoints.push({
+          x: val[0],
+          y: Number.parseInt(val[1])
+        });
+        this.xValue++;
+        this.yValue = Number.parseInt(val[1]);
+      }
     }
     this.newDataCount = 1;
     this.chart.render();
     this.timeout = setTimeout(this.updateData, 1000);
-  }
+  };
+
 
 }

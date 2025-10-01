@@ -28,13 +28,12 @@
                 <p class="text-xs text-yellow-500 font-medium">
                   ★ {{comment.ranking}}
                 </p>
-
-                <img
+                <a href="" (click)="startEdit(comment)">
+                  <img
                   src="edit.svg"
                   alt="Éditer"
                   class="w-4 h-4 cursor-pointer hover:opacity-70 transition-opacity"
-                  (click)="startEdit(comment)"
-                  >
+                ></a>
               </div>
               @if (editingCommentId != comment.id) {
                 <p
@@ -74,12 +73,14 @@
                   </div>
                 </div>
               }
-              <div class="flex justify-end mt-2" >
-                <img
-                  src="delete.svg"
-                  alt="Supprimer"
-                  class="w-4 h-4 cursor-pointer hover:opacity-70 transition-opacity"
-                  (click)="deleteComment(comment.id)">
+              <div class="flex justify-end mt-2">
+                <a href="" (click)="deleteComment(comment.id)">
+                  <img
+                    src="delete.svg"
+                    alt="Supprimer"
+                    class="w-4 h-4 cursor-pointer hover:opacity-70 transition-opacity"
+                  >
+                </a>
               </div>
             </div>
           </div>

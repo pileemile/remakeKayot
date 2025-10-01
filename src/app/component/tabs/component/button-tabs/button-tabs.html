@@ -1,11 +1,16 @@
 <div>
-  <div class="w-52 h-28 flex items-center justify-center rounded-lg cursor-pointer flex  flex-col"
-       [ngClass]="{'bg-blue-600': isActive, 'bg-white': !isActive}"
-       (click)="click($event)">
-    <img src="{{state}}.svg"
-         alt="{{state}}"
-         class="w-9 h-9 transition-all duration-300"
-         [ngClass]=" {'filter invert' : isActive, 'filter brightness-0 saturate-0' : !isActive}">
+  <button
+    type="button"
+    class="w-52 h-28 flex items-center justify-center rounded-lg cursor-pointer flex flex-col"
+    [ngClass]="{'bg-blue-600': isActive, 'bg-white': !isActive}"
+    (click)="click($event)"
+  >
+    <img
+      [src]="state + '.svg'"
+      [alt]="state"
+      class="w-9 h-9 transition-all duration-300"
+      [ngClass]="{'filter invert': isActive, 'filter brightness-0 saturate-0': !isActive}"
+    />
     <p [ngClass]="{'text-white': isActive, 'text-black': !isActive}">{{ label }}</p>
-  </div>
+  </button>
 </div>

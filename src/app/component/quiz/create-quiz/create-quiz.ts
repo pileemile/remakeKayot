@@ -94,8 +94,9 @@ export class CreateQuiz implements OnInit {
     });
 
     const answersArray = groupQuestion.get('answers') as FormArray;
-    answersArray.push(this.createAnswersFormGroup());
-    answersArray.push(this.createAnswersFormGroup());
+    answersArray.push(
+      this.createAnswersFormGroup(),
+    );
 
     return groupQuestion;
   }
@@ -165,13 +166,13 @@ export class CreateQuiz implements OnInit {
 
   public onCorrectAnswerChange(questionIndex: number, answerIndex: number): void {
     const answersArray = this.questions.at(questionIndex).get('answers') as FormArray;
-
-    answersArray.controls.forEach((control, index) => {
+    for (const [index, control] of answersArray.controls.entries()) {
       if (index !== answerIndex) {
         control.get('is_correct')?.setValue(false);
       }
-    });
+    }
   }
+
 
   public async onSubmit() {
     if (!this.form.valid) {
@@ -207,14 +208,15 @@ export class CreateQuiz implements OnInit {
   }
 
 
-  private markFormGroupTouched(formGroup: FormGroup | FormArray) {
-    Object.keys(formGroup.controls).forEach(key => {
-      const control = formGroup.get(key);
+  private markFormGroupTouched(formGroup: FormGroup | FormArray): void {
+    for (const control of Object.values(formGroup.controls)) {
       control?.markAsTouched();
 
       if (control instanceof FormGroup || control instanceof FormArray) {
         this.markFormGroupTouched(control);
       }
-    });
+    }
+
   }
+
 }

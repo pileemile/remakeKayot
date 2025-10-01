@@ -41,8 +41,6 @@ export class SelectFilter {
     return [];
   }
 
-
-
   onValueChange(newValue: string) {
     this.filterService.updateFilter(this.state, newValue);
   }
