@@ -1,0 +1,31 @@
+name: Track Activity
+
+on:
+  watch:
+    types: [started]
+  issues:
+    types: [opened]
+
+jobs:
+  log-activity:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create logs directory
+        run: mkdir -p logs
+
+      - name: Log activity
+        run: |
+          echo "[$(date)] Nouvelle activité par ${{ github.actor }} (${{ github.event_name }})" >> logs/activity.log
+          echo "Contenu du log :"
+          cat logs/activity.log
+
+      - name: Commit and push
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add logs/activity.log
+          git commit -m "Mise à jour des logs (automatique)" || echo "Aucun changement à commiter"
+          git push
