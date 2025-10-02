@@ -56,7 +56,7 @@ export class SearchService {
         cp: 'ilike',
         role: 'eq',
       };
-      Object.entries(search).forEach(([key, value]) => {
+      for (const [key, value] of Object.entries(search)) {
         if (value) {
           const filterType = filterMap[key as keyof IFilters];
           if (filterType === 'ilike') {
@@ -65,7 +65,8 @@ export class SearchService {
             query = query.eq(key, value);
           }
         }
-      });
+      }
+
     }
 
     const { data, error } = await query;

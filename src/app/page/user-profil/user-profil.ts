@@ -19,6 +19,7 @@ import {PaginationType} from '../../component/pagination/constent';
   styleUrl: './user-profil.css'
 })
 export class UserProfil {
+  protected readonly PaginationType = PaginationType;
 
   public tableColumns: TableColumn[] = [
     { key: 'title', label: 'Titre', type: 'text' },
@@ -32,9 +33,7 @@ export class UserProfil {
   ) {}
 
   public get userQuiz() {
+    console.log("userQuiz", this.userService.userByQuiz.value);
     return this.userService.userByQuiz.value;
   }
-
-
-  protected readonly PaginationType = PaginationType;
 }

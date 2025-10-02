@@ -51,25 +51,29 @@ export class UserService {
   }
 
   public async getQuizByUserId(user_id: string) {
-    const {data, error} = await supabase
+    const { data, error } = await supabase
       .from('attempt_answers')
       .select(`quizzes!inner(*)`)
-      .eq('user_id', user_id)
+      .eq('user_id', user_id);
 
     if (error) {
-      console.error("erreur sur ", error);
-    } else {
-      const dataTable: Quiz[] = [];
-      data?.forEach(item => {
-        if (Array.isArray(item.quizzes)) {
-          item.quizzes.forEach(quiz => dataTable.push(quiz));
-        } else if (item.quizzes) {
-          dataTable.push(item.quizzes);
-        }
-      });
-
-      this.userByQuiz.next(dataTable);
+      console.error("Erreur sur :", error);
+      return;
     }
+
+    const dataTable: Quiz[] = data?.flatMap(item => {
+      if (Array.isArray(item.quizzes)) {
+        return item.quizzes;
+      } else if (item.quizzes) {
+        return [item.quizzes];
+      } else {
+        return [];
+      }
+    }) || [];
+
+
+    this.userByQuiz.next(dataTable);
   }
+
 
 }

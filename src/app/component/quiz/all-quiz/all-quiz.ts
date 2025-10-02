@@ -47,6 +47,7 @@ export class AllQuiz {
 
   public get all_quiz() {
     const all_quiz = this.allQuizService.allQuizs$.value;
+    console.log("all_quiz", all_quiz);
 
     if (!all_quiz) {
       return null;
