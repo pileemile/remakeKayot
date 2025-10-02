@@ -13,12 +13,11 @@ export class UserNotification implements OnInit {
   public isOpen = false;
   public showAll = false;
 
-//TODO Dégeulasse de faire ça
-  user_id = "22ce5a89-1db2-46e7-a265-c929697ff1d0";
+  private readonly _user_id = "22ce5a89-1db2-46e7-a265-c929697ff1d0";
 
   constructor(
     private readonly notificationService: NotificationService,
-    private eRef: ElementRef
+    private readonly eRef: ElementRef
   ) {}
 
   @HostListener('document:click', ['$event'])
@@ -32,9 +31,8 @@ export class UserNotification implements OnInit {
     }
   }
 
-  async ngOnInit() {
-    await this.notificationService.getNotificationIsNotRead(this.user_id);
-    console.log(this.notificationLoad);
+  ngOnInit() {
+  this.loadData().then();
   }
 
   public toggleDropdown() {
@@ -44,7 +42,6 @@ export class UserNotification implements OnInit {
   public async deleteNotification(notification: Notification, event: Event) {
     event.stopPropagation();
     await this.notificationService.deleteNotification(notification.id);
-    this.notificationLoad;
   }
 
   public getTimeAgo(date: Date | string | number): string {
@@ -90,7 +87,12 @@ export class UserNotification implements OnInit {
 
   public async notificationAllLoad() {
     this.showAll = true;
-    await this.notificationService.getNotifications(this.user_id);
+    await this.notificationService.getNotifications(this._user_id);
+  }
+
+  private async loadData() {
+    await this.notificationService.getNotificationIsNotRead(this._user_id);
+    console.log(this.notificationLoad);
   }
 
 

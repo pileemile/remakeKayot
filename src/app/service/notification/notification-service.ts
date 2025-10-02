@@ -10,8 +10,7 @@ export class NotificationService {
   public notifications$ = new BehaviorSubject<Notification[]>([]);
   public notification$ = new BehaviorSubject<Notification | null>(null)
 
-//TODO Dégeulasse de faire ça
-  user_id = "22ce5a89-1db2-46e7-a265-c929697ff1d0";
+ private readonly _user_id = "22ce5a89-1db2-46e7-a265-c929697ff1d0";
 
   public async getNotifications(user_id: string | undefined) {
     const { data, error } = await supabase
@@ -31,7 +30,7 @@ export class NotificationService {
     const { data, error } = await supabase
       .from('notifications')
       .insert({
-        user_id: this.user_id,
+        user_id: this._user_id,
         type: type,
         title: title,
         message: message,
@@ -56,7 +55,7 @@ export class NotificationService {
     if (error) {
       console.error("erreur lors de la suppression de la notification", error);
     }
-      await this.getNotifications(this.user_id);
+      await this.getNotifications(this._user_id);
   }
 
   public async updateNotification(id: string) {
@@ -69,7 +68,7 @@ export class NotificationService {
     if (error) {
       console.error("erreur lors de la mise à jour de la notification", error);
     } else {
-     await this.getNotifications(this.user_id);
+     await this.getNotifications(this._user_id);
      return data;
     }
   }

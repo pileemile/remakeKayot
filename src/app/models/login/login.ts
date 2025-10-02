@@ -3,12 +3,12 @@ export interface Login {
   password: string;
 }
 
-export interface user_roles {
+export interface UserRoles {
   role: app_roles,
   user_id: string
 }
 
-export interface role_permissions {
+export interface RolePermissions {
   role: app_roles,
   permission: role_permission
 }

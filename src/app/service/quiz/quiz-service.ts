@@ -4,6 +4,7 @@ import {QuestionCreate, Quiz} from '../../models/quiz/quiz';
 import {supabase} from '../../../environments/environment';
 import {ButtonEnum} from '../../component/tabs/constants';
 import {Comment} from '../../models/quiz-comment/quiz-comment';
+import {Answers} from '../../models/answer/answer';
 
 @Injectable({
   providedIn: 'root'
@@ -49,7 +50,7 @@ export class QuizService {
 
     if (questionError) throw questionError;
 
-    const answersInsert: any[] = [];
+    const answersInsert: Answers[] = [];
     questionData.forEach((q, index) => {
       questions[index].answers?.forEach(a => {
         answersInsert.push({

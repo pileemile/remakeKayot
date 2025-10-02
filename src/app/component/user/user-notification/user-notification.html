@@ -31,13 +31,15 @@
       </div>
       }
       @for(notification of (showAll ? notificationLoad : notificationNotRead); track $index) {
-      <div
-        (click)="isRead(notification.id)"
-        class="group p-4 hover:bg-gray-50 border-b border-gray-50 last:border-b-0 cursor-pointer transition-all duration-200 relative"
-        [class.bg-blue-50]="!notification.is_read"
-        [class.border-l-4]="!notification.is_read"
-        [class.border-l-blue-500]="!notification.is_read"
-        [class.pl-3]="!notification.is_read">
+      <div>
+        <button
+          (click)="isRead(notification.id)"
+          class="group p-4 hover:bg-gray-50 border-b border-gray-50 last:border-b-0 cursor-pointer transition-all duration-200 relative"
+          [class.bg-blue-50]="!notification.is_read"
+          [class.border-l-4]="!notification.is_read"
+          [class.border-l-blue-500]="!notification.is_read"
+          [class.pl-3]="!notification.is_read">
+
 
         <div class="flex items-start space-x-3">
           <div class="flex-shrink-0 rounded-full flex items-center justify-center p-1"
@@ -114,6 +116,7 @@
              class="absolute left-0 top-0 bottom-0 bg-gradient-to-b from-blue-400 to-blue-600 rounded-r-full">
         </div>
         }
+        </button>
       </div>
       }
     </div>

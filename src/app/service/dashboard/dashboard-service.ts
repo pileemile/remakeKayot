@@ -49,7 +49,7 @@ export class DashboardService {
       legendText: string;
       showInLegend: boolean;
       dataPoints: { label: string; y: number; }[];
-      axisYType?: undefined;
+      axisYType?: string;
     } | {
       type: string;
       name: string;
@@ -114,10 +114,11 @@ export class DashboardService {
       },
       legend:{
         cursor:"pointer",
-        itemclick: function(e: any){
-          e.dataSeries.visible = !(typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible);
+        itemclick: function(e: any) {
+          e.dataSeries.visible = !(e.dataSeries.visible ?? true);
           e.chart.render();
         }
+
       },
       data: [{
         type: "column",

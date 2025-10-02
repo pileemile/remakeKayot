@@ -17,19 +17,22 @@ export class UserComments implements OnInit {
   constructor(
     private readonly quizCommentService: QuizCommentService,
     private readonly quizService: QuizService,
-  ) {
+  ) {}
+
+  ngOnInit() {
+    initAccordions();
+    this.loadData().then();
   }
 
-  async ngOnInit() {
-    initAccordions();
 
+  private async loadData() {
     await this.quizCommentService.loadCommentByUser();
     await this.quizService.getAllQuizFromQuizIdFromComment(this.commentUserByQuizId);
     await this.quizCommentService.getAllCommentsByQuizId(this.quizId);
   }
 
   private get commentUserByQuizId() {
-    return this.quizCommentService.commentUser.value;
+    return this.quizCommentService.commentUser$.value;
   }
 
   public get quizId() {

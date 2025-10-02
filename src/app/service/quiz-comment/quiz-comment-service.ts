@@ -9,14 +9,12 @@ import {BehaviorSubject} from 'rxjs';
 })
 export class QuizCommentService {
 
-  public comments = new BehaviorSubject<Comment[]>([])
-  public commentUser = new BehaviorSubject<Comment[]>([])
-  public commentByQuiz = new BehaviorSubject<{ [quizId: string]: Comment[] }>({});
+  public comments$ = new BehaviorSubject<Comment[]>([])
+  public commentUser$ = new BehaviorSubject<Comment[]>([])
+  public commentByQuiz$ = new BehaviorSubject<{ [quizId: string]: Comment[] }>({});
   public quizIdForComment: string | null = null;
 
-  private readonly isLoading = new BehaviorSubject<boolean>(false);
-
-  //todo: l'enlever après
+  private readonly _isLoading$ = new BehaviorSubject<boolean>(false);
   private readonly currentUserId = '22ce5a89-1db2-46e7-a265-c929697ff1d0';
 
 
@@ -32,7 +30,7 @@ export class QuizCommentService {
         throw error;
       }
 
-      this.comments.next(data);
+      this.comments$.next(data);
       return data || [];
     } catch (error) {
       console.error('Erreur inattendue:', error);
@@ -117,7 +115,7 @@ export class QuizCommentService {
 
   public async loadCommentsByQuiz() {
     try {
-         this.comments.next(await this.getCommentsByQuizId(this.quizIdForComment));
+         this.comments$.next(await this.getCommentsByQuizId(this.quizIdForComment));
     } catch (error) {
       console.error('Erreur chargement des commentaires:', error);
     }
@@ -126,7 +124,7 @@ export class QuizCommentService {
   public async loadCommentByUser() {
     try {
       if (this.currentUserId) {
-        this.commentUser.next(await this.getAllCommentsByUserId(this.currentUserId));
+        this.commentUser$.next(await this.getAllCommentsByUserId(this.currentUserId));
       }
     } catch (error) {
       console.error('Erreur chargement des commentaires:', error);
@@ -134,7 +132,7 @@ export class QuizCommentService {
   }
 
   public async getCommentByQuizId(quizId: string): Promise<Comment[]> {
-    this.isLoading.next(true);
+    this._isLoading$.next(true);
     try {
       const { data, error } = await supabase
         .from('quiz_comments')
@@ -145,25 +143,25 @@ export class QuizCommentService {
         console.error("Erreur lors de la récupération des commentaires :", error);
         return [];
       }
-      const currentComments = this.commentByQuiz.value;
+      const currentComments = this.commentByQuiz$.value;
 
-      this.commentByQuiz.next({
+      this.commentByQuiz$.next({
         ...currentComments,
         [quizId]: data || []
       });
 
       return data || [];
     } finally {
-      this.isLoading.next(false);
+      this._isLoading$.next(false);
     }
   }
 
  public getCommentsForQuiz(quizId: string): Comment[] {
-    return this.commentByQuiz.value[quizId] || [];
+    return this.commentByQuiz$.value[quizId] || [];
   }
 
  public get loading(): boolean {
-    return this.isLoading.value;
+    return this._isLoading$.value;
   }
 
 
