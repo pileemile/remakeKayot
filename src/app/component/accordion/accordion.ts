@@ -25,7 +25,7 @@ export class Accordion implements OnDestroy {
   private readonly router = inject(Router);
 
   constructor() {
-    this.quizCommentService.commentByQuiz
+    this.quizCommentService.commentByQuiz$
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.isLoading = this.quizCommentService.loading;

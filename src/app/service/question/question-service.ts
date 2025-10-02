@@ -26,7 +26,4 @@ export class QuestionService {
       this.question$.next(questions);
     }
   }
-
-
-
 }

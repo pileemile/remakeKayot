@@ -34,10 +34,14 @@ export class UserDetails implements OnInit{
     )
   }
 
-  async ngOnInit() {
+  ngOnInit() {
+    this.updateFormValues();
+    this.loadData().then();
+  }
+
+  private async loadData() {
     await this.userService.getUserById(this.id_user);
     await this.userService.getQuizByUserId(this.id_user);
-    this.updateFormValues();
   }
 
   private updateFormValues() {

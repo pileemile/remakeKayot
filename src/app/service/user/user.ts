@@ -47,6 +47,7 @@ export class UserService {
     if (error) {
       console.error("erreur sur l'insertion des attempts", error);
     }
+    return data;
   }
 
   public async getQuizByUserId(user_id: string) {

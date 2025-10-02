@@ -3,7 +3,7 @@ import {BehaviorSubject, lastValueFrom} from 'rxjs';
 import {Login} from '../../models/login/login';
 import {environment, supabase} from '../../../environments/environment';
 import {SessionService} from '../session-service/session-service';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +15,10 @@ export class LoginService {
   public user_create_at: string | number | Date = "";
 
   private isAuthentificated = false;
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   constructor(
-    private sessionService: SessionService,
+    private readonly sessionService: SessionService,
   ) {}
 
   public async loginSigUp(login: Login) {
@@ -29,6 +29,7 @@ export class LoginService {
     if (error) {
       console.error("erreur sur l'inscription", error);
     }
+    return data;
   }
 
   public async loginSigIn(login : Login ){
@@ -82,8 +83,8 @@ export class LoginService {
 
     if (error) {
       console.error('Erreur lors du stockage de session:', error);
-    } else {
     }
+    return data;
   }
 
   public async forgotPassword(login: Login) {
@@ -94,6 +95,7 @@ export class LoginService {
     if (error) {
       console.error("erreur sur le reset de mot de passe", error);
     }
+    return data;
   }
 
   public async updateUser(login: Login){

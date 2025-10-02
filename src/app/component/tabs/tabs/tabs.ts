@@ -16,7 +16,9 @@ export class Tabs {
   set mode(new_mode: ITabsMode) {
     this._mode = new_mode;
     if (new_mode) {
-      this.modes = Object.entries(this.mode).filter((v) => v).map((v) => v[0]) as ButtonEnum[] ;
+      this.modes = Object.entries(this.mode)
+        .filter(Boolean)
+        .map(([key]) => key) as ButtonEnum[];
     }
   }
   @Output() activeTab: EventEmitter<ButtonEnum> = new EventEmitter();

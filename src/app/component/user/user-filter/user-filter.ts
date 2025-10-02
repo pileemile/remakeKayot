@@ -15,6 +15,7 @@ import {PaginationType} from '../../pagination/constent';
   styleUrl: './user-filter.css'
 })
 export class UserFilter {
+  protected readonly PaginationType = PaginationType;
 
   constructor(
     private readonly searchService: SearchService,
@@ -32,5 +33,4 @@ export class UserFilter {
     return this.searchService.quizsSearch.value
   }
 
-  protected readonly PaginationType = PaginationType;
 }

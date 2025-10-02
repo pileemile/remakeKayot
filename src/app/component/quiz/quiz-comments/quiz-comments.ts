@@ -46,6 +46,10 @@ export class QuizComments implements OnInit{
     await this.loadCommentsByQuiz();
   }
 
+  public get quizComments() {
+    return this.quizCommentsService.comments$.value;
+  }
+
   public async onSubmitComment() {
     if (this.commentForm.valid && !this.isSubmitting) {
       try {
@@ -65,7 +69,7 @@ export class QuizComments implements OnInit{
   public async loadCommentsByQuiz() {
     try {
         const comments = await this.quizCommentsService.getCommentsByQuizId(this.quizCommentsService.quizIdForComment);
-        this.quizCommentsService.comments.next(comments);
+        this.quizCommentsService.comments$.next(comments);
     } catch (error) {
       console.error('Erreur chargement des commentaires:', error);
     }
