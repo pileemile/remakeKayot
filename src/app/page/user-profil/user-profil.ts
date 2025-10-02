@@ -6,6 +6,7 @@ import {TableColumn} from '../../models/tables/tables-interface';
 import {UserComments} from '../../component/user/user-comments/user-comments';
 import {Pagination} from '../../component/pagination/pagination';
 import {PaginationType} from '../../component/pagination/constent';
+import {QuizService} from '../../service/quiz/quiz-service';
 
 @Component({
   selector: 'app-user-profil',
@@ -21,6 +22,8 @@ import {PaginationType} from '../../component/pagination/constent';
 export class UserProfil {
   protected readonly PaginationType = PaginationType;
 
+  public user_id: string = '22ce5a89-1db2-46e7-a265-c929697ff1d0';
+
   public tableColumns: TableColumn[] = [
     { key: 'title', label: 'Titre', type: 'text' },
     { key: 'description', label: 'Description', type: 'text' },
@@ -29,11 +32,15 @@ export class UserProfil {
   ];
 
   constructor(
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly quizService: QuizService,
   ) {}
 
   public get userQuiz() {
     console.log("userQuiz", this.userService.userByQuiz.value);
     return this.userService.userByQuiz.value;
+  }
+  public get paginatedQuizzes() {
+    return this.quizService.allQuizs$.value;
   }
 }
