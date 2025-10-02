@@ -3,8 +3,8 @@
     <app-user-details></app-user-details>
   </div>
   <div class="p-4 rounded-lg shadow-md mb-4">
-    <app-table [data]="userQuiz" [columns]="tableColumns"></app-table>
-    <app-pagination [type]="PaginationType.ALLQUIZ"></app-pagination>
+    <app-table [data]="paginatedQuizzes" [columns]="tableColumns"></app-table>
+    <app-pagination [type]="PaginationType.USERQUIZ" [userId]="user_id"></app-pagination>
   </div>
   <div class="p-4 rounded-lg shadow-md">
     <app-user-comments></app-user-comments>

@@ -2,14 +2,15 @@
   import { Pagination } from '../../models/pagination/pagination';
   import { supabase } from '../../../environments/environment';
   import { QuizService } from '../quiz/quiz-service';
-  import { BehaviorSubject } from 'rxjs';
   import { UserService } from '../user/user';
   import {SearchService} from '../search-service/search-service';
+  import {firstValueFrom, filter, take, BehaviorSubject, tap} from 'rxjs';
 
   @Injectable({
     providedIn: 'root'
   })
   export class PaginationService {
+    public pagination$ = new BehaviorSubject<Pagination | null>(null);
 
     constructor(
       private readonly quizService: QuizService,
@@ -17,7 +18,6 @@
       private readonly searchService: SearchService,
     ) {}
 
-    public pagination$ = new BehaviorSubject<Pagination | null>(null);
 
     public async paginationQuiz(page: number, limit: number): Promise<void> {
       try {
@@ -86,7 +86,7 @@
           return;
         }
 
-        const start = page * limit;
+        const start = (page - 1) * limit;
         const end = start + limit;
         const paginatedQuizs = allFilteredQuizs.slice(start, end);
 
@@ -102,6 +102,46 @@
         console.error('Erreur lors de la pagination des quiz filtrés:', error);
       }
     }
+
+    async paginationUserQuiz(page: number, limit: number, userId: string): Promise<void> {
+      try {
+        const allUserQuizzes = await firstValueFrom(
+          this.userService.userByQuiz.pipe(
+            filter(quizzes => quizzes !== null && quizzes.length > 0),
+            take(1)
+          )
+        );
+        if (!allUserQuizzes) {
+          console.error("Aucun quiz trouvé");
+          return;
+        }
+
+        const start = page +10;
+        const end = start +10;
+
+        const safeStart = Math.min(start, allUserQuizzes.length);
+        const paginatedQuizzes = allUserQuizzes.slice(safeStart, end);
+
+        console.log("DEBUG Pagination:", {
+          page,
+          start,
+          end,
+          count: paginatedQuizzes.length,
+          total: allUserQuizzes.length
+        });
+
+        this.quizService.allQuizs$.next(paginatedQuizzes);
+        this.pagination$.next({
+          page: page + 1,
+          limit,
+          total: allUserQuizzes.length,
+        });
+      } catch (error) {
+        console.error('Erreur:', error);
+        this.quizService.allQuizs$.next([]);
+      }
+    }
+
 
 
   }

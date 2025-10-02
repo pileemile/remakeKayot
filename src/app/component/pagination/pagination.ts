@@ -14,6 +14,7 @@ import { PaginationService } from '../../service/pagination/pagination-service';
 })
 export class Pagination implements OnInit, OnDestroy {
   @Input() type!: PaginationType;
+  @Input() userId?: string;
 
   private readonly destroy$ = new Subject<void>();
 
@@ -29,7 +30,7 @@ export class Pagination implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscribeToPageChanges();
-    this.initializePagination();
+    this.initializePagination().then();
   }
 
   ngOnDestroy(): void {
@@ -42,12 +43,14 @@ export class Pagination implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(pagination => {
         if (pagination) {
-          this.currentPage = Math.floor(pagination.page / this.itemsPerPage) + 1;
-          this.totalPages = Math.ceil(pagination.total / this.itemsPerPage);
+          this.currentPage = Math.floor(pagination.page / pagination.limit) + 1;
+          this.totalPages = Math.ceil(pagination.total / pagination.limit);
           this.totalItems = pagination.total;
+          this.itemsPerPage = pagination.limit;
         }
       });
   }
+
 
   private async initializePagination(): Promise<void> {
     const currentPagination = this.paginationService.pagination$.value;
@@ -93,6 +96,11 @@ export class Pagination implements OnInit, OnDestroy {
           break;
         case PaginationType.QUIZFILTER:
           await this.paginationService.paginationQuizFilter(page, limit);
+          break;
+        case PaginationType.USERQUIZ:
+          if (this.userId) {
+            await this.paginationService.paginationUserQuiz(page, limit, this.userId);
+          }
           break;
         default:
           console.warn('pagination non supporté:', this.type);

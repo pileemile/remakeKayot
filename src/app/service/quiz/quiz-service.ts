@@ -51,15 +51,18 @@ export class QuizService {
     if (questionError) throw questionError;
 
     const answersInsert: Answers[] = [];
-    questionData.forEach((q, index) => {
-      questions[index].answers?.forEach(a => {
-        answersInsert.push({
-          question_id: q.id,
-          text: a.text,
-          is_correct: a.is_correct
-        });
-      });
-    });
+    for (const [index, q] of questionData.entries()) {
+      const answers = questions[index].answers;
+      if (answers) {
+        for (const a of answers) {
+          answersInsert.push({
+            question_id: q.id,
+            text: a.text,
+            is_correct: a.is_correct
+          });
+        }
+      }
+    }
 
     const { data: answersData, error: answersError } = await supabase
       .from('answers')

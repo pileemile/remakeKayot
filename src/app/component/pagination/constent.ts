@@ -3,4 +3,5 @@ export enum PaginationType {
   ALLUSERS = 'allusers',
   QUIZFILTER = 'quizfilter',
   USERFILTER = 'userfilter',
+  USERQUIZ = 'USERQUIZ'
 }
