@@ -1,7 +1,7 @@
-import {Component, EventEmitter, Output, Input} from '@angular/core';
-import {TableAction, TableColumn} from '../../models/tables/tables-interface';
-import {Quiz} from '../../models/quiz/quiz';
-import {UserModele} from '../../models/user/user-modele';
+import { Component, EventEmitter, Output, Input } from '@angular/core';
+import { TableAction, TableColumn } from '../../models/tables/tables-interface';
+import { Quiz } from '../../models/quiz/quiz';
+import { UserModele } from '../../models/user/user-modele';
 
 @Component({
   selector: 'app-table',
@@ -10,7 +10,7 @@ import {UserModele} from '../../models/user/user-modele';
   styleUrl: './table.css'
 })
 export class Table {
-  @Input() data: (Quiz & { questionCount?: number })[] | UserModele[] | number[] | null = null;
+  @Input() data: (Quiz & { questionCount?: number; isCompleted?: boolean })[] | UserModele[] | number[] | null = null;
   @Input() columns: TableColumn[] = [];
   @Input() actions: TableAction[] = [];
 
@@ -18,6 +18,10 @@ export class Table {
 
   public onActionClick(action: TableAction, item: any) {
     action.handler(item);
+  }
+
+  public isItemCompleted(item: any): boolean {
+    return item && typeof item === 'object' && 'isCompleted' in item ? item.isCompleted : false;
   }
 
   public getColumnValue(item: any, column: TableColumn): any {
@@ -31,5 +35,4 @@ export class Table {
         return value || '';
     }
   }
-
 }

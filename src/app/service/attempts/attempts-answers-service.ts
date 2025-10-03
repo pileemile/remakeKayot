@@ -12,7 +12,7 @@ import {NotificationType} from '../../models/notification/notification';
 export class AttemptsAnswersService {
   public recoverAnswersUser = new BehaviorSubject<AttemtpsAnswers[]>([]);
   public correctCount: number = 0;
-  private readonly PASSING_THRESHOLD = 75;
+  public passing_thresh = 75;
 
   constructor(private readonly notificationService: NotificationService) {}
 
@@ -36,7 +36,7 @@ export class AttemptsAnswersService {
 
     this.correctCount = correctAnswers.filter(a => a.is_correct).length;
     const percentage = answersArray.length > 0 ? (this.correctCount / answersArray.length) * 100 : 0;
-    const isPassed = percentage >= this.PASSING_THRESHOLD;
+    const isPassed = percentage >= this.passing_thresh;
 
     const newAttempts: Attempts = {
       quiz_id: quiz_id ?? null,
@@ -75,42 +75,11 @@ export class AttemptsAnswersService {
       console.error("Erreur sur l'insertion des attempt_answers", answersError);
     } else {
       console.log("Réponses insérées :", attemptAnswers);
-      await this.createNotification(isPassed, percentage, quiz_id, quiz_name);
+      await this.notificationService.createNotification(isPassed, percentage, quiz_id, quiz_name, this.passing_thresh);
       this.recoverAnswersUser.next([]);
     }
 
     return { percentage, isPassed };
   }
 
-  private async createNotification(
-    isPassed: boolean,
-    percentage: number,
-    quiz_id: string | null | undefined,
-    quiz_name?: string
-  ) {
-    const metadata = {
-      quiz_id: quiz_id ?? undefined,
-      quiz_name: quiz_name,
-      percentage: Math.round(percentage)
-    };
-
-    if (isPassed) {
-      const quizNameSuffix = quiz_name ? ` "${quiz_name}"` : '';
-      const message = `Félicitations ! Vous avez réussi le quiz${quizNameSuffix} avec ${Math.round(percentage)}%.`;
-
-      await this.notificationService.addNotification(
-        NotificationType.QuizPassed,
-        'Quiz réussi !',
-        message,
-        metadata
-      );
-     } else {
-      await this.notificationService.addNotification(
-        NotificationType.QuizFailed,
-        'Quiz échoué',
-        `Vous n'avez pas atteint le score minimum de ${this.PASSING_THRESHOLD}%. Votre score : ${Math.round(percentage)}%. Réessayez !`,
-        metadata
-      );
-    }
-  }
 }

@@ -116,7 +116,7 @@
           return;
         }
 
-        const start = page +10;
+        const start = page;
         const end = start +10;
 
         const safeStart = Math.min(start, allUserQuizzes.length);
