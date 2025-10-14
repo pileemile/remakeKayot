@@ -12,6 +12,7 @@ import {Quiz} from '../../../models/quiz/quiz';
 export interface QuizWithStatus extends Quiz {
   questionCount: number;
   isAttempted: boolean;
+  isCompleted: boolean;
 }
 
 @Component({
@@ -52,8 +53,7 @@ export class AllQuiz implements OnInit{
       label: 'Voir',
       icon: 'arrow-right',
       handler: (quiz) => this.getQuizByIdLoad(quiz.id),
-      disabled: (quiz) => this.attemptsUser.some(a => a.quiz_id === quiz.id)
-
+      disabled: (quiz) => this.attemptsUser.some(a => a.quiz_id === quiz.id && a.isCompleted)
     },
     // {
     //   label: 'Modifier',
@@ -79,15 +79,28 @@ export class AllQuiz implements OnInit{
     this.router.navigate(['/answer-quiz/' + id]).then();
   }
 
-  private async loadData() {
+  private async loadData(): Promise<void> {
     const userId = '22ce5a89-1db2-46e7-a265-c929697ff1d0';
 
     await this.quizService.getAllQuiz();
+
     await this.attemptsService.matchAttemptsQuiz(userId);
 
+    const quizzes = this.quizService.allQuizs$.value ?? [];
     this.attemptsUser = this.attemptsService.attemptsAllWithUser$.value ?? [];
 
-    console.log('📊 Attempts de l’utilisateur :', this.attemptsUser);
+    this.allQuizWithStatus = quizzes.map((quiz: Quiz) => {
+      const attempt = this.attemptsUser.find(a => a.quiz_id === quiz.id);
+      const isAttempted = !!attempt;
+      const isCompleted = attempt?.isCompleted ?? false;
+
+      return {
+        ...quiz,
+        questionCount: quiz.questions?.length ?? 0,
+        isAttempted,
+        isCompleted
+      };
+    });
   }
 
 }

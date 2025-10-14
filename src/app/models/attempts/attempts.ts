@@ -9,4 +9,5 @@ export interface Attempts {
   total?: number | null
   user_id?: string | null
   quizzes?: Quiz;
+  isCompleted?: boolean
 }

@@ -22,7 +22,7 @@
                   @for (action of actions; track $index) {
                     <button
                       [ngClass]="{'opacity-50 cursor-not-allowed': action.disabled ? action.disabled(item) : false}"
-                      [disabled]="action.disabled ? action.disabled(item) : false"
+                      [disabled]="action.disabled?.(item)"
                       (click)="onActionClick(action, item)"
                       class="inline-flex items-center px-3 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 hover:text-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 mr-2"
                     >
