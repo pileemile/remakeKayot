@@ -29,22 +29,22 @@ export class AttemptsService {
     const { data, error } = await supabase
       .from('attempts')
       .select(`
+      id,
+      user_id,
+      quiz_id,
+      score,
+      total,
+      created_at,
+      quizzes (
         id,
         user_id,
-        quiz_id,
-        score,
-        total,
-        created_at,
-        quizzes (
-          id,
-          user_id,
-          title,
-          description,
-          category,
-          difficulty,
-          created_at
-        )
-      `)
+        title,
+        description,
+        category,
+        difficulty,
+        created_at
+      )
+    `)
       .eq('user_id', user_id)
       .order('created_at', { ascending: false });
 
@@ -57,6 +57,8 @@ export class AttemptsService {
       const quizArray = item.quizzes as Quiz[];
       const quiz = quizArray && quizArray.length > 0 ? quizArray[0] : undefined;
 
+      const completionRate = (item.score / item.total) * 100;
+
       return {
         id: item.id,
         user_id: item.user_id,
@@ -64,10 +66,12 @@ export class AttemptsService {
         score: item.score,
         total: item.total,
         created_at: item.created_at,
-        quizzes: quiz
+        quizzes: quiz,
+        isCompleted: completionRate >= 75
       };
     });
 
     this.attemptsAllWithUser$.next(formatted);
   }
+
 }
