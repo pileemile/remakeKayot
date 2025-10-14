@@ -7,13 +7,8 @@ import {Table} from '../../table/table';
 import {PaginationType} from '../../pagination/constent';
 import {AttemptsService} from '../../../service/attempts/attempts-service';
 import {Attempts} from '../../../models/attempts/attempts';
-import {Quiz} from '../../../models/quiz/quiz';
+import {Quiz, QuizWithStatus} from '../../../models/quiz/quiz';
 
-export interface QuizWithStatus extends Quiz {
-  questionCount: number;
-  isAttempted: boolean;
-  isCompleted: boolean;
-}
 
 @Component({
   selector: 'app-all-quiz',
@@ -79,7 +74,7 @@ export class AllQuiz implements OnInit{
     this.router.navigate(['/answer-quiz/' + id]).then();
   }
 
-  private async loadData(): Promise<void> {
+  private async loadData() {
     const userId = '22ce5a89-1db2-46e7-a265-c929697ff1d0';
 
     await this.quizService.getAllQuiz();
