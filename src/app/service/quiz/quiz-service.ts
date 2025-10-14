@@ -74,8 +74,6 @@ export class QuizService {
     return { quiz: quizData[0], questions: questionData, answers: answersData };
   }
 
-
-
   public async getAllQuiz() {
 
     let { data: quiz, error } = await supabase

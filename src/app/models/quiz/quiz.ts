@@ -32,6 +32,13 @@ export interface QuestionCreate {
   text: string
 }
 
+export interface QuizWithStatus extends Quiz {
+  questionCount: number;
+  isAttempted: boolean;
+  isCompleted: boolean;
+}
+
+
 
 
 

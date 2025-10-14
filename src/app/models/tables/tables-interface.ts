@@ -5,9 +5,10 @@ export interface TableColumn {
   sortable?: boolean;
 }
 
-export interface TableAction {
+export interface TableAction<T = any> {
   label?: string;
   icon?: string;
   handler: (item: any) => void;
   color?: 'primary' | 'secondary' | 'danger' | 'success';
+  disabled?: (item: T) => boolean;
 }

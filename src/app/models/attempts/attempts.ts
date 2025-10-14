@@ -1,3 +1,5 @@
+import {Quiz} from '../quiz/quiz';
+
 export interface Attempts {
   created_at: string | number | Date
   id?: string
@@ -6,4 +8,6 @@ export interface Attempts {
   score?: number | null
   total?: number | null
   user_id?: string | null
+  quizzes?: Quiz;
+  isCompleted?: boolean
 }
