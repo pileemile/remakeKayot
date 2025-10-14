@@ -1,10 +1,18 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {QuizService} from '../../../service/quiz/quiz-service';
 import {Pagination} from '../../pagination/pagination';
 import {TableAction, TableColumn} from '../../../models/tables/tables-interface';
 import {Table} from '../../table/table';
 import {PaginationType} from '../../pagination/constent';
+import {AttemptsService} from '../../../service/attempts/attempts-service';
+import {Attempts} from '../../../models/attempts/attempts';
+import {Quiz} from '../../../models/quiz/quiz';
+
+export interface QuizWithStatus extends Quiz {
+  questionCount: number;
+  isAttempted: boolean;
+}
 
 @Component({
   selector: 'app-all-quiz',
@@ -16,13 +24,20 @@ import {PaginationType} from '../../pagination/constent';
   templateUrl: './all-quiz.html',
   styleUrl: './all-quiz.css'
 })
-export class AllQuiz {
+export class AllQuiz implements OnInit{
   protected readonly PaginationType = PaginationType;
+  public allQuizWithStatus: QuizWithStatus[] = [];
+  private attemptsUser: Attempts[] = [];
 
   constructor(
-    private readonly allQuizService: QuizService,
+    private readonly quizService: QuizService,
     private readonly router: Router,
+    private readonly attemptsService: AttemptsService,
   ) {}
+
+  ngOnInit() {
+    this.loadData().then();
+  }
 
   public tableColumns: TableColumn[] = [
     { key: 'title', label: 'Titre', type: 'text' },
@@ -36,7 +51,9 @@ export class AllQuiz {
     {
       label: 'Voir',
       icon: 'arrow-right',
-      handler: (quiz) => this.getQuizByIdLoad(quiz.id)
+      handler: (quiz) => this.getQuizByIdLoad(quiz.id),
+      disabled: (quiz) => this.attemptsUser.some(a => a.quiz_id === quiz.id)
+
     },
     // {
     //   label: 'Modifier',
@@ -46,7 +63,7 @@ export class AllQuiz {
   ];
 
   public get all_quiz() {
-    const all_quiz = this.allQuizService.allQuizs$.value;
+    const all_quiz = this.quizService.allQuizs$.value;
     console.log("all_quiz", all_quiz);
 
     if (!all_quiz) {
@@ -59,7 +76,18 @@ export class AllQuiz {
   }
 
   public getQuizByIdLoad(id: string) {
-   this.router.navigate(['/answer-quiz/' + id]).then();
+    this.router.navigate(['/answer-quiz/' + id]).then();
+  }
+
+  private async loadData() {
+    const userId = '22ce5a89-1db2-46e7-a265-c929697ff1d0';
+
+    await this.quizService.getAllQuiz();
+    await this.attemptsService.matchAttemptsQuiz(userId);
+
+    this.attemptsUser = this.attemptsService.attemptsAllWithUser$.value ?? [];
+
+    console.log('📊 Attempts de l’utilisateur :', this.attemptsUser);
   }
 
 }

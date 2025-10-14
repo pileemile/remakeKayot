@@ -2,10 +2,13 @@ import {Component, EventEmitter, Output, Input} from '@angular/core';
 import {TableAction, TableColumn} from '../../models/tables/tables-interface';
 import {Quiz} from '../../models/quiz/quiz';
 import {UserModele} from '../../models/user/user-modele';
+import {NgClass} from '@angular/common';
 
 @Component({
   selector: 'app-table',
-  imports: [],
+  imports: [
+    NgClass
+  ],
   templateUrl: './table.html',
   styleUrl: './table.css'
 })
@@ -15,6 +18,9 @@ export class Table {
   @Input() actions: TableAction[] = [];
 
   @Output() actionClick = new EventEmitter<{action: string, item: any}>();
+
+  constructor(
+  ) {}
 
   public onActionClick(action: TableAction, item: any) {
     action.handler(item);

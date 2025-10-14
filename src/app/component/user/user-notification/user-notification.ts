@@ -90,6 +90,11 @@ export class UserNotification implements OnInit {
     await this.notificationService.getNotifications(this._user_id);
   }
 
+  public async notificationAllNotRead() {
+    this.showAll = false;
+    await this.notificationService.getNotificationIsNotRead(this._user_id);
+  }
+
   private async loadData() {
     await this.notificationService.getNotificationIsNotRead(this._user_id);
     console.log(this.notificationLoad);
