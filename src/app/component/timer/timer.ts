@@ -21,8 +21,11 @@ export class Timer {
 
     const timer = setInterval(() => {
       seconds--;
-      if (statSec != 0) statSec--;
-      else statSec = 59;
+      if (statSec != 0){
+        statSec--;
+      } else {
+        statSec = 59;
+      }
 
       if (statSec < 10) {
         textSec = "0" + statSec;

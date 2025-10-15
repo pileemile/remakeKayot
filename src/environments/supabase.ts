@@ -149,6 +149,42 @@ export type Database = {
           },
         ]
       }
+      categories: {
+        Row: {
+          color: string | null
+          created_at: string | null
+          description: string | null
+          icon: string | null
+          id: string
+          is_official: boolean | null
+          name: string
+          slug: string
+          usage_count: number | null
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_official?: boolean | null
+          name: string
+          slug: string
+          usage_count?: number | null
+        }
+        Update: {
+          color?: string | null
+          created_at?: string | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_official?: boolean | null
+          name?: string
+          slug?: string
+          usage_count?: number | null
+        }
+        Relationships: []
+      }
       leaderboards: {
         Row: {
           attempts_count: number | null
@@ -325,7 +361,7 @@ export type Database = {
       }
       quizzes: {
         Row: {
-          category: string | null
+          category_id: string | null
           created_at: string | null
           description: string | null
           difficulty: string | null
@@ -334,7 +370,7 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
-          category?: string | null
+          category_id?: string | null
           created_at?: string | null
           description?: string | null
           difficulty?: string | null
@@ -343,7 +379,7 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
-          category?: string | null
+          category_id?: string | null
           created_at?: string | null
           description?: string | null
           difficulty?: string | null
@@ -351,7 +387,15 @@ export type Database = {
           title?: string
           user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "quizzes_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       role_permissions: {
         Row: {

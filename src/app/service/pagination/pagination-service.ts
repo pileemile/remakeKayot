@@ -4,7 +4,7 @@
   import { QuizService } from '../quiz/quiz-service';
   import { UserService } from '../user/user';
   import {SearchService} from '../search-service/search-service';
-  import {firstValueFrom, filter, take, BehaviorSubject, tap} from 'rxjs';
+  import {firstValueFrom, filter, take, BehaviorSubject} from 'rxjs';
 
   @Injectable({
     providedIn: 'root'
@@ -17,7 +17,6 @@
       private readonly userService: UserService,
       private readonly searchService: SearchService,
     ) {}
-
 
     public async paginationQuiz(page: number, limit: number): Promise<void> {
       try {
@@ -141,7 +140,4 @@
         this.quizService.allQuizs$.next([]);
       }
     }
-
-
-
   }

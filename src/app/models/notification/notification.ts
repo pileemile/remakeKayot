@@ -15,8 +15,6 @@ export enum NotificationType {
   QuizPassed = 'quiz_passed',
   QuizFailed = 'quiz_failed',
   Achievement = 'achievement',
-  SystemAnnouncement = 'system_announcement',
-  Reminder = 'reminder'
 }
 
 export interface NotificationMetadata {
