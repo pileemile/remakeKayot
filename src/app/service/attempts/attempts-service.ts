@@ -29,22 +29,26 @@ export class AttemptsService {
     const { data, error } = await supabase
       .from('attempts')
       .select(`
-      id,
-      user_id,
-      quiz_id,
-      score,
-      total,
-      created_at,
-      quizzes (
-        id,
-        user_id,
-        title,
-        description,
-        category,
-        difficulty,
-        created_at
-      )
-    `)
+          id,
+          user_id,
+          quiz_id,
+          score,
+          total,
+          created_at,
+          quizzes (
+            id,
+            user_id,
+            title,
+            description,
+            difficulty,
+            created_at,
+            categories (
+              id,
+              name,
+              slug
+            )
+          )
+        `)
       .eq('user_id', user_id)
       .order('created_at', { ascending: false });
 
