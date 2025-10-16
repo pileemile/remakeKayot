@@ -2,12 +2,15 @@ import {Component, OnInit} from '@angular/core';
 import {UserService} from '../../../service/user/user';
 import {NgClass} from '@angular/common';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {ProgressBar} from '../../progress-bar/progress-bar';
+import {LevelService} from '../../../service/level/level-service';
 
 @Component({
   selector: 'app-user-details',
   imports: [
     NgClass,
     ReactiveFormsModule,
+    ProgressBar,
   ],
   templateUrl: './user-details.html',
   styleUrl: './user-details.css',
@@ -21,7 +24,8 @@ export class UserDetails implements OnInit{
 
   constructor(
     private readonly formBuilder: FormBuilder,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly levelService: LevelService,
   ) {
     this.form = this.formBuilder.group(
       {
@@ -34,7 +38,7 @@ export class UserDetails implements OnInit{
     )
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.updateFormValues();
     this.loadData().then();
   }
@@ -42,6 +46,7 @@ export class UserDetails implements OnInit{
   private async loadData() {
     await this.userService.getUserById(this.id_user);
     await this.userService.getQuizByUserId(this.id_user);
+    await this.levelService.getUserLevel(this.id_user);
   }
 
   private updateFormValues() {
