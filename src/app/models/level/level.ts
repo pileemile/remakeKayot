@@ -1,15 +1,17 @@
 export interface LevelUser {
-  current_level: string;
-  current_xp: number;
-  last_updated: string;
-  total_xp: number;
   user_id: string;
+  current_xp: number;
+  total_xp: number;
+  last_update: string;
+  current_level: string;
   levels: Level;
 }
 
 export interface Level {
+  id: string;
   level: number;
   required_xp: number;
   name: string;
-  reward: string;
+  reward: string | null;
+  created_at: string;
 }

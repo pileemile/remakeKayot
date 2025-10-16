@@ -68,7 +68,25 @@
         <p>{{ user?.first_name }}</p>
       </div>
       <p class="text-gray-500">{{user?.role}}</p>
-      <app-progress-bar></app-progress-bar>
+      @if (levelService.userLevel$.value) {
+        @if (levelService.userLevel$.value.levels) {
+          <div class="mt-2 text-center">
+            <p class="font-medium text-lg">
+              Niveau {{ levelService.userLevel$.value.levels.level }}: {{ levelService.userLevel$.value.levels.name }}
+            </p>
+            <p class="text-sm text-gray-600">
+              {{ levelService.userLevel$.value.current_xp }} XP
+            </p>
+          </div>
+        } @else {
+          <div class="mt-2 text-center">
+            <p class="text-sm text-gray-500">Les données de niveau ne sont pas disponibles.</p>
+          </div>
+        }
+      }
+      <app-progress-bar class="mt-2"></app-progress-bar>
+
+
     </div>
   </div>
 </div>

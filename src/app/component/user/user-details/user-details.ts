@@ -25,7 +25,7 @@ export class UserDetails implements OnInit{
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly userService: UserService,
-    private readonly levelService: LevelService,
+    public readonly levelService: LevelService,
   ) {
     this.form = this.formBuilder.group(
       {
