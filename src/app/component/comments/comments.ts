@@ -36,9 +36,12 @@ export class Comments implements OnInit{
     });
   }
 
-  async ngOnInit(){
+  ngOnInit(){
+    this.loadData().then();
+  }
+
+  private async loadData(){
     await this.quizCommentsService.getCommentsByQuizId(this.quizCommentsService.quizIdForComment);
-    await this.quizRatingService.quizRatingByComment;
   }
 
   public startEdit(comment: Comment) {
