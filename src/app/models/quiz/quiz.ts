@@ -1,21 +1,26 @@
-import {Answers} from '../answer/answer';
+import {QuestionCreate} from '../question/question';
+import {Categories} from '../categories/categories';
 
 export interface Quiz {
-  [key: string]: string | number | boolean | undefined | null | QuestionCreate[];
+  [key: string]: string | number | boolean | undefined | null | QuestionCreate[] | Categories;
   id: string;
   user_id: string;
   title: string;
   description: string;
-  category: Category;
   difficulty: Difficulty;
   created_at: string;
   questions: QuestionCreate[]
+  category_id: string;
+  category?: Categories;
 }
 
-export enum Category {
-  Sport = "Sport",
-  Culture = "Culture",
-  Geographie = "Géographie",
+export interface QuizInsert {
+  title: string;
+  description: string;
+  difficulty: Difficulty;
+  created_at: string;
+  user_id: string;
+  category_id: string;
 }
 
 export enum Difficulty {
@@ -24,13 +29,13 @@ export enum Difficulty {
   Difficile = "Difficile",
 }
 
-export interface QuestionCreate {
-  answers: Answers[]
-  created_at?: string
-  id: string
-  quiz_id?: string
-  text: string
+
+export interface QuizWithStatus extends Quiz {
+  questionCount: number;
+  isAttempted: boolean;
+  isCompleted: boolean;
 }
+
 
 
 

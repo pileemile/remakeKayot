@@ -39,6 +39,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      achievements: {
+        Row: {
+          created_at: string | null
+          criteria: Json | null
+          description: string | null
+          icon: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          criteria?: Json | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          criteria?: Json | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       answers: {
         Row: {
           id: string
@@ -149,6 +182,42 @@ export type Database = {
           },
         ]
       }
+      categories: {
+        Row: {
+          color: string | null
+          created_at: string | null
+          description: string | null
+          icon: string | null
+          id: string
+          is_official: boolean | null
+          name: string
+          slug: string
+          usage_count: number | null
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_official?: boolean | null
+          name: string
+          slug: string
+          usage_count?: number | null
+        }
+        Update: {
+          color?: string | null
+          created_at?: string | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_official?: boolean | null
+          name?: string
+          slug?: string
+          usage_count?: number | null
+        }
+        Relationships: []
+      }
       leaderboards: {
         Row: {
           attempts_count: number | null
@@ -183,6 +252,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      levels: {
+        Row: {
+          created_at: string | null
+          id: string
+          level: number
+          name: string | null
+          required_xp: number
+          reward: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          level: number
+          name?: string | null
+          required_xp: number
+          reward?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          level?: number
+          name?: string | null
+          required_xp?: number
+          reward?: string | null
+        }
+        Relationships: []
       }
       notifications: {
         Row: {
@@ -325,7 +421,7 @@ export type Database = {
       }
       quizzes: {
         Row: {
-          category: string | null
+          category_id: string | null
           created_at: string | null
           description: string | null
           difficulty: string | null
@@ -334,7 +430,7 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
-          category?: string | null
+          category_id?: string | null
           created_at?: string | null
           description?: string | null
           difficulty?: string | null
@@ -343,7 +439,7 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
-          category?: string | null
+          category_id?: string | null
           created_at?: string | null
           description?: string | null
           difficulty?: string | null
@@ -351,7 +447,15 @@ export type Database = {
           title?: string
           user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "quizzes_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       role_permissions: {
         Row: {
@@ -368,6 +472,62 @@ export type Database = {
           id?: number
           permission?: Database["public"]["Enums"]["app_permission"]
           role?: Database["public"]["Enums"]["app_role"]
+        }
+        Relationships: []
+      }
+      user_achievements: {
+        Row: {
+          achievement_id: string
+          id: string
+          metadata: Json | null
+          obtained_at: string | null
+          user_id: string
+        }
+        Insert: {
+          achievement_id: string
+          id?: string
+          metadata?: Json | null
+          obtained_at?: string | null
+          user_id: string
+        }
+        Update: {
+          achievement_id?: string
+          id?: string
+          metadata?: Json | null
+          obtained_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_achievements_achievement_id_fkey"
+            columns: ["achievement_id"]
+            isOneToOne: false
+            referencedRelation: "achievements"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_levels: {
+        Row: {
+          current_level: number | null
+          current_xp: number | null
+          last_update: string | null
+          total_xp: number | null
+          user_id: string
+        }
+        Insert: {
+          current_level?: number | null
+          current_xp?: number | null
+          last_update?: string | null
+          total_xp?: number | null
+          user_id: string
+        }
+        Update: {
+          current_level?: number | null
+          current_xp?: number | null
+          last_update?: string | null
+          total_xp?: number | null
+          user_id?: string
         }
         Relationships: []
       }

@@ -44,14 +44,14 @@
             </label>
             <select
               id="category"
-              formControlName="category"
+              formControlName="category_id"
               class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
               [class.border-red-300]="form.get('category')?.invalid && form.get('category')?.touched"
               [class.border-gray-300]="!form.get('category')?.invalid || !form.get('category')?.touched"
             >
               <option value="">Sélectionnez une catégorie</option>
               @for (categorie of categories; track $index) {
-                <option [value]="categorie">{{ categorie }}</option>
+                <option [value]="categorie.name">{{ categorie.name }}</option>
               }
             </select>
             @if (form.get('category')?.invalid && form.get('category')?.touched) {

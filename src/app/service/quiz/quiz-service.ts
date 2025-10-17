@@ -1,10 +1,11 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
-import {QuestionCreate, Quiz} from '../../models/quiz/quiz';
+import {Quiz, QuizInsert} from '../../models/quiz/quiz';
 import {supabase} from '../../../environments/environment';
 import {ButtonEnum} from '../../component/tabs/constants';
 import {Comment} from '../../models/quiz-comment/quiz-comment';
 import {Answers} from '../../models/answer/answer';
+import {QuestionCreate} from '../../models/question/question';
 
 @Injectable({
   providedIn: 'root'
@@ -19,10 +20,10 @@ export class QuizService {
 
 
   public async insertFullQuiz(quiz: Quiz, questions: QuestionCreate[]) {
-    const quizInsert: Partial<Quiz> = {
+    const quizInsert: Partial<QuizInsert> = {
       title: quiz.title,
       description: quiz.description,
-      category: quiz.category,
+      category_id: quiz.category_id,
       difficulty: quiz.difficulty,
       created_at: quiz.created_at ?? new Date().toISOString(),
       user_id: quiz.user_id
@@ -87,9 +88,15 @@ export class QuizService {
   }
 
   public async getQuizById(id: string ) {
-    let { data: quiz, error } = await supabase
+    let { data, error } = await supabase
       .from('quizzes')
-      .select('*, questions(*)')
+      .select(`
+        *,
+        questions(*),
+        category:categories!quizzes_category_id_fkey (
+          *
+        )
+      `)
       .eq('id', id)
       .single();
 
@@ -97,8 +104,10 @@ export class QuizService {
       console.error("error", error);
       throw error;
     }
-    this.quiz$.next(quiz);
-    return quiz;
+      this.quiz$.next(data);
+      console.log("idi");
+      console.log("quiz", this.quiz$.value  );
+    return data;
 
   }
 

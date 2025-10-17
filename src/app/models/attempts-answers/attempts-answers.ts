@@ -4,4 +4,5 @@ export interface AttemtpsAnswers {
   quiz_id: string | null | undefined
   selected_answer_id: string | null
   user_id: string | null
+  percentage?: number | null
 }

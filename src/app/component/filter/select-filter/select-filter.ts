@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { ControlContainer, FormGroup, FormGroupDirective, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FilterService } from '../../../service/filter/filter-service';
 import { FilterEnum, filterConfig } from '../constent';
+import {Difficulty} from '../../../models/quiz/quiz';
 
 @Component({
   selector: 'app-select-filter',
@@ -27,17 +28,11 @@ export class SelectFilter {
     return filterConfig[this.state]?.label ?? '';
   }
 
-  get values(): string[] {
+  get values(): Difficulty[] | string[] {
     const config = filterConfig[this.state];
-
     if (config && 'values' in config) {
-      return config.values ?? [];
+      return (config.values as Difficulty[] | string[]) ?? [];
     }
-
-    if (config?.type === 'select') {
-      return [];
-    }
-
     return [];
   }
 

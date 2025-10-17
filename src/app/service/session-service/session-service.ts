@@ -10,7 +10,7 @@ export class SessionService {
   public session$ = new BehaviorSubject<Session | null>(null);
 
   public async getSession(access_token: string, refresh_token: string) {
-    const { data, error } = await supabase.auth.setSession({
+    await supabase.auth.setSession({
       access_token,
       refresh_token
     })

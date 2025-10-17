@@ -1,4 +1,4 @@
-import { Category, Difficulty } from '../../models/quiz/quiz';
+import { Difficulty } from '../../models/quiz/quiz';
 
 export enum FilterEnum {
   CATEGORY = 'category',
@@ -28,7 +28,7 @@ export const filterConfig = {
   [FilterEnum.CATEGORY]: {
     label: 'Filtrer par catégorie',
     type: 'select',
-    values: Object.values(Category),
+    value: ['Culture', 'Sports', 'Geographie'],
     target: 'quiz'
   },
   [FilterEnum.DIFFICULTY]: {

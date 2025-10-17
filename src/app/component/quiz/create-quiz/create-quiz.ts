@@ -1,12 +1,15 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {AbstractControl, FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators} from '@angular/forms';
-import {Category, Difficulty, Quiz, QuestionCreate} from '../../../models/quiz/quiz';
+import {Difficulty, Quiz} from '../../../models/quiz/quiz';
 import {QuizService} from '../../../service/quiz/quiz-service';
 import {MatButtonModule} from '@angular/material/button';
 import {Answers} from '../../../models/answer/answer';
 import {CommonModule} from '@angular/common';
 import {MatDialog} from '@angular/material/dialog';
 import {DialogSuccessError} from '../../dialog/dialog-success-error/dialog-success-error';
+import {Categories} from '../../../models/categories/categories';
+import {QuestionCreate} from '../../../models/question/question';
+import {CategoriesService} from '../../../service/categories/categories-service';
 
 @Component({
   selector: 'app-create-quizz',
@@ -24,18 +27,19 @@ import {DialogSuccessError} from '../../dialog/dialog-success-error/dialog-succe
 export class CreateQuiz implements OnInit {
 
   public form: FormGroup;
-  public categories = Object.values(Category);
+  public categories: Categories[] = [];
   public difficulties = Object.values(Difficulty);
 
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly dialog: MatDialog,
     private readonly quizService: QuizService,
+    private readonly categoriesService: CategoriesService
   ) {
     this.form = this.formBuilder.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
-      category: ['', Validators.required],
+      category_id: ['', Validators.required],
       difficulty: ['', Validators.required],
       question: this.formBuilder.array([], [this.minQuestionsValidator]),
     });
@@ -43,14 +47,22 @@ export class CreateQuiz implements OnInit {
 
   ngOnInit() {
     this.addQuestion();
+    this.loadAllCategories().then();
   }
 
-  public get questions(): FormArray {
-    return this.form.get('question') as FormArray;
+  private async loadAllCategories() {
+    await this.categoriesService.getAllCategories();
+    this.categories = this.categoriesService.categories;
   }
 
-  public getAnswersControls(questionIndex: number) {
-    return (this.questions.at(questionIndex).get('answers') as FormArray).controls;
+  private markFormGroupTouched(formGroup: FormGroup | FormArray): void {
+    for (const control of Object.values(formGroup.controls)) {
+      control?.markAsTouched();
+
+      if (control instanceof FormGroup || control instanceof FormArray) {
+        this.markFormGroupTouched(control);
+      }
+    }
   }
 
   private minQuestionsValidator(control: AbstractControl): ValidationErrors | null {
@@ -94,19 +106,24 @@ export class CreateQuiz implements OnInit {
     });
 
     const answersArray = groupQuestion.get('answers') as FormArray;
-    answersArray.push(
-      this.createAnswersFormGroup(),
-    );
+    answersArray.push(this.createAnswersFormGroup());
 
     return groupQuestion;
   }
 
   private createAnswersFormGroup(answers?: Answers): FormGroup {
-    const groupAnswers = this.formBuilder.group({
+    return this.formBuilder.group({
       text: [answers?.text || '', Validators.required],
       is_correct: [answers?.is_correct || false]
     });
-    return groupAnswers;
+  }
+
+  public get questions(): FormArray {
+    return this.form.get('question') as FormArray;
+  }
+
+  public getAnswersControls(questionIndex: number) {
+    return (this.questions.at(questionIndex).get('answers') as FormArray).controls;
   }
 
   public addQuestion() {
@@ -116,10 +133,6 @@ export class CreateQuiz implements OnInit {
   public addAnswerQuestion(questionIndex: number) {
     const answersArray = this.questions.at(questionIndex).get('answers') as FormArray;
     answersArray.push(this.createAnswersFormGroup());
-  }
-
-  public addQuizz(quiz: Quiz) {
-    this.quizService.quiz$.next(quiz);
   }
 
   public removeQuestion(index: number): void {
@@ -173,7 +186,6 @@ export class CreateQuiz implements OnInit {
     }
   }
 
-
   public async onSubmit() {
     if (!this.form.valid) {
       this.markFormGroupTouched(this.form);
@@ -196,7 +208,6 @@ export class CreateQuiz implements OnInit {
         data: { message: 'Le quiz a été enregistré avec succès !', type: 'success' }
       });
       this.form.reset();
-
     } catch (error) {
       console.error('Erreur lors de l\'insertion du quiz complet', error);
       this.dialog.open(DialogSuccessError, {
@@ -207,16 +218,5 @@ export class CreateQuiz implements OnInit {
     }
   }
 
-
-  private markFormGroupTouched(formGroup: FormGroup | FormArray): void {
-    for (const control of Object.values(formGroup.controls)) {
-      control?.markAsTouched();
-
-      if (control instanceof FormGroup || control instanceof FormArray) {
-        this.markFormGroupTouched(control);
-      }
-    }
-
-  }
 
 }

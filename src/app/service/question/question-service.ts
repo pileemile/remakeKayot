@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
-import {QuestionCreate} from '../../models/quiz/quiz';
+import {QuestionCreate} from '../../models/question/question';
 import {supabase} from '../../../environments/environment';
 
 @Injectable({
