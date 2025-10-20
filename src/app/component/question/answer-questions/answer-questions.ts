@@ -56,6 +56,28 @@ export class AnswerQuestions implements OnInit {
     console.log("aaa", this.quizz?.category);
   }
 
+  private getXpByDifficulty(difficulty: string | undefined): number {
+    let xp = 0;
+
+    switch (difficulty) {
+      case 'Facile':
+        xp = 50;
+        break;
+      case 'Moyen':
+        xp = 100;
+        break;
+      case 'Difficile':
+        xp = 200;
+        break;
+      default:
+        xp = 0;
+    }
+
+    console.log(`🎯 Difficulté du quiz : ${difficulty} → XP attribué : ${xp}`);
+    return xp;
+  }
+
+
   public get question(): QuestionCreate | null {
     return this.questionService.question$.value?.[this.index] || null;
   }
@@ -142,6 +164,9 @@ export class AnswerQuestions implements OnInit {
       const { percentage, isPassed } = result;
 
       if (isPassed) {
+        const xpGained = this.getXpByDifficulty(this.quizz?.difficulty);
+        await this.attemptsAnswersService.addUserXp('22ce5a89-1db2-46e7-a265-c929697ff1d0', xpGained);
+
         this.dialog.open(DialogSuccessError, {
           width: '400px',
           height: '200px',

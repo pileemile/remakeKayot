@@ -132,4 +132,55 @@ export class LevelService {
 
     return levels.filter((level: Level) => level.level > currentLevel.level);
   }
+
+  async updateUserLevelIfNeeded(userId: string): Promise<void> {
+    const { data: userData, error: userError } = await supabase
+      .from('user_levels')
+      .select('current_xp, current_level')
+      .eq('user_id', userId)
+      .single();
+
+    if (userError || !userData) {
+      console.error('❌ Erreur lors de la récupération du niveau utilisateur :', userError);
+      return;
+    }
+
+    const { current_xp, current_level } = userData;
+
+    // 🔍 Récupère les niveaux disponibles
+    const { data: levels, error: levelError } = await supabase
+      .from('levels')
+      .select('*')
+      .order('required_xp', { ascending: true });
+
+    if (levelError || !levels) {
+      console.error('❌ Erreur lors de la récupération des niveaux :', levelError);
+      return;
+    }
+
+    // 🔎 Trouve le niveau actuel et le prochain
+    const currentLevelIndex = levels.findIndex(l => l.id === current_level);
+    const nextLevel = levels[currentLevelIndex + 1];
+
+    if (!nextLevel) {
+      console.log('🏆 Niveau maximum atteint');
+      return;
+    }
+
+    const xpNeeded = nextLevel.required_xp - current_xp;
+
+    if (xpNeeded <= 0) {
+      console.log(`🎉 L'utilisateur ${userId} passe au niveau ${nextLevel.name} !`);
+
+      await supabase
+        .from('user_levels')
+        .update({ current_level: nextLevel.id })
+        .eq('user_id', userId);
+    } else {
+      console.log(
+        `ℹ️ Niveau actuel : ${levels[currentLevelIndex].name} (${levels[currentLevelIndex].id}) | ` +
+        `XP actuel : ${current_xp} | XP restant pour ${nextLevel.name} : ${xpNeeded}`
+      );
+    }
+  }
 }
