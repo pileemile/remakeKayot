@@ -23,3 +23,13 @@ export interface UserCompletedQuiz {
   quiz: Quiz[];
 }
 
+export interface UserProfile {
+  user_id: string;
+  avatar_url?: string;
+  bio?: string;
+  country?: string;
+  language?: string;
+  theme_preference?: 'light' | 'dark';
+  updated_at?: string;
+}
+

@@ -158,19 +158,18 @@ export class LevelService {
       return;
     }
 
-    // 🔎 Trouve le niveau actuel et le prochain
     const currentLevelIndex = levels.findIndex(l => l.id === current_level);
     const nextLevel = levels[currentLevelIndex + 1];
 
     if (!nextLevel) {
-      console.log('🏆 Niveau maximum atteint');
+      console.log('Niveau maximum atteint');
       return;
     }
 
     const xpNeeded = nextLevel.required_xp - current_xp;
 
     if (xpNeeded <= 0) {
-      console.log(`🎉 L'utilisateur ${userId} passe au niveau ${nextLevel.name} !`);
+      console.log(`L'utilisateur ${userId} passe au niveau ${nextLevel.name} !`);
 
       await supabase
         .from('user_levels')
