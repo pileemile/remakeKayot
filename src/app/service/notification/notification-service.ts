@@ -78,7 +78,7 @@ export class NotificationService {
       .from('notifications')
       .select('*')
       .eq('user_id', user_id)
-      .eq('is_read', false);
+      .eq('is_read', false)
 
     if (error) {
       console.error("erreur sur les notifications", error);
@@ -86,5 +86,39 @@ export class NotificationService {
       this.notifications$.next(data)
     }
   }
+
+  public async createNotification(
+    isPassed: boolean,
+    percentage: number,
+    quiz_id: string | null | undefined,
+    quiz_name?: string,
+    passing_thresh?: number
+  ) {
+    const metadata = {
+      quiz_id: quiz_id ?? undefined,
+      quiz_name: quiz_name,
+      percentage: Math.round(percentage)
+    };
+
+    if (isPassed) {
+      const quizNameSuffix = quiz_name ? ` "${quiz_name}"` : '';
+      const message = `Félicitations ! Vous avez réussi le quiz${quizNameSuffix} avec ${Math.round(percentage)}%.`;
+
+      await this.addNotification(
+        NotificationType.QuizPassed,
+        'Quiz réussi !',
+        message,
+        metadata
+      );
+    } else {
+      await this.addNotification(
+        NotificationType.QuizFailed,
+        'Quiz échoué',
+        `Vous n'avez pas atteint le score minimum de ${passing_thresh ?? 75}%. Votre score : ${Math.round(percentage)}%. Réessayez !`,
+        metadata
+      );
+    }
+  }
+
 
 }

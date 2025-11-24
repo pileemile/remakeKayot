@@ -11,7 +11,7 @@ export class AttemptsService {
   public attemptsAllWithUser$ = new BehaviorSubject<Attempts[] | null>(null);
   public attempts: Attempts | null = null
 
-  public async getAttempts(user_id: string | undefined) {
+  public async getAttemptsByUser(user_id: string | undefined) {
 
     let { data: attempts, error } = await supabase
       .from('attempts')

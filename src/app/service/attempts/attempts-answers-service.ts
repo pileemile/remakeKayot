@@ -5,6 +5,7 @@ import {AttemtpsAnswers} from '../../models/attempts-answers/attempts-answers';
 import {BehaviorSubject} from 'rxjs';
 import {NotificationService} from '../notification/notification-service';
 import {NotificationType} from '../../models/notification/notification';
+import {LevelService} from '../level/level-service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +13,12 @@ import {NotificationType} from '../../models/notification/notification';
 export class AttemptsAnswersService {
   public recoverAnswersUser = new BehaviorSubject<AttemtpsAnswers[]>([]);
   public correctCount: number = 0;
-  private readonly PASSING_THRESHOLD: number = 75;
+  public passing_thresh = 75;
 
-  constructor(private readonly notificationService: NotificationService) {}
+  constructor(
+    private readonly notificationService: NotificationService,
+    private readonly levelService: LevelService
+  ) {}
 
   public async insertAttempts(total: number, quiz_id: string | null | undefined, quiz_name?: string) {
     const uniqueAnswers = new Map(
@@ -36,7 +40,7 @@ export class AttemptsAnswersService {
 
     this.correctCount = correctAnswers.filter(a => a.is_correct).length;
     const percentage = answersArray.length > 0 ? (this.correctCount / answersArray.length) * 100 : 0;
-    const isPassed = percentage >= this.PASSING_THRESHOLD;
+    const isPassed = percentage >= this.passing_thresh;
 
     const newAttempts: Attempts = {
       quiz_id: quiz_id ?? null,
@@ -74,42 +78,46 @@ export class AttemptsAnswersService {
       console.error("Erreur sur l'insertion des attempt_answers", answersError);
     } else {
       console.log("Réponses insérées :", attemptAnswers);
-      await this.createNotification(isPassed, percentage, quiz_id, quiz_name);
+      await this.notificationService.createNotification(isPassed, percentage, quiz_id, quiz_name, this.passing_thresh);
       this.recoverAnswersUser.next([]);
     }
 
     return { percentage, isPassed };
   }
 
-  private async createNotification(
-    isPassed: boolean,
-    percentage: number,
-    quiz_id: string | null | undefined,
-    quiz_name?: string
-  ) {
-    const metadata = {
-      quiz_id: quiz_id ?? undefined,
-      quiz_name: quiz_name,
-      percentage: Math.round(percentage)
-    };
+  async addUserXp(userId: string, xpToAdd: number): Promise<void> {
+    try {
+      // 1️⃣ Récupération des infos actuelles
+      const { data: userLevel } = await supabase
+        .from('user_levels')
+        .select('current_xp, total_xp')
+        .eq('user_id', userId)
+        .single();
 
-    if (isPassed) {
-      const quizNameSuffix = quiz_name ? ` "${quiz_name}"` : '';
-      const message = `Félicitations ! Vous avez réussi le quiz${quizNameSuffix} avec ${Math.round(percentage)}%.`;
+      if (!userLevel) return;
 
-      await this.notificationService.addNotification(
-        NotificationType.QuizPassed,
-        'Quiz réussi !',
-        message,
-        metadata
-      );
-     } else {
-      await this.notificationService.addNotification(
-        NotificationType.QuizFailed,
-        'Quiz échoué',
-        `Vous n'avez pas atteint le score minimum de ${this.PASSING_THRESHOLD}%. Votre score : ${Math.round(percentage)}%. Réessayez !`,
-        metadata
-      );
+      const newCurrentXp = userLevel.current_xp + xpToAdd;
+      const newTotalXp = userLevel.total_xp + xpToAdd;
+
+      // 2️⃣ Mise à jour de l'XP
+      await supabase
+        .from('user_levels')
+        .update({
+          current_xp: newCurrentXp,
+          total_xp: newTotalXp,
+          last_update: new Date().toISOString()
+        })
+        .eq('user_id', userId);
+
+      // 3️⃣ ✅ Confirmation console
+      console.log(`✅ ${xpToAdd} XP ajoutés avec succès à l'utilisateur ${userId}`);
+
+      // 4️⃣ 🆕 Vérifie si l'utilisateur doit monter de niveau
+      await this.levelService.updateUserLevelIfNeeded(userId);
+
+    } catch (err) {
+      console.error('❌ Erreur lors de la mise à jour du XP :', err);
     }
   }
+
 }

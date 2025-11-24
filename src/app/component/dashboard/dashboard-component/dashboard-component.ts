@@ -36,7 +36,7 @@ export class DashboardComponent implements OnInit{
   }
 
   private async loadData(){
-    await this.attemptsService.getAttempts("22ce5a89-1db2-46e7-a265-c929697ff1d0");
+    await this.attemptsService.getAttemptsByUser("22ce5a89-1db2-46e7-a265-c929697ff1d0");
     await this.quizService.getAllQuiz();
   }
 
