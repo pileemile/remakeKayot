@@ -138,8 +138,8 @@ export class AnswerQuestions implements OnInit {
   public async submit_answer() {
     if (!this.isCurrentQuestionAnswered) {
       this.dialog.open(DialogSuccessError, {
-        width: '400px',
-        height: '170px',
+        width: '450px',
+        height: '250px',
         data: {
           message: 'Veuillez vérifier que les réponses ont bien été cochées',
           type: 'error'
@@ -168,8 +168,8 @@ export class AnswerQuestions implements OnInit {
         await this.attemptsAnswersService.addUserXp('22ce5a89-1db2-46e7-a265-c929697ff1d0', xpGained);
 
         this.dialog.open(DialogSuccessError, {
-          width: '400px',
-          height: '200px',
+          width: '450px',
+          height: '250px',
           data: {
             message: `Félicitations ! Vous avez réussi le quiz avec ${Math.round(percentage)}%.`,
             type: 'success'
@@ -181,8 +181,8 @@ export class AnswerQuestions implements OnInit {
         this.router.navigate(['all-quiz']);
       } else {
         this.dialog.open(DialogSuccessError, {
-          width: '400px',
-          height: '200px',
+          width: '450px',
+          height: '250px',
           data: {
             message: `Vous avez obtenu ${Math.round(percentage)}%. Il faut au moins 75% pour réussir. Veuillez recommencer le quiz.`,
             type: 'error'
@@ -193,8 +193,8 @@ export class AnswerQuestions implements OnInit {
     } catch (error) {
       console.error("Erreur lors du quiz", error);
       this.dialog.open(DialogSuccessError, {
-        width: '400px',
-        height: '170px',
+        width: '450px',
+        height: '250px',
         data: {
           message: 'Une erreur est survenue lors de la validation du quiz',
           type: 'error'

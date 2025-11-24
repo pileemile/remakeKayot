@@ -35,7 +35,7 @@ export class NotificationService {
         title: title,
         message: message,
         is_read: false,
-        metadata: this.notification$.value?.metadata,
+        metadata: metadata,
         created_at: new Date().toISOString()
       })
       .select()
@@ -43,6 +43,7 @@ export class NotificationService {
     if (error){
       console.error("erreur lors de l'ajout de la notification", error);
     }
+    console.log("data des notifications", data);
     return data;
   }
 

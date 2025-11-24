@@ -1,0 +1,36 @@
+name: Track Activity
+
+on:
+  watch:
+    types: [started]
+  issues:
+    types: [opened]
+
+jobs:
+  log-activity:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          token: ${{ secrets.PERSONNAL }}
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "pileemile"
+          git config --global user.email "votre-email@github.com"
+
+      - name: Create logs directory
+        run: mkdir -p logs
+
+      - name: Log activity
+        run: |
+          echo "[$(date)] Nouvelle activité par ${{ github.actor }} (${{ github.event_name }})" >> logs/activity.log
+          cat logs/activity.log
+
+      - name: Commit and push
+        run: |
+          git add logs/activity.log
+          git commit -m "[Auto] Mise à jour des logs" || echo "Aucun changement à commiter"
+          git push https://pileemile:${{ secrets.PERSONNAL }}@github.com/pileemile/remakeKayot.git master

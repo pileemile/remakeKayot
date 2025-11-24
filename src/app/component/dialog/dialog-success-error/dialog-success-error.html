@@ -1,7 +1,7 @@
 <div class="w-full h-full flex flex-col items-center justify-center">
   <img [src]="data.type === 'success' ? 'success.svg' : 'error.svg'" alt="" class="w-10 h-10">
   <h2 [ngClass]="data.type">{{ data.type === 'success' ? 'Succès' : 'Erreur' }}</h2>
-  <p>{{ data.message }}</p>
+  <p class="p-4 text-center">{{ data.message }}</p>
   <button mat-dialog-close class="p-2 flex justify-center rounded-lg w-24 h-10 border mt-2" [ngClass]="{'border-blue-500': data.type === 'success' ? 'border-red-500': data.type === 'error'}">OK</button>
 </div>
 

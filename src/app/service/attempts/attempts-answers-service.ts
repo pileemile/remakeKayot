@@ -68,7 +68,6 @@ export class AttemptsAnswersService {
       quiz_id: a.quiz_id,
       selected_answer_id: a.selected_answer_id,
       user_id: a.user_id,
-      attempt_id: insertedAttempt.id,
     }));
 
     const { error: answersError } = await supabase
