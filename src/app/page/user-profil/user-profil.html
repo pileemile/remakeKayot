@@ -1,8 +1,11 @@
-<div>
-  <div class="mb-4">
+<div class="space-y-6">
+  <div>
     <app-user-details></app-user-details>
   </div>
-  <div class="p-4 rounded-lg shadow-md mb-4">
+  <div>
+    <app-streak-card [userId]="user_id"></app-streak-card>
+  </div>
+  <div class="p-4 rounded-lg shadow-md">
     <app-table [data]="paginatedQuizzes" [columns]="tableColumns"></app-table>
     <app-pagination [type]="PaginationType.USERQUIZ" [userId]="user_id"></app-pagination>
   </div>
