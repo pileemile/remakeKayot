@@ -6,12 +6,13 @@ import {QuizService} from '../../../service/quiz/quiz-service';
 import {HttpClient} from '@angular/common/http';
 import {CommonModule} from '@angular/common';
 import {StreakDisplayComponent} from '../../streaks/streak-display/streak-display';
+import {DailyChallengeComponent} from '../../streaks/daily-challenge/daily-challenge';
 
 @Component({
   selector: 'app-dashboard-component',
   standalone: true,
   imports: [
-    CommonModule, CanvasJSAngularChartsModule, StreakDisplayComponent
+    CommonModule, CanvasJSAngularChartsModule, StreakDisplayComponent, DailyChallengeComponent
   ],
   templateUrl: './dashboard-component.html',
   styleUrl: './dashboard-component.css'
