@@ -80,6 +80,7 @@ export class QuizService {
     let { data: quiz, error } = await supabase
       .from('quizzes')
       .select('*, questions(*)')
+      .eq('is_daily_challenge', false);
     this.allQuizs$.next(quiz);
 
     if (error) {

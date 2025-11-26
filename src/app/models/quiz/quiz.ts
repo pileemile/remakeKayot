@@ -12,6 +12,8 @@ export interface Quiz {
   questions: QuestionCreate[]
   category_id: string;
   category?: Categories;
+  is_daily_challenge?: boolean;
+  valid_until?: string | null;
 }
 
 export interface QuizInsert {
