@@ -18,6 +18,8 @@ export class DailyChallengeComponent implements OnInit, OnDestroy {
   public hasCompletedToday: boolean = false;
   public dailyQuiz: Quiz | null = null;
   public isLoading: boolean = true;
+  public isCreating: boolean = false;
+  public createError: string | null = null;
   private destroy$ = new Subject<void>();
   private userId: string | null = null;
 
@@ -50,6 +52,21 @@ export class DailyChallengeComponent implements OnInit, OnDestroy {
 
   private async loadDailyQuiz(): Promise<void> {
     this.dailyQuiz = await this.dailyChallengeService.getTodayQuiz();
+  }
+
+  public async createDailyQuiz(): Promise<void> {
+    this.isCreating = true;
+    this.createError = null;
+
+    const result = await this.dailyChallengeService.createTodayQuiz();
+
+    if (result.success) {
+      await this.loadDailyQuiz();
+    } else {
+      this.createError = result.error || 'Erreur lors de la création du quiz quotidien';
+    }
+
+    this.isCreating = false;
   }
 
   ngOnDestroy(): void {

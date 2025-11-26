@@ -1,7 +1,16 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { supabase } from '../../../environments/environment';
+import { supabase, environment } from '../../../environments/environment';
 import { Quiz } from '../../models/quiz/quiz';
+
+interface CreateDailyQuizResponse {
+  success: boolean;
+  quizId?: string;
+  title?: string;
+  questionsCount?: number;
+  message?: string;
+  error?: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -62,5 +71,40 @@ export class DailyChallengeService {
     }
 
     return !!data;
+  }
+
+  /**
+   * Créer manuellement le quiz quotidien pour aujourd'hui
+   * Appelle la fonction Edge Supabase pour créer le quiz
+   * @returns Le résultat de la création
+   */
+  public async createTodayQuiz(): Promise<CreateDailyQuizResponse> {
+    try {
+      const response = await fetch(
+        `${environment.supabaseUrl}/functions/v1/create-daily-quiz`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${environment.supabaseKey}`,
+          },
+        }
+      );
+
+      const result: CreateDailyQuizResponse = await response.json();
+
+      if (result.success) {
+        // Rafraîchir le quiz du jour après la création
+        await this.getTodayQuiz();
+      }
+
+      return result;
+    } catch (error) {
+      console.error('Erreur lors de la création du quiz quotidien:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Erreur inconnue',
+      };
+    }
   }
 }
