@@ -108,8 +108,12 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    // Shuffle and pick 10 random questions
-    const shuffled = allQuestions.sort(() => 0.5 - Math.random());
+    // Fisher-Yates shuffle for proper randomization
+    const shuffled = [...allQuestions];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
     const selectedQuestions = shuffled.slice(0, Math.min(10, shuffled.length));
 
     // Calculate valid_until (24 hours from now, at midnight)
@@ -162,7 +166,8 @@ Deno.serve(async (req: Request) => {
       .select();
 
     if (insertQuestionsError) {
-      // Rollback: delete the quiz if questions insertion fails
+      // Rollback: delete the quiz and any partially inserted questions
+      await supabase.from('questions').delete().eq('quiz_id', newQuiz.id);
       await supabase.from('quizzes').delete().eq('id', newQuiz.id);
       throw new Error(`Error inserting questions: ${insertQuestionsError.message}`);
     }
