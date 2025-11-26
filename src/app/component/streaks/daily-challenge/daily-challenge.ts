@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StreaksService } from '../../../service/streaks/streaks-service';
 import { QuizService } from '../../../service/quiz/quiz-service';
@@ -13,30 +13,30 @@ import { takeUntil } from 'rxjs/operators';
   imports: [CommonModule],
   templateUrl: './daily-challenge.html'
 })
-export class DailyChallengeComponent implements OnInit, OnDestroy {
+export class DailyChallengeComponent implements OnDestroy {
   public hasCompletedToday: boolean = false;
   public nextQuizzes: Quiz[] = [];
-  private destroy$ = new Subject<void>();
-  private userId: string | null = null;
+  private readonly destroy$ = new Subject<void>();
+  private readonly userId: string = "2ce5a89-1db2-46e7-a265-c929697ff1d0";
 
   constructor(
-    private streaksService: StreaksService,
-    private quizService: QuizService,
-    private sessionService: SessionService
+    private readonly streaksService: StreaksService,
+    private readonly quizService: QuizService,
+    private readonly sessionService: SessionService
   ) {}
 
-  ngOnInit(): void {
-    this.initializeDailyChallenge();
-  }
+  // ngOnInit(): void {
+  //   this.initializeDailyChallenge();
+  // }
 
-  private async initializeDailyChallenge(): Promise<void> {
-    const user = await this.sessionService.getCurrentUser();
-    if (user) {
-      this.userId = user.id;
-      await this.checkDailyCompletion();
-      await this.loadRandomQuizzes();
-    }
-  }
+  // private async initializeDailyChallenge(): Promise<void> {
+  //   const user = await this.sessionService.getCurrentUser();
+  //   if (user) {
+  //     this.userId = user.id;
+  //     await this.checkDailyCompletion();
+  //     await this.loadRandomQuizzes();
+  //   }
+  // }
 
   private async checkDailyCompletion(): Promise<void> {
     if (this.userId) {
@@ -50,7 +50,10 @@ export class DailyChallengeComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(quizzes => {
         if (quizzes && quizzes.length > 0) {
-          this.nextQuizzes = quizzes.sort(() => 0.5 - Math.random()).slice(0, 5);
+          this.nextQuizzes = quizzes
+            .slice()
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 5);
         }
       });
   }

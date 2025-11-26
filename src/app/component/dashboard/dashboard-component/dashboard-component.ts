@@ -34,7 +34,7 @@ export class DashboardComponent implements OnInit{
   ) {}
 
   ngOnInit() {
-   this.loadData().then();
+    this.loadData().then();
   }
 
   private async loadData(){
