@@ -17,9 +17,9 @@ export class StreakCardComponent implements OnInit, OnDestroy {
   public longestStreak: number = 0;
   public lastActivityDate: Date | null = null;
 
-  private destroy$ = new Subject<void>();
+  private readonly destroy$ = new Subject<void>();
 
-  constructor(private streaksService: StreaksService) {}
+  constructor(private readonly streaksService: StreaksService) {}
 
   ngOnInit(): void {
     if (this.userId) {

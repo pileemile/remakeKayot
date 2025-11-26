@@ -20,27 +20,27 @@ export class StreakDisplayComponent implements OnInit, OnDestroy {
   public streakMessage: string | null = null;
   public streakMessageType: 'success' | 'error' | null = null;
 
-  private destroy$ = new Subject<void>();
-  private userId: string | null = null;
+  private readonly destroy$ = new Subject<void>();
+  private readonly userId: string = "2ce5a89-1db2-46e7-a265-c929697ff1d0";
 
   constructor(
-    private streaksService: StreaksService,
-    private sessionService: SessionService
+    private readonly streaksService: StreaksService,
+    private readonly sessionService: SessionService
   ) {}
 
   ngOnInit(): void {
-    this.initializeUserStreak();
+    // this.initializeUserStreak();
   }
 
-  private initializeUserStreak(): void {
-    this.sessionService.getCurrentUser().then(user => {
-      if (user) {
-        this.userId = user.id;
-        this.loadUserStreak();
-        this.subscribeToStreakUpdates();
-      }
-    });
-  }
+  // private initializeUserStreak(): void {
+  //   this.sessionService.getCurrentUser().then(user => {
+  //     if (user) {
+  //       this.userId = user.id;
+  //       this.loadUserStreak();
+  //       this.subscribeToStreakUpdates();
+  //     }
+  //   });
+  // }
 
   private loadUserStreak(): void {
     if (this.userId) {
