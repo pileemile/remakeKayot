@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Session} from '@supabase/supabase-js';
+import {Session, User} from '@supabase/supabase-js';
 import {BehaviorSubject} from 'rxjs';
 import {supabase} from '../../../environments/environment';
 
@@ -14,5 +14,10 @@ export class SessionService {
       access_token,
       refresh_token
     })
+  }
+
+  public async getCurrentUser(): Promise<User | null> {
+    const { data: { user } } = await supabase.auth.getUser();
+    return user || null;
   }
 }
