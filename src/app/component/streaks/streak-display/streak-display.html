@@ -42,8 +42,12 @@
       (click)="updateStreakManually()"
       class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors duration-200"
       [disabled]="isUpdating">
-      <span *ngIf="!isUpdating">Mettre à jour</span>
-      <span *ngIf="isUpdating">Mise à jour...</span>
+      @if (!isUpdating) {
+        <span>Mettre à jour</span>
+      }
+      @if (isUpdating) {
+        <span>Mise à jour...</span>
+      }
     </button>
   </div>
 

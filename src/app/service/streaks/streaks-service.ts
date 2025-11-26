@@ -113,4 +113,59 @@ export class StreaksService {
       this.userStreak$.next(data);
     }
   }
+
+  public async recordDailyQuizCompletion(userId: string, quizId: string): Promise<boolean> {
+    const today = new Date().toISOString().split('T')[0];
+
+    const { data: existingCompletion, error: checkError } = await supabase
+      .from('daily_quiz_completions')
+      .select('*')
+      .eq('user_id', userId)
+      .eq('completed_at', today)
+      .maybeSingle();
+
+    if (checkError && checkError.code !== 'PGRST116') {
+      console.error('Erreur lors de la vérification de complétion:', checkError);
+      return false;
+    }
+
+    if (existingCompletion) {
+      return true;
+    }
+
+    const { error: insertError } = await supabase
+      .from('daily_quiz_completions')
+      .insert({
+        user_id: userId,
+        quiz_id: quizId,
+        completed_at: today,
+        created_at: new Date().toISOString()
+      });
+
+    if (insertError) {
+      console.error('Erreur lors de l\'enregistrement de la complétion:', insertError);
+      return false;
+    }
+
+    await this.updateStreak(userId);
+    return true;
+  }
+
+  public async hasCompletedQuizToday(userId: string): Promise<boolean> {
+    const today = new Date().toISOString().split('T')[0];
+
+    const { data, error } = await supabase
+      .from('daily_quiz_completions')
+      .select('*')
+      .eq('user_id', userId)
+      .eq('completed_at', today)
+      .maybeSingle();
+
+    if (error && error.code !== 'PGRST116') {
+      console.error('Erreur lors de la vérification:', error);
+      return false;
+    }
+
+    return !!data;
+  }
 }
