@@ -11,6 +11,8 @@ import {QuizComments} from '../../quiz/quiz-comments/quiz-comments';
 import {MatDialog} from '@angular/material/dialog';
 import {DialogSuccessError} from '../../dialog/dialog-success-error/dialog-success-error';
 import {QuestionCreate} from '../../../models/question/question';
+import {StreaksService} from '../../../service/streaks/streaks-service';
+import {SessionService} from '../../../service/session-service/session-service';
 
 @Component({
   selector: 'app-answer-questions',
@@ -37,6 +39,8 @@ export class AnswerQuestions implements OnInit {
     private readonly router: Router,
     private readonly allQuizService: QuizService,
     private readonly dialog: MatDialog,
+    private readonly streaksService: StreaksService,
+    private readonly sessionService: SessionService,
   ) {}
 
   ngOnInit() {
@@ -167,6 +171,11 @@ export class AnswerQuestions implements OnInit {
         const xpGained = this.getXpByDifficulty(this.quizz?.difficulty);
         await this.attemptsAnswersService.addUserXp('22ce5a89-1db2-46e7-a265-c929697ff1d0', xpGained);
 
+        const user = await this.sessionService.getCurrentUser();
+        if (user && this.quizz?.id) {
+          await this.streaksService.recordDailyQuizCompletion(user.id, this.quizz.id);
+        }
+
         this.dialog.open(DialogSuccessError, {
           width: '450px',
           height: '250px',
@@ -202,4 +211,5 @@ export class AnswerQuestions implements OnInit {
       });
     }
   }
+
 }
