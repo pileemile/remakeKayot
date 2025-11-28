@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PaginationType } from './constent';
@@ -8,7 +8,7 @@ import { PaginationService } from '../../service/pagination/pagination-service';
 @Component({
   selector: 'app-pagination',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './pagination.html',
   styleUrls: ['./pagination.css']
 })
