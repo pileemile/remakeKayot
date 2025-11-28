@@ -5,6 +5,14 @@
   <div>
     <app-streak-card [userId]="user_id"></app-streak-card>
   </div>
+  <div>
+    <app-achivements-list [userId]="user_id"></app-achivements-list>
+  </div>
+
+  <div class="p-4 rounded-lg shadow-md">
+    <app-table [data]="paginatedQuizzes" [columns]="tableColumns"></app-table>
+    <app-pagination [type]="PaginationType.USERQUIZ" [userId]="user_id"></app-pagination>
+  </div>
   <div class="p-4 rounded-lg shadow-md">
     <app-table [data]="paginatedQuizzes" [columns]="tableColumns"></app-table>
     <app-pagination [type]="PaginationType.USERQUIZ" [userId]="user_id"></app-pagination>

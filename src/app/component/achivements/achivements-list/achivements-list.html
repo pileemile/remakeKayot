@@ -1,0 +1,104 @@
+<div class="bg-white rounded-lg shadow-md p-6">
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-2xl font-bold text-gray-800">Achievements</h2>
+    <div class="text-right">
+      <div class="text-sm text-gray-600">Progression</div>
+      <div class="text-2xl font-bold text-blue-600">
+        {{ completionPercentage }}%
+      </div>
+      <div class="text-xs text-gray-500">
+        {{ userAchievements.length }} / {{ allAchievements.length }}
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-8">
+    <div class="w-full bg-gray-200 rounded-full h-3">
+      <div
+        class="bg-gradient-to-r from-blue-500 to-purple-600 h-3 rounded-full transition-all duration-500"
+        [style.width. %]="completionPercentage">
+      </div>
+    </div>
+  </div>
+
+  <!-- Liste des achievements -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    @for (achievement of allAchievements; track achievement.id) {
+      <div
+        class="relative border rounded-lg p-4 transition-all duration-300 hover:shadow-lg"
+        [ngClass]="{
+          'bg-gradient-to-br from-yellow-50 to-yellow-100 border-yellow-400': hasAchievement(achievement.id),
+          'bg-gray-50 border-gray-200 opacity-60': !hasAchievement(achievement.id)
+        }">
+
+        <!-- Badge "Débloqué" -->
+        @if (hasAchievement(achievement.id)) {
+          <div class="absolute top-2 right-2">
+            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">
+              <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9. 293a1 1 0 00-1.414-1. 414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              </svg>
+              Débloqué
+            </span>
+          </div>
+        }
+
+        <!-- Icône -->
+        <div class="flex items-center mb-3">
+          <div
+            class="w-16 h-16 rounded-full flex items-center justify-center text-3xl"
+            [ngClass]="{
+              'bg-yellow-200': hasAchievement(achievement.id),
+              'bg-gray-200': !hasAchievement(achievement.id)
+            }">
+            {{ achievement.icon || '🏆' }}
+          </div>
+        </div>
+
+        <!-- Nom et description -->
+        <h3 class="font-bold text-lg mb-2"
+             [ngClass]="{
+              'text-gray-900': hasAchievement(achievement.id),
+              'text-gray-500': !hasAchievement(achievement.id)
+            }">
+          {{ achievement.name }}
+        </h3>
+
+        <p class="text-sm mb-3"
+           [ngClass]="{
+             'text-gray-700': hasAchievement(achievement. id),
+             'text-gray-400': !hasAchievement(achievement.id)
+           }">
+          {{ achievement.description || 'Aucune description' }}
+        </p>
+
+        <!-- Date d'obtention -->
+        @if (hasAchievement(achievement.id)) {
+          @for (userAchievement of userAchievements; track userAchievement.id) {
+            @if (userAchievement. achievement_id === achievement.id) {
+              <div class="text-xs text-gray-600 mt-2 pt-2 border-t border-yellow-300">
+                <svg class="w-3 h-3 inline mr-1" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293. 707l2.828 2.829a1 1 0 101. 415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                </svg>
+                Obtenu le {{ formatDate(userAchievement.obtained_at) }}
+              </div>
+            }
+          }
+        } @else {
+          <div class="text-xs text-gray-400 mt-2 pt-2 border-t border-gray-200">
+            🔒 Verrouillé
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  @if (allAchievements.length === 0) {
+    <div class="text-center py-12 text-gray-500">
+      <svg class="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+      </svg>
+      <p class="text-lg">Aucun achievement disponible pour le moment</p>
+    </div>
+  }
+</div>

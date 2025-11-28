@@ -8,6 +8,7 @@ import {Pagination} from '../../component/pagination/pagination';
 import {PaginationType} from '../../component/pagination/constent';
 import {QuizService} from '../../service/quiz/quiz-service';
 import {StreakCardComponent} from '../../component/streaks/streak-card/streak-card';
+import {AchivementsList} from '../../component/achivements/achivements-list/achivements-list';
 
 @Component({
   selector: 'app-user-profil',
@@ -16,7 +17,8 @@ import {StreakCardComponent} from '../../component/streaks/streak-card/streak-ca
     Table,
     UserComments,
     Pagination,
-    StreakCardComponent
+    StreakCardComponent,
+    AchivementsList
   ],
   templateUrl: './user-profil.html',
   styleUrl: './user-profil.css'
