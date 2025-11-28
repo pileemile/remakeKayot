@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormsModule} from '@angular/forms';
 import {Comment} from '../../models/quiz-comment/quiz-comment';
 import {QuizCommentService} from '../../service/quiz-comment/quiz-comment-service';
-import {CommonModule} from '@angular/common';
+
 import {QuizRating} from '../../models/quiz-rating/quiz-rating';
 import {QuizRatingService} from '../../service/quiz-rating/quiz-rating-service';
 
@@ -10,9 +10,8 @@ import {QuizRatingService} from '../../service/quiz-rating/quiz-rating-service';
   selector: 'app-comments',
   imports: [
     ReactiveFormsModule,
-    CommonModule,
     FormsModule
-  ],
+],
   templateUrl: './comments.html',
   styleUrl: './comments.css'
 })

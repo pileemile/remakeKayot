@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {QuizCommentService} from '../../../service/quiz-comment/quiz-comment-service';
-import {CommonModule} from '@angular/common';
+
 import {Comments} from '../../comments/comments';
 import {ActivatedRoute} from '@angular/router';
 import {QuizRatingService} from '../../../service/quiz-rating/quiz-rating-service';
@@ -10,10 +10,9 @@ import {QuizRatingService} from '../../../service/quiz-rating/quiz-rating-servic
   selector: 'app-quiz-comments',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     Comments
-  ],
+],
   templateUrl: './quiz-comments.html',
   styleUrl: './quiz-comments.css'
 })

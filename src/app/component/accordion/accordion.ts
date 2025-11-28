@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { Quiz } from '../../models/quiz/quiz';
 import { QuizCommentService } from '../../service/quiz-comment/quiz-comment-service';
 import { Subject } from 'rxjs';
@@ -10,7 +10,7 @@ import {Router} from '@angular/router';
 @Component({
   selector: 'app-accordion',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './accordion.html',
   styleUrl: './accordion.css'
 })

@@ -4,7 +4,7 @@ import {Difficulty, Quiz} from '../../../models/quiz/quiz';
 import {QuizService} from '../../../service/quiz/quiz-service';
 import {MatButtonModule} from '@angular/material/button';
 import {Answers} from '../../../models/answer/answer';
-import {CommonModule} from '@angular/common';
+
 import {MatDialog} from '@angular/material/dialog';
 import {DialogSuccessError} from '../../dialog/dialog-success-error/dialog-success-error';
 import {Categories} from '../../../models/categories/categories';
@@ -15,11 +15,10 @@ import {CategoriesService} from '../../../service/categories/categories-service'
   selector: 'app-create-quizz',
   standalone: true,
   imports: [
-    CommonModule,
     MatButtonModule,
     ReactiveFormsModule,
-    FormsModule,
-  ],
+    FormsModule
+],
   templateUrl: './create-quiz.html',
   styleUrl: './create-quiz.css',
   changeDetection: ChangeDetectionStrategy.OnPush

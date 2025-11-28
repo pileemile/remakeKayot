@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { RouterModule } from '@angular/router';
 import { StreaksService } from '../../../service/streaks/streaks-service';
+import { QuizService } from '../../../service/quiz/quiz-service';
 import { DailyChallengeService } from '../../../service/daily-challenge/daily-challenge.service';
 import { SessionService } from '../../../service/session-service/session-service';
 import { Quiz } from '../../../models/quiz/quiz';
@@ -11,7 +12,7 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-daily-challenge',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [RouterModule],
   templateUrl: './daily-challenge.html'
 })
 export class DailyChallengeComponent implements OnInit, OnDestroy {
